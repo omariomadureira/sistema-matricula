@@ -10,8 +10,7 @@ namespace SistemaMatricula.Controllers
         public ActionResult Index()
         {
             Curso c = new Curso();
-            List<Curso> l = new List<Curso>();
-            l = c.Listar();
+            ViewBag.Cursos = c.Listar();
 
             return View();
         }

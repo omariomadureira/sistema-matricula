@@ -72,13 +72,15 @@ namespace SistemaMatricula.Database
                 c.Creditos = 10;
                 c.DataCadastro = DateTime.Now;
 
+                Cursos = new List<CursoDAO>();
+
                 Cursos.Add(a);
                 Cursos.Add(b);
                 Cursos.Add(c);
 
                 return Cursos.Where(x => x.DataExclusao == null).Select(x => Converter(x)).ToList();
             }
-            catch
+            catch (Exception e)
             {
                 return null;
             }

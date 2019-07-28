@@ -1,31 +1,87 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
+﻿@model SistemaMatricula.Models.Curso
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
-
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Curso</h6>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <label>
+                    Pesquisar: <input type="search" class="form-control form-control-sm" placeholder="" aria-controls="dataTable">
+                </label>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Quantidade de Créditos</th>
+                        <th>Data de Cadastro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Cursos)
+                    {
+                        <tr>
+                            <td>@item.Nome</td>
+                            <td>@item.Descricao</td>
+                            <td>@item.Creditos</td>
+                            <td>@item.DataCadastro</td>
+                        </tr>
+                    }
+                    </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Quantidade de Créditos</th>
+                        <th>Data de Cadastro</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-sm-12 col-md-5">
+                <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
+                    Página 1 de 10 de 57 registros
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+                <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                    <ul class="pagination">
+                        <li class="paginate_button page-item active">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0" class="page-link">2</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="3" tabindex="0" class="page-link">3</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">4</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">5</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">6</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">7</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">8</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
