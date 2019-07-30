@@ -6,55 +6,74 @@
         <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
     </div>
     <div class="card-body">
-        <form method="post">
-            <div class="row">
-                <div class="col-md-5">
-                    <input type="search" class="form-control form-control-user" name="pesquisa" placeholder="O que você está procurando?">
+        @{
+            if (!string.IsNullOrEmpty(ViewBag.Message))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.Message
                 </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary btn-user btn-sm"><i class="fas fa-search"></i> PESQUISAR</button>
+            }
+            else
+            {
+                <form method="post">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <input type="search" class="form-control form-control-user" required name="pesquisa" value="@ViewBag.Pesquisa" placeholder="O que você está procurando?">
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary btn-user btn-sm"><i class="fas fa-search"></i> PESQUISAR</button>
+                            <a class="btn btn-primary btn-user btn-sm" href="@Url.Action("Index", "Curso")">LIMPAR FILTRO</a>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Descrição</th>
+                                <th>Quantidade de Créditos</th>
+                                <th>Data de Cadastro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.Cursos)
+                            {
+                                <tr>
+                                    <td>@item.Nome</td>
+                                    <td>@item.Descricao</td>
+                                    <td>@item.Creditos</td>
+                                    <td>@item.DataCadastro</td>
+                                    <td class="text-center"><a class="btn btn-warning btn-sm" href="@Url.Action("Edit", "Curso", new { Id = item.IdCurso })"><i class="fas fa-pen"></i> EDITAR</a></td>
+                                    <td class="text-center"><a class="btn btn-danger btn-sm" href="@Url.Action("Delete", "Curso", new { Id = item.IdCurso })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
+                                </tr>
+                            }
+
+                            @if (ViewBag.Cursos.Count <= 0)
+                            {
+                                <tr>
+                                    <td colspan="6">Não há registros para listar.</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="6">
+                                    <a class="btn btn-primary btn-user btn-sm" href="@Url.Action("Edit", "Curso")"><i class="fas fa-plus"></i> ADICIONAR CURSO</a>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
-                <div class="col-md-5"></div>
-            </div>
-        </form>
-        <div class="table-responsive">
-            <table class="table table-bordered" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                        <th>Quantidade de Créditos</th>
-                        <th>Data de Cadastro</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in ViewBag.Cursos)
-                    {
-                        <tr>
-                            <td>@item.Nome</td>
-                            <td>@item.Descricao</td>
-                            <td>@item.Creditos</td>
-                            <td>@item.DataCadastro</td>
-                            <td class="text-center"><a class="btn btn-warning btn-sm" href="@Url.Action("Edit", "Curso", new { Id = item.IdCurso })"><i class="fas fa-pen"></i> EDITAR</a></td>
-                            <td class="text-center"><a class="btn btn-danger btn-sm" href="@Url.Action("Delete", "Curso", new { Id = item.IdCurso })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
-                        </tr>
-                    }
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th colspan="6">
-                            <a class="btn btn-primary btn-user btn-sm" href="@Url.Action("Edit", "Curso")"><i class="fas fa-plus"></i> ADICIONAR CURSO</a>
-                        </th>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+            }
+        }
     </div>
     <!--<div class="card-footer">
         <div class="row">
             <div class="col-sm-12 col-md-5">
                 <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
-                    Página 1 de 10 de @ViewBag.Cursos.Count registros
+                    Página 1 de 10 de 50 registros
                 </div>
             </div>
             <div class="col-sm-12 col-md-7">
