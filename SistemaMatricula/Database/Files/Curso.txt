@@ -1,0 +1,48 @@
+7af7aab1-71ef-455b-ad0d-b3d9fb2ed363
+Curso C
+Teste e teste
+60
+29/07/2019 14:45:55
+
+d70d7295-ef38-4609-b5a6-f9ea4247c3f0
+Curso C
+Teste
+10
+29/07/2019 14:53:59
+29/07/2019 21:35:45
+18bf89e1-412b-421e-ae2a-327fc8b7eebf
+Curso D
+Teste
+2
+29/07/2019 14:54:26
+
+3a380524-6a90-4787-a57d-49145fce4eb7
+Curso u
+Lorem ipsum lorem ipsum
+40
+29/07/2019 15:15:28
+29/07/2019 21:45:33
+5ea0062e-556b-4b60-9ee1-b1c6eff95d46
+Curso ABC
+lorem ipsum lorem ipsum
+20
+29/07/2019 16:09:42
+
+d72db601-656a-4b0d-a8e4-bcf0a2db3ca2
+Graduação
+Lorem ipsum
+20
+29/07/2019 16:25:03
+
+7fd393d7-be86-4c5c-ba98-6fc9c3cff972
+Pós-Graduação
+Teste de posoi
+1999
+29/07/2019 18:17:08
+29/07/2019 21:36:02
+31145b5a-85c9-45bf-b3f1-1576de0b498d
+Gradu antiga
+sdsahdkj jdhkashd ks jdh ksdhksaj sjd hksjhd ouy
+998
+29/07/2019 21:45:49
+29/07/2019 21:46:17

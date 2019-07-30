@@ -1,18 +1,22 @@
 ﻿@model SistemaMatricula.Models.Curso
+@{ViewBag.Title = "Cadastro de Cursos";}
 
-<!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Curso</h6>
+        <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
     </div>
     <div class="card-body">
-        <div class="row">
-            <div class="col-md-12">
-                <label>
-                    Pesquisar: <input type="search" class="form-control form-control-sm" placeholder="" aria-controls="dataTable">
-                </label>
+        <form method="post">
+            <div class="row">
+                <div class="col-md-5">
+                    <input type="search" class="form-control form-control-user" name="pesquisa" placeholder="O que você está procurando?">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary btn-user btn-sm"><i class="fas fa-search"></i> PESQUISAR</button>
+                </div>
+                <div class="col-md-5"></div>
             </div>
-        </div>
+        </form>
         <div class="table-responsive">
             <table class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
@@ -31,25 +35,26 @@
                             <td>@item.Descricao</td>
                             <td>@item.Creditos</td>
                             <td>@item.DataCadastro</td>
+                            <td class="text-center"><a class="btn btn-warning btn-sm" href="@Url.Action("Edit", "Curso", new { Id = item.IdCurso })"><i class="fas fa-pen"></i> EDITAR</a></td>
+                            <td class="text-center"><a class="btn btn-danger btn-sm" href="@Url.Action("Delete", "Curso", new { Id = item.IdCurso })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
                         </tr>
                     }
-                    </tbody>
+                </tbody>
                 <tfoot>
                     <tr>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                        <th>Quantidade de Créditos</th>
-                        <th>Data de Cadastro</th>
+                        <th colspan="6">
+                            <a class="btn btn-primary btn-user btn-sm" href="@Url.Action("Edit", "Curso")"><i class="fas fa-plus"></i> ADICIONAR CURSO</a>
+                        </th>
                     </tr>
                 </tfoot>
             </table>
         </div>
     </div>
-    <div class="card-footer">
+    <!--<div class="card-footer">
         <div class="row">
             <div class="col-sm-12 col-md-5">
                 <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
-                    Página 1 de 10 de 57 registros
+                    Página 1 de 10 de @ViewBag.Cursos.Count registros
                 </div>
             </div>
             <div class="col-sm-12 col-md-7">
@@ -83,5 +88,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>

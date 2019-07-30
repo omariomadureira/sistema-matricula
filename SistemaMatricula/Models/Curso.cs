@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SistemaMatricula.Database;
+using System;
 using System.Collections.Generic;
-using SistemaMatricula.Database;
 
 namespace SistemaMatricula.Models
 {
@@ -12,36 +12,30 @@ namespace SistemaMatricula.Models
         public int Creditos { get; set; }
         public DateTime DataCadastro { get; set; }
         public DateTime? DataExclusao { get; set; }
-        public CursoDAO Cursos { get; set; }
 
-        public Curso()
+        public static bool Incluir(string Nome, string Descricao, int Creditos)
         {
-            Cursos = new CursoDAO();
+            return CursoDAO.Incluir(Nome, Descricao, Creditos);
         }
 
-        public bool Incluir(string Nome, string Descricao, int Creditos)
+        public static Curso Consultar(Guid Id)
         {
-            return Cursos.Incluir(Nome, Descricao, Creditos);
+            return CursoDAO.Consultar(Id);
         }
 
-        public Curso Consultar(Guid Id)
+        public static List<Curso> Listar(string pesquisa)
         {
-            return Cursos.Consultar(Id);
+            return CursoDAO.Listar(pesquisa);
         }
 
-        public List<Curso> Listar()
+        public static bool Alterar(Guid Id, string Nome, string Descricao, int Creditos)
         {
-            return Cursos.Listar();
+            return CursoDAO.Alterar(Id, Nome, Descricao, Creditos);
         }
 
-        public bool Desativar(Guid Id)
+        public static bool Desativar(Guid Id)
         {
-            return Cursos.Desativar(Id);
-        }
-
-        public bool Alterar(Guid Id, string Nome, string Descricao, int Creditos)
-        {
-            return Cursos.Alterar(Id, Nome, Descricao, Creditos);
+            return CursoDAO.Desativar(Id);
         }
     }
 }
