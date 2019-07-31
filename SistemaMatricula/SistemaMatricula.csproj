@@ -120,15 +120,21 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AlunoController.cs" />
+    <Compile Include="Controllers\ProfessorController.cs" />
     <Compile Include="Controllers\DisciplinaController.cs" />
     <Compile Include="Controllers\CursoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Database\AlunoDAO.cs" />
+    <Compile Include="Database\ProfessorDAO.cs" />
     <Compile Include="Database\DisciplinaDAO.cs" />
     <Compile Include="Database\CursoDAO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\TextFile.cs" />
+    <Compile Include="Models\Aluno.cs" />
+    <Compile Include="Models\Professor.cs" />
     <Compile Include="Models\Disciplina.cs" />
     <Compile Include="Models\Curso.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1906,6 +1912,12 @@
     <Content Include="Views\Disciplina\Delete.cshtml" />
     <Content Include="Views\Disciplina\Edit.cshtml" />
     <Content Include="Views\Disciplina\Index.cshtml" />
+    <Content Include="Views\Professor\Delete.cshtml" />
+    <Content Include="Views\Professor\Edit.cshtml" />
+    <Content Include="Views\Professor\Index.cshtml" />
+    <Content Include="Views\Aluno\Delete.cshtml" />
+    <Content Include="Views\Aluno\Edit.cshtml" />
+    <Content Include="Views\Aluno\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

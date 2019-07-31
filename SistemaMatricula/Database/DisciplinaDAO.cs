@@ -87,6 +87,9 @@ namespace SistemaMatricula.Database
                         DataCadastro = DateTime.Parse(lines[i + 4])
                     };
 
+                    if (disciplina.Curso == null)
+                        continue;
+
                     if (!string.IsNullOrEmpty(lines[i + 5]))
                         disciplina.DataExclusao = DateTime.Parse(lines[i + 5]);
 
@@ -155,6 +158,28 @@ namespace SistemaMatricula.Database
                         return true;
                     }
                 }
+            }
+            catch { }
+
+            return false;
+        }
+
+        public static bool DesativarPorCurso(Guid IdCurso)
+        {
+            try
+            {
+                TextFile t = new TextFile("Disciplina");
+                string[] lines = t.Read();
+
+                for (int i = 0; i < lines.Length; i += 6)
+                {
+                    if (Guid.TryParse(lines[i + 1], out _) && Guid.Parse(lines[i + 1]) == IdCurso)
+                        lines[i + 5] = DateTime.Now.ToString();
+                }
+
+                t.Update(lines);
+
+                return true;
             }
             catch { }
 
