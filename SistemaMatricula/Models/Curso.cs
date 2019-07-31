@@ -18,24 +18,24 @@ namespace SistemaMatricula.Models
             return CursoDAO.Incluir(Nome, Descricao, Creditos);
         }
 
-        public static Curso Consultar(Guid Id)
+        public static Curso Consultar(Guid IdCurso)
         {
-            return CursoDAO.Consultar(Id);
+            return CursoDAO.Consultar(IdCurso);
         }
 
-        public static List<Curso> Listar(string pesquisa)
+        public static List<Curso> Listar(string palavra = null)
         {
-            return CursoDAO.Listar(pesquisa);
+            return CursoDAO.Listar(palavra);
         }
 
-        public static bool Alterar(Guid Id, string Nome, string Descricao, int Creditos)
+        public static bool Alterar(Guid IdCurso, string Nome, string Descricao, int Creditos)
         {
-            return CursoDAO.Alterar(Id, Nome, Descricao, Creditos);
+            return CursoDAO.Alterar(IdCurso, Nome, Descricao, Creditos);
         }
 
-        public static bool Desativar(Guid Id)
+        public static bool Desativar(Guid IdCurso)
         {
-            return CursoDAO.Desativar(Id);
+            return CursoDAO.Desativar(IdCurso);
         }
     }
 }

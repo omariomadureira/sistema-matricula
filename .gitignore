@@ -9,3 +9,10 @@ SistemaMatricula/bin/SistemaMatricula.pdb
 SistemaMatricula/obj/Debug/SistemaMatricula.dll
 SistemaMatricula/obj/Debug/SistemaMatricula.pdb
 SistemaMatricula/Database/Files/Curso.txt
+.vs/SistemaMatricula/v16/.suo
+.vs/SistemaMatricula/v16/Server/sqlite3/storage.ide
+*.dll
+*.pdb
+SistemaMatricula/Database/Files/Curso.txt
+SistemaMatricula/Database/Files/Disciplina.txt
+*.cache

@@ -32,7 +32,7 @@ namespace SistemaMatricula.Database
             }
         }
 
-        public static Curso Consultar(Guid Id)
+        public static Curso Consultar(Guid IdCurso)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace SistemaMatricula.Database
 
                 for (int i = 0; i < lines.Length; i += 6)
                 {
-                    if (Guid.TryParse(lines[i], out _) && Guid.Parse(lines[i]) == Id)
+                    if (Guid.TryParse(lines[i], out _) && Guid.Parse(lines[i]) == IdCurso)
                     {
                         CursoDAO curso = new CursoDAO
                         {
@@ -49,9 +49,11 @@ namespace SistemaMatricula.Database
                             Nome = lines[i + 1],
                             Descricao = lines[i + 2],
                             Creditos = int.Parse(lines[i + 3]),
-                            DataCadastro = DateTime.Parse(lines[i + 4]),
-                            DataExclusao = null
+                            DataCadastro = DateTime.Parse(lines[i + 4])
                         };
+
+                        if (!string.IsNullOrEmpty(lines[i + 5]))
+                            curso.DataExclusao = DateTime.Parse(lines[i + 5]);
 
                         return Converter(curso);
                     }
@@ -62,14 +64,14 @@ namespace SistemaMatricula.Database
             return null;
         }
 
-        public static List<Curso> Listar(string busca)
+        public static List<Curso> Listar(string palavra)
         {
             try
             {
                 TextFile t = new TextFile("Curso");
                 string[] lines = t.Read();
 
-                List<CursoDAO> Cursos = new List<CursoDAO>();
+                List<CursoDAO> cursos = new List<CursoDAO>();
 
                 for (int i = 0; i < lines.Length; i += 6)
                 {
@@ -83,14 +85,17 @@ namespace SistemaMatricula.Database
                     };
 
                     if (!string.IsNullOrEmpty(lines[i + 5]))
-                    {
                         curso.DataExclusao = DateTime.Parse(lines[i + 5]);
-                    }
 
-                    Cursos.Add(curso);
+                    cursos.Add(curso);
                 }
 
-                return Cursos.Where(x => x.DataExclusao == null && (x.Nome.ToLower().Contains(busca.ToLower()) || x.Descricao.ToLower().Contains(busca.ToLower()))).Select(x => Converter(x)).ToList();
+                IEnumerable<CursoDAO> query = cursos.Where(x => x.DataExclusao == null);
+
+                if (!string.IsNullOrWhiteSpace(palavra))
+                    query = query.Where(x => x.Nome.ToLower().Contains(palavra.ToLower()) || x.Descricao.ToLower().Contains(palavra.ToLower()));
+
+                return query.Select(x => Converter(x)).ToList();
             }
             catch (Exception e)
             {
@@ -98,18 +103,16 @@ namespace SistemaMatricula.Database
             }
         }
 
-        public static bool Alterar(Guid Id, string Nome, string Descricao, int Creditos)
+        public static bool Alterar(Guid IdCurso, string Nome, string Descricao, int Creditos)
         {
             try
             {
                 TextFile t = new TextFile("Curso");
                 string[] lines = t.Read();
 
-                List<CursoDAO> Cursos = new List<CursoDAO>();
-
                 for (int i = 0; i < lines.Length; i += 6)
                 {
-                    if (Guid.TryParse(lines[i], out _) && Guid.Parse(lines[i]) == Id)
+                    if (Guid.TryParse(lines[i], out _) && Guid.Parse(lines[i]) == IdCurso)
                     {
                         lines[i + 1] = Nome;
                         lines[i + 2] = Descricao;
@@ -126,18 +129,16 @@ namespace SistemaMatricula.Database
             return false;
         }
 
-        public static bool Desativar(Guid Id)
+        public static bool Desativar(Guid IdCurso)
         {
             try
             {
                 TextFile t = new TextFile("Curso");
                 string[] lines = t.Read();
 
-                List<CursoDAO> Cursos = new List<CursoDAO>();
-
                 for (int i = 0; i < lines.Length; i += 6)
                 {
-                    if (Guid.TryParse(lines[i], out _) && Guid.Parse(lines[i]) == Id)
+                    if (Guid.TryParse(lines[i], out _) && Guid.Parse(lines[i]) == IdCurso)
                     {
                         lines[i + 5] = DateTime.Now.ToString();
                         t.Update(lines);

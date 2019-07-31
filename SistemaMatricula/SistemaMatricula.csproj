@@ -120,13 +120,16 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DisciplinaController.cs" />
     <Compile Include="Controllers\CursoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Database\DisciplinaDAO.cs" />
     <Compile Include="Database\CursoDAO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\TextFile.cs" />
+    <Compile Include="Models\Disciplina.cs" />
     <Compile Include="Models\Curso.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1900,6 +1903,9 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Views\Curso\Delete.cshtml" />
+    <Content Include="Views\Disciplina\Delete.cshtml" />
+    <Content Include="Views\Disciplina\Edit.cshtml" />
+    <Content Include="Views\Disciplina\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

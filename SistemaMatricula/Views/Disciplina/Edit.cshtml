@@ -1,0 +1,66 @@
+﻿@model SistemaMatricula.Models.Disciplina
+@{ViewBag.Title = "Cadastro de Disciplinas";}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+    </div>
+    <div class="card-body">
+        @{
+            if (!string.IsNullOrEmpty(ViewBag.Message))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.Message
+                </div>
+
+                if (ViewBag.HideScreen)
+                {
+                    <div class="text-center">
+                        <a class="btn btn-primary btn-sm" href="@Url.Action("Index", "Disciplina")">VOLTAR</a>
+                    </div>
+                }
+            }
+
+            if (!ViewBag.HideScreen)
+            {
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form class="user" method="post" href="@Url.Action("Edit", "Disciplina", new { Id = ViewBag.Disciplina.IdDisciplina })">
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input type="text" class="form-control form-control-user" required name="nome" placeholder="Nome" value="@ViewBag.Disciplina.Nome">
+                                </div>
+                                <div class="col-sm-6">
+                                    <select class="form-control form-control-user" required name="curso">
+                                        <option>Selecione um curso</option>
+                                        @{
+                                            foreach (SistemaMatricula.Models.Curso item in ViewBag.Cursos)
+                                            {
+                                                if (ViewBag.Disciplina.Curso != null && ViewBag.Disciplina.Curso.IdCurso == item.IdCurso)
+                                                {
+                                                    <option selected value="@item.IdCurso">@item.Nome</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.IdCurso">@item.Nome</option>
+                                                }
+
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control form-control-user" name="descricao" required placeholder="Descrição">@ViewBag.Disciplina.Descricao</textarea>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary btn-success btn-sm"><i class="fas fa-save"></i> SALVAR</button>
+                                <a class="btn btn-danger btn-sm" href="@Url.Action("Index", "Disciplina")">CANCELAR</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

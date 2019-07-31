@@ -1,5 +1,5 @@
-﻿@model SistemaMatricula.Models.Curso
-@{ViewBag.Title = "Cadastro de Cursos";}
+﻿@model SistemaMatricula.Models.Disciplina
+@{ViewBag.Title = "Cadastro de Disciplinas";}
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -18,13 +18,32 @@
                 <form method="post">
                     <div class="row">
                         <div class="col-md-5">
-                            <input type="search" class="form-control form-control-user" required name="palavra" value="@ViewBag.Palavra" placeholder="O que você está procurando?">
+                            <input type="search" class="form-control form-control-user" name="palavra" value="@ViewBag.Palavra" placeholder="O que você está procurando?">
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control form-control-user" required name="curso">
+                                <option>Filtrar por curso</option>
+                                @{
+                                    foreach (SistemaMatricula.Models.Curso item in ViewBag.Cursos)
+                                    {
+                                        if (ViewBag.IdCurso != null && ViewBag.IdCurso == item.IdCurso.ToString())
+                                        {
+                                            <option selected value="@item.IdCurso">@item.Nome</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.IdCurso">@item.Nome</option>
+                                        }
+
+                                    }
+                                }
+                            </select>
                         </div>
                         <div class="col-md-3">
                             <button type="submit" class="btn btn-primary btn-user btn-sm"><i class="fas fa-search"></i> PESQUISAR</button>
-                            <a class="btn btn-primary btn-user btn-sm" href="@Url.Action("Index", "Curso")">LIMPAR FILTRO</a>
+                            <a class="btn btn-primary btn-user btn-sm" href="@Url.Action("Index", "Disciplina")">LIMPAR FILTRO</a>
                         </div>
-                        <div class="col-md-4"></div>
+                        <div class="col-md-1"></div>
                     </div>
                 </form>
                 <div class="table-responsive">
@@ -33,23 +52,23 @@
                             <tr>
                                 <th>Nome</th>
                                 <th>Descrição</th>
-                                <th>Quantidade de Créditos</th>
+                                <th>Curso</th>
                                 <th>Data de Cadastro</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in ViewBag.Cursos)
+                            @foreach (var item in ViewBag.Disciplinas)
                             {
                                 <tr>
                                     <td>@item.Nome</td>
                                     <td>@item.Descricao</td>
-                                    <td>@item.Creditos</td>
+                                    <td>@item.Curso.Nome</td>
                                     <td>@item.DataCadastro</td>
-                                    <td class="text-center"><a class="btn btn-warning btn-sm" href="@Url.Action("Edit", "Curso", new { Id = item.IdCurso })"><i class="fas fa-pen"></i> EDITAR</a></td>
-                                    <td class="text-center"><a class="btn btn-danger btn-sm" href="@Url.Action("Delete", "Curso", new { Id = item.IdCurso })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
+                                    <td class="text-center"><a class="btn btn-warning btn-sm" href="@Url.Action("Edit", "Disciplina", new { Id = item.IdDisciplina })"><i class="fas fa-pen"></i> EDITAR</a></td>
+                                    <td class="text-center"><a class="btn btn-danger btn-sm" href="@Url.Action("Delete", "Disciplina", new { Id = item.IdDisciplina })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
                                 </tr>
                             }
-                            @if (ViewBag.Cursos.Count <= 0)
+                            @if (ViewBag.Disciplinas.Count <= 0)
                             {
                                 <tr>
                                     <td colspan="6">Não há registros para listar.</td>
@@ -59,7 +78,7 @@
                         <tfoot>
                             <tr>
                                 <th colspan="6">
-                                    <a class="btn btn-primary btn-user btn-sm" href="@Url.Action("Edit", "Curso")"><i class="fas fa-plus"></i> ADICIONAR CURSO</a>
+                                    <a class="btn btn-primary btn-user btn-sm" href="@Url.Action("Edit", "Disciplina")"><i class="fas fa-plus"></i> ADICIONAR DISCIPLINA</a>
                                 </th>
                             </tr>
                         </tfoot>
