@@ -1,0 +1,106 @@
+﻿@model SistemaMatricula.Models.Aluno
+@{ViewBag.Title = "Cadastro de Alunos";}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+    </div>
+    <div class="card-body">
+        @{
+            if (!string.IsNullOrEmpty(ViewBag.Message))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.Message
+                </div>
+            }
+            else
+            {
+                <form method="post">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <input type="search" class="form-control form-control-user" required name="palavra" value="@ViewBag.Palavra" placeholder="O que você está procurando?">
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary btn-user btn-sm"><i class="fas fa-search"></i> PESQUISAR</button>
+                            <a class="btn btn-primary btn-user btn-sm" href="@Url.Action("Index", "Aluno")">LIMPAR FILTRO</a>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Data de Cadastro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.Alunos)
+                            {
+                                <tr>
+                                    <td>@item.Nome</td>
+                                    <td>@item.CadastroData</td>
+                                    <td class="text-center"><a class="btn btn-warning btn-sm" href="@Url.Action("Edit", "Aluno", new { Id = item.IdAluno })"><i class="fas fa-pen"></i> EDITAR</a></td>
+                                    <td class="text-center"><a class="btn btn-danger btn-sm" href="@Url.Action("Delete", "Aluno", new { Id = item.IdAluno })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
+                                </tr>
+                            }
+                            @if (ViewBag.Alunos.Count <= 0)
+                            {
+                                <tr>
+                                    <td colspan="4">Não há registros para listar.</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="5">
+                                    <a class="btn btn-primary btn-user btn-sm" href="@Url.Action("Edit", "Aluno")"><i class="fas fa-plus"></i> ADICIONAR ALUNO</a>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            }
+        }
+    </div>
+    <!--<div class="card-footer">
+        <div class="row">
+            <div class="col-sm-12 col-md-5">
+                <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
+                    Página 1 de 10 de 50 registros
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+                <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                    <ul class="pagination">
+                        <li class="paginate_button page-item active">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0" class="page-link">2</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="3" tabindex="0" class="page-link">3</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">4</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">5</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">6</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">7</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">8</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>-->
+</div>

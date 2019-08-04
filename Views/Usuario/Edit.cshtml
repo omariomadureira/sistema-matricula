@@ -1,0 +1,30 @@
+﻿@model SistemaMatricula.Models.RegisterViewModel
+@{ViewBag.Title = "Cadastro de Usuários";}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "user", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-user", @required = "required", @placeholder = "E-mail" })
+            </div>
+            <div class="form-group">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-user", @required = "required", @placeholder = "Senha" })
+            </div>
+            <div class="form-group">
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control form-control-user", @required = "required", @placeholder = "Confirmação de senha" })
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary btn-success btn-sm"><i class="fas fa-save"></i> SALVAR</button>
+                <a class="btn btn-danger btn-sm" href="@Url.Action("Index", "Aluno")">CANCELAR</a>
+            </div>
+        }
+    </div>
+</div>

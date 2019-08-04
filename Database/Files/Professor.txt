@@ -1,0 +1,78 @@
+7af7aab1-71ef-455b-ad0d-b3d9fb2ed363
+Curso C
+Teste e teste
+60
+29/07/2019 14:45:55
+30/07/2019 14:25:14
+d70d7295-ef38-4609-b5a6-f9ea4247c3f0
+Curso C
+Teste
+10
+29/07/2019 14:53:59
+29/07/2019 21:35:45
+18bf89e1-412b-421e-ae2a-327fc8b7eebf
+Curso DEFGH
+Teste e teste
+90
+29/07/2019 14:54:26
+30/07/2019 16:10:04
+3a380524-6a90-4787-a57d-49145fce4eb7
+Curso u
+Lorem ipsum lorem ipsum
+40
+29/07/2019 15:15:28
+29/07/2019 21:45:33
+5ea0062e-556b-4b60-9ee1-b1c6eff95d46
+Curso ABC
+lorem ipsum lorem ipsum
+20
+29/07/2019 16:09:42
+30/07/2019 16:10:07
+d72db601-656a-4b0d-a8e4-bcf0a2db3ca2
+Graduação
+Lorem ipsum
+20
+29/07/2019 16:25:03
+30/07/2019 16:10:09
+7fd393d7-be86-4c5c-ba98-6fc9c3cff972
+Pós-Graduação
+Teste de posoi
+1999
+29/07/2019 18:17:08
+29/07/2019 21:36:02
+31145b5a-85c9-45bf-b3f1-1576de0b498d
+Gradu antiga
+sdsahdkj jdhkashd ks jdh ksdhksaj sjd hksjhd ouy
+998
+29/07/2019 21:45:49
+29/07/2019 21:46:17
+c25c5f7e-8e39-48e5-abd6-d95a58dc9078
+
+
+0
+30/07/2019 14:45:27
+30/07/2019 14:58:05
+4a004673-bd51-4e34-a6f6-133dbf3b9b92
+Novo Curso Teste
+Descrição do novo curso super bacana e dahora
+120
+30/07/2019 15:06:36
+30/07/2019 16:10:11
+9749d08a-418e-498b-92dc-d5ba679520b7
+Novo Curso A
+Novo Curso B
+0
+30/07/2019 15:08:20
+30/07/2019 15:08:39
+060c2fb1-bd2e-42b1-bb58-b30a6fa0019a
+Curso C
+teste
+40
+30/07/2019 16:10:29
+
+963e7c7b-38f1-485f-89fc-ed300257d740
+Mario
+teste
+999
+30/07/2019 16:13:55
+

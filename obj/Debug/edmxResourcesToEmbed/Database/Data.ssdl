@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SistemaMatriculaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="AlunoData">
+    <Key>
+      <PropertyRef Name="IdAluno" />
+    </Key>
+    <Property Name="IdAluno" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Nome" Type="nchar" MaxLength="100" Nullable="false" />
+    <Property Name="DataNascimento" Type="datetime" Nullable="false" />
+    <Property Name="Email" Type="nchar" MaxLength="100" Nullable="false" />
+    <Property Name="CPF" Type="int" Nullable="false" />
+    <Property Name="CadastroData" Type="datetime" Nullable="false" />
+    <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ExclusaoData" Type="datetime" />
+    <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+  </EntityType>
+  <EntityType Name="CursoData">
+    <Key>
+      <PropertyRef Name="IdCurso" />
+    </Key>
+    <Property Name="IdCurso" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Nome" Type="nchar" MaxLength="100" Nullable="false" />
+    <Property Name="Descricao" Type="varchar(max)" Nullable="false" />
+    <Property Name="Creditos" Type="int" Nullable="false" />
+    <Property Name="CadastroData" Type="datetime" Nullable="false" />
+    <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ExclusaoData" Type="datetime" />
+    <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+  </EntityType>
+  <EntityType Name="DisciplinaData">
+    <Key>
+      <PropertyRef Name="IdDisciplina" />
+    </Key>
+    <Property Name="IdDisciplina" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Nome" Type="nchar" MaxLength="100" Nullable="false" />
+    <Property Name="Descricao" Type="varchar(max)" Nullable="false" />
+    <Property Name="IdCurso" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="CadastroData" Type="datetime" Nullable="false" />
+    <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ExclusaoData" Type="datetime" />
+    <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+  </EntityType>
+  <EntityType Name="ProfessorData">
+    <Key>
+      <PropertyRef Name="IdProfessor" />
+    </Key>
+    <Property Name="IdProfessor" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Nome" Type="nchar" MaxLength="100" Nullable="false" />
+    <Property Name="DataNascimento" Type="datetime" Nullable="false" />
+    <Property Name="Email" Type="nchar" MaxLength="100" Nullable="false" />
+    <Property Name="CPF" Type="int" Nullable="false" />
+    <Property Name="Curriculo" Type="text" Nullable="false" />
+    <Property Name="CadastroData" Type="datetime" Nullable="false" />
+    <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ExclusaoData" Type="datetime" />
+    <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+  </EntityType>
+  <EntityContainer Name="SistemaMatriculaModelStoreContainer">
+    <EntitySet Name="AlunoData" EntityType="Self.AlunoData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CursoData" EntityType="Self.CursoData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DisciplinaData" EntityType="Self.DisciplinaData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProfessorData" EntityType="Self.ProfessorData" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>
