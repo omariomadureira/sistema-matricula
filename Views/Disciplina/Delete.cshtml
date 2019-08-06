@@ -25,7 +25,7 @@
                                 Você confirma a exclusão da disciplina <b>@Model.Nome</b>?
                             </div>
                             <div class="form-group text-center">
-                                <a class="btn btn-success btn-sm" href="@Url.Action("Delete", "Disciplina", new { IdCurso = Model.IdDisciplina, Delete = true })">CONFIRMAR</a>
+                                <a class="btn btn-success btn-sm" href="@Url.Action("Delete", "Disciplina", new { IdDisciplina = Model.IdDisciplina, Delete = true })">CONFIRMAR</a>
                                 <a class="btn btn-danger btn-sm" href="@Url.Action("Index", "Disciplina")">CANCELAR</a>
                             </div>
                         </form>

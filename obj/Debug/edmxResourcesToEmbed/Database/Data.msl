@@ -60,5 +60,19 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="UsuarioData">
+      <EntityTypeMapping TypeName="SistemaMatriculaModel.UsuarioData">
+        <MappingFragment StoreEntitySet="UsuarioData">
+          <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
+          <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
+          <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
+          <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
+          <ScalarProperty Name="Perfil" ColumnName="Perfil" />
+          <ScalarProperty Name="Senha" ColumnName="Senha" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -60,11 +60,25 @@
           <Property Name="ExclusaoData" Type="datetime" />
           <Property Name="ExclusaoPor" Type="uniqueidentifier" />
         </EntityType>
+        <EntityType Name="UsuarioData">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Email" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="Senha" Type="binary" MaxLength="100" Nullable="false" />
+          <Property Name="Perfil" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="CadastroData" Type="datetime" Nullable="false" />
+          <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ExclusaoData" Type="datetime" />
+          <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+        </EntityType>
         <EntityContainer Name="SistemaMatriculaModelStoreContainer">
           <EntitySet Name="AlunoData" EntityType="Self.AlunoData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CursoData" EntityType="Self.CursoData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DisciplinaData" EntityType="Self.DisciplinaData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProfessorData" EntityType="Self.ProfessorData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsuarioData" EntityType="Self.UsuarioData" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -75,6 +89,7 @@
           <EntitySet Name="DisciplinaData" EntityType="SistemaMatriculaModel.DisciplinaData" />
           <EntitySet Name="ProfessorData" EntityType="SistemaMatriculaModel.ProfessorData" />
           <EntitySet Name="AlunoData" EntityType="SistemaMatriculaModel.AlunoData" />
+          <EntitySet Name="UsuarioData" EntityType="SistemaMatriculaModel.UsuarioData" />
         </EntityContainer>
         <EntityType Name="CursoData">
           <Key>
@@ -126,6 +141,19 @@
           <Property Name="DataNascimento" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
           <Property Name="CPF" Type="Int32" Nullable="false" />
+          <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CadastroPor" Type="Guid" Nullable="false" />
+          <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
+          <Property Name="ExclusaoPor" Type="Guid" />
+        </EntityType>
+        <EntityType Name="UsuarioData">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="Guid" Nullable="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Senha" Type="Binary" Nullable="false" MaxLength="100" FixedLength="true" />
+          <Property Name="Perfil" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
           <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CadastroPor" Type="Guid" Nullable="false" />
           <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
@@ -193,6 +221,20 @@
                 <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
                 <ScalarProperty Name="Nome" ColumnName="Nome" />
                 <ScalarProperty Name="IdAluno" ColumnName="IdAluno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UsuarioData">
+            <EntityTypeMapping TypeName="SistemaMatriculaModel.UsuarioData">
+              <MappingFragment StoreEntitySet="UsuarioData">
+                <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
+                <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
+                <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
+                <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
+                <ScalarProperty Name="Perfil" ColumnName="Perfil" />
+                <ScalarProperty Name="Senha" ColumnName="Senha" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

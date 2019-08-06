@@ -1,7 +1,5 @@
 ﻿using SistemaMatricula.Models;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace SistemaMatricula.Controllers
@@ -74,6 +72,7 @@ namespace SistemaMatricula.Controllers
 
                     item = DisciplinaView.Converter(disciplina);
                     item.Cursos = new SelectList(Cursos, "IdCurso", "Nome", item.Curso.IdCurso);
+                    item.CursoSelecionado = item.Curso.IdCurso;
                 }
             }
             catch

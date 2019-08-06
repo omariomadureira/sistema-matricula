@@ -9,6 +9,7 @@
         <EntityTypeShape EntityType="SistemaMatriculaModel.DisciplinaData" Width="1.5" PointX="0.5" PointY="0.5" />
         <EntityTypeShape EntityType="SistemaMatriculaModel.ProfessorData" Width="1.5" PointX="6.5" PointY="0.5" />
         <EntityTypeShape EntityType="SistemaMatriculaModel.AlunoData" Width="1.5" PointX="4.5" PointY="0.5" />
+        <EntityTypeShape EntityType="SistemaMatriculaModel.UsuarioData" Width="1.5" PointX="8.375" PointY="0.5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

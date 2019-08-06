@@ -55,10 +55,24 @@
     <Property Name="ExclusaoData" Type="datetime" />
     <Property Name="ExclusaoPor" Type="uniqueidentifier" />
   </EntityType>
+  <EntityType Name="UsuarioData">
+    <Key>
+      <PropertyRef Name="IdUsuario" />
+    </Key>
+    <Property Name="IdUsuario" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Email" Type="nchar" MaxLength="100" Nullable="false" />
+    <Property Name="Senha" Type="binary" MaxLength="100" Nullable="false" />
+    <Property Name="Perfil" Type="nchar" MaxLength="100" Nullable="false" />
+    <Property Name="CadastroData" Type="datetime" Nullable="false" />
+    <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ExclusaoData" Type="datetime" />
+    <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+  </EntityType>
   <EntityContainer Name="SistemaMatriculaModelStoreContainer">
     <EntitySet Name="AlunoData" EntityType="Self.AlunoData" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CursoData" EntityType="Self.CursoData" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DisciplinaData" EntityType="Self.DisciplinaData" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProfessorData" EntityType="Self.ProfessorData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UsuarioData" EntityType="Self.UsuarioData" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
 </Schema>

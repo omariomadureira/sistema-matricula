@@ -39,7 +39,12 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                CursoData curso = new SistemaMatriculaEntities().CursoData.FirstOrDefault(x => x.IdCurso == IdCurso);
+                SistemaMatriculaEntities db = new SistemaMatriculaEntities();
+
+                CursoData curso = db.CursoData.FirstOrDefault(x => x.IdCurso == IdCurso);
+
+                db.Dispose();
+
                 return Converter(curso);
             }
             catch { }

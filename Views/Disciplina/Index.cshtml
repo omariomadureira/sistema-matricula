@@ -49,7 +49,7 @@
                                     <td>@item.Descricao</td>
                                     <td>@item.Curso.Nome</td>
                                     <td>@item.CadastroData</td>
-                                    <td class="text-center"><a class="btn btn-warning btn-sm" href="@Url.Action("Edit", "Disciplina", new SistemaMatricula.Controllers.DisciplinaView { IdDisciplina = item.IdDisciplina }))"><i class="fas fa-pen"></i> EDITAR</a></td>
+                                    <td class="text-center"><a class="btn btn-warning btn-sm" href="@Url.Action("Edit", "Disciplina", new SistemaMatricula.Controllers.DisciplinaView { IdDisciplina = item.IdDisciplina, CursoSelecionado = item.Curso.IdCurso }))"><i class="fas fa-pen"></i> EDITAR</a></td>
                                     <td class="text-center"><a class="btn btn-danger btn-sm" href="@Url.Action("Delete", "Disciplina", new SistemaMatricula.Controllers.DisciplinaView { IdDisciplina = item.IdDisciplina }))"><i class="fas fa-trash"></i> EXCLUIR</a></td>
                                 </tr>
                             }

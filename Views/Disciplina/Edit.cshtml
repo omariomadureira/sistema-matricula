@@ -33,7 +33,7 @@
                                     @Html.ValidationMessageFor(model => model.Nome)
                                 </div>
                                 <div class="col-sm-6">
-                                    @Html.DropDownListFor(model => model.CursoSelecionado, Model.Cursos, new { @class = "form-control form-control-user" })
+                                    @Html.DropDownListFor(model => model.CursoSelecionado, Model.Cursos, "Selecione um curso", new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.Cursos)
                                 </div>
                             </div>

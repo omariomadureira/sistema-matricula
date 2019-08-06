@@ -39,7 +39,12 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                DisciplinaData disciplina = new SistemaMatriculaEntities().DisciplinaData.FirstOrDefault(x => x.IdDisciplina == IdDisciplina);
+                SistemaMatriculaEntities db = new SistemaMatriculaEntities();
+
+                DisciplinaData disciplina = db.DisciplinaData.FirstOrDefault(x => x.IdDisciplina == IdDisciplina);
+
+                db.Dispose();
+
                 return Converter(disciplina);
             }
             catch { }

@@ -5,6 +5,7 @@
     <EntitySet Name="DisciplinaData" EntityType="SistemaMatriculaModel.DisciplinaData" />
     <EntitySet Name="ProfessorData" EntityType="SistemaMatriculaModel.ProfessorData" />
     <EntitySet Name="AlunoData" EntityType="SistemaMatriculaModel.AlunoData" />
+    <EntitySet Name="UsuarioData" EntityType="SistemaMatriculaModel.UsuarioData" />
   </EntityContainer>
   <EntityType Name="CursoData">
     <Key>
@@ -56,6 +57,19 @@
     <Property Name="DataNascimento" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
     <Property Name="CPF" Type="Int32" Nullable="false" />
+    <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CadastroPor" Type="Guid" Nullable="false" />
+    <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
+    <Property Name="ExclusaoPor" Type="Guid" />
+  </EntityType>
+  <EntityType Name="UsuarioData">
+    <Key>
+      <PropertyRef Name="IdUsuario" />
+    </Key>
+    <Property Name="IdUsuario" Type="Guid" Nullable="false" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+    <Property Name="Senha" Type="Binary" Nullable="false" MaxLength="100" FixedLength="true" />
+    <Property Name="Perfil" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
     <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="CadastroPor" Type="Guid" Nullable="false" />
     <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
