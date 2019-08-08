@@ -1,27 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SistemaMatricula.Database;
 using SistemaMatricula.Models;
-using SistemaMatricula.Helpers;
 
 namespace SistemaMatricula.DAO
 {
     public class AlunoDAO
     {
-        public Guid IdAluno { get; set; }
-        public string Nome { get; set; }
-        public DateTime DataNascimento { get; set; }
-        public DateTime DataCadastro { get; set; }
-        public DateTime? DataExclusao { get; set; }
-
-        public static bool Incluir(string Nome, DateTime DataNascimento)
+        public static bool Incluir(Aluno item)
         {
             try
             {
-                string[] row = { Guid.NewGuid().ToString(), Nome, DataNascimento.ToString(), DateTime.Now.ToString(), string.Empty };
+                AlunoData Aluno = new AlunoData
+                {
+                    IdAluno = Guid.NewGuid(),
+                    Nome = item.Nome,
+                    DataNascimento = item.DataNascimento,
+                    Email = item.Email,
+                    CPF = item.CPF,
+                    CadastroData = DateTime.Now,
+                    CadastroPor = Guid.Empty //TODO: Alterar para ID do usuário logado
+                };
 
-                TextFile t = new TextFile("Aluno");
-                t.Add(row);
+                SistemaMatriculaEntities db = new SistemaMatriculaEntities();
+                db.AlunoData.Add(Aluno);
+                db.SaveChanges();
+                db.Dispose();
 
                 return true;
             }
@@ -35,27 +40,13 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                TextFile t = new TextFile("Aluno");
-                string[] lines = t.Read();
+                SistemaMatriculaEntities db = new SistemaMatriculaEntities();
 
-                for (int i = 0; i < lines.Length; i += 5)
-                {
-                    if (Guid.TryParse(lines[i], out _) && Guid.Parse(lines[i]) == IdAluno)
-                    {
-                        AlunoDAO Aluno = new AlunoDAO
-                        {
-                            IdAluno = Guid.Parse(lines[i]),
-                            Nome = lines[i + 1],
-                            DataNascimento = DateTime.Parse(lines[i + 2]),
-                            DataCadastro = DateTime.Parse(lines[i + 3])
-                        };
+                AlunoData Aluno = db.AlunoData.FirstOrDefault(x => x.IdAluno == IdAluno);
 
-                        if (!string.IsNullOrEmpty(lines[i + 4]))
-                            Aluno.DataExclusao = DateTime.Parse(lines[i + 4]);
+                db.Dispose();
 
-                        return Converter(Aluno);
-                    }
-                }
+                return Converter(Aluno);
             }
             catch { }
 
@@ -66,33 +57,18 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                TextFile t = new TextFile("Aluno");
-                string[] lines = t.Read();
+                SistemaMatriculaEntities db = new SistemaMatriculaEntities();
 
-                List<AlunoDAO> Alunos = new List<AlunoDAO>();
-
-                for (int i = 0; i < lines.Length; i += 5)
-                {
-                    AlunoDAO Aluno = new AlunoDAO
-                    {
-                        IdAluno = Guid.Parse(lines[i]),
-                        Nome = lines[i + 1],
-                        DataNascimento = DateTime.Parse(lines[i + 2]),
-                        DataCadastro = DateTime.Parse(lines[i + 3])
-                    };
-
-                    if (!string.IsNullOrEmpty(lines[i + 4]))
-                        Aluno.DataExclusao = DateTime.Parse(lines[i + 4]);
-
-                    Alunos.Add(Aluno);
-                }
-
-                IEnumerable<AlunoDAO> query = Alunos.Where(x => x.DataExclusao == null);
+                IEnumerable<AlunoData> query = db.AlunoData.Where(x => x.ExclusaoData == null);
 
                 if (!string.IsNullOrWhiteSpace(palavra))
-                    query = query.Where(x => x.Nome.ToLower().Contains(palavra.ToLower()));
+                    query = query.Where(x => x.Nome.ToLower().Contains(palavra.ToLower()) || x.Email.ToLower().Contains(palavra.ToLower()));
 
-                return query.Select(x => Converter(x)).ToList();
+                List<Aluno> Alunos = query.Select(x => Converter(x)).ToList();
+
+                db.Dispose();
+
+                return Alunos;
             }
             catch (Exception e)
             {
@@ -100,25 +76,27 @@ namespace SistemaMatricula.DAO
             }
         }
 
-        public static bool Alterar(Guid IdAluno, string Nome, DateTime DataNascimento)
+        public static bool Alterar(Aluno item)
         {
             try
             {
-                TextFile t = new TextFile("Aluno");
-                string[] lines = t.Read();
+                SistemaMatriculaEntities db = new SistemaMatriculaEntities();
+                AlunoData Aluno = db.AlunoData.FirstOrDefault(x => x.IdAluno == item.IdAluno);
 
-                for (int i = 0; i < lines.Length; i += 5)
+                if (Aluno != null)
                 {
-                    if (Guid.TryParse(lines[i], out _) && Guid.Parse(lines[i]) == IdAluno)
-                    {
-                        lines[i + 1] = Nome;
-                        lines[i + 2] = DataNascimento.ToString();
+                    Aluno.Nome = item.Nome;
+                    Aluno.DataNascimento = item.DataNascimento;
+                    Aluno.Email = item.Email;
+                    Aluno.CPF = item.CPF;
 
-                        t.Update(lines);
+                    db.SaveChanges();
+                    db.Dispose();
 
-                        return true;
-                    }
+                    return true;
                 }
+
+                db.Dispose();
             }
             catch { }
 
@@ -129,37 +107,43 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                TextFile t = new TextFile("Aluno");
-                string[] lines = t.Read();
+                SistemaMatriculaEntities db = new SistemaMatriculaEntities();
+                AlunoData Aluno = db.AlunoData.FirstOrDefault(x => x.IdAluno == IdAluno);
 
-                for (int i = 0; i < lines.Length; i += 5)
+                if (Aluno != null)
                 {
-                    if (Guid.TryParse(lines[i], out _) && Guid.Parse(lines[i]) == IdAluno)
-                    {
-                        lines[i + 4] = DateTime.Now.ToString();
-                        t.Update(lines);
+                    Aluno.ExclusaoData = DateTime.Now;
+                    Aluno.ExclusaoPor = Guid.Empty; //TODO: Alterar para ID do usuário logado
 
-                        return true;
-                    }
+                    db.SaveChanges();
+                    db.Dispose();
+
+                    return true;
                 }
+
+                db.Dispose();
             }
             catch { }
 
             return false;
         }
 
-        public static Aluno Converter(AlunoDAO a)
+        public static Aluno Converter(AlunoData a)
         {
             try
             {
-                Aluno b = new Aluno();
-                b.IdAluno = a.IdAluno;
-                b.Nome = a.Nome;
-                b.DataNascimento = a.DataNascimento;
-                b.DataCadastro = a.DataCadastro;
-                b.DataExclusao = a.DataExclusao;
-
-                return b;
+                return new Aluno
+                {
+                    IdAluno = a.IdAluno,
+                    Nome = a.Nome,
+                    DataNascimento = a.DataNascimento,
+                    Email = a.Email,
+                    CPF = a.CPF,
+                    CadastroData = a.CadastroData,
+                    CadastroPor = a.CadastroPor,
+                    ExclusaoData = a.ExclusaoData,
+                    ExclusaoPor = a.ExclusaoPor
+                };
             }
             catch
             {
