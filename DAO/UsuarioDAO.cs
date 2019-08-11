@@ -8,23 +8,6 @@ namespace SistemaMatricula.DAO
 {
     public class UsuarioDAO
     {
-        public static Usuario Consultar(Guid IdUsuario)
-        {
-            try
-            {
-                Entities db = new Entities();
-
-                AspNetUsers Usuario = db.AspNetUsers.FirstOrDefault(x => x.Id == IdUsuario.ToString());
-
-                db.Dispose();
-
-                return Converter(Usuario);
-            }
-            catch { }
-
-            return null;
-        }
-
         public static List<Usuario> Listar(string palavra)
         {
             try
@@ -34,7 +17,7 @@ namespace SistemaMatricula.DAO
                 IEnumerable<AspNetUsers> query = db.AspNetUsers.Where(x => x.ExclusaoData == null);
 
                 if (!string.IsNullOrWhiteSpace(palavra))
-                    query = query.Where(x => x.Email.ToLower().Contains(palavra.ToLower()));
+                    query = query.Where(x => x.Email.ToLower().Contains(palavra.ToLower()) || x.UserName.ToLower().Contains(palavra.ToLower()));
 
                 List<Usuario> Usuarios = query.Select(x => Converter(x)).ToList();
 
@@ -80,6 +63,7 @@ namespace SistemaMatricula.DAO
                 return new Usuario
                 {
                     IdUsuario = Guid.Parse(a.Id),
+                    Login = a.UserName,
                     Email = a.Email,
                     CadastroData = a.CadastroData,
                     ExclusaoData = a.ExclusaoData,

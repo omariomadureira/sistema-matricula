@@ -26,8 +26,8 @@
                                 Você confirma a exclusão do curso <b>@Model.Nome</b>?
                             </div>
                             <div class="form-group text-center">
-                                <a class="btn btn-success btn-sm" href="@Url.Action("Delete", "Curso", new { IdCurso = Model.IdCurso, Delete = true })">CONFIRMAR</a>
-                                <a class="btn btn-danger btn-sm" href="@Url.Action("Index", "Curso")">CANCELAR</a>
+                                <a id="confirmar" class="btn btn-success btn-sm" href="@Url.Action("Delete", "Curso", new { IdCurso = Model.IdCurso, Delete = true })">CONFIRMAR</a>
+                                <a id="cancelar" class="btn btn-danger btn-sm" href="@Url.Action("Index", "Curso")">CANCELAR</a>
                             </div>
                         }
                     </div>

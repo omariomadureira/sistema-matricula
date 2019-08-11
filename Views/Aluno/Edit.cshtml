@@ -16,7 +16,7 @@
                 if (ViewBag.HideScreen)
                 {
                     <div class="text-center">
-                        <a class="btn btn-primary btn-sm" href="@Url.Action("Index", "Aluno")">VOLTAR</a>
+                        <a id="voltar" class="btn btn-primary btn-sm" href="@Url.Action("Index", "Aluno")">VOLTAR</a>
                     </div>
                 }
             }
@@ -52,8 +52,8 @@
                                 @Html.HiddenFor(model => model.IdAluno)
                             }
                             <div class="form-group text-center">
-                                <button type="submit" class="btn btn-primary btn-success btn-sm"><i class="fas fa-save"></i> SALVAR</button>
-                                <a class="btn btn-danger btn-sm" href="@Url.Action("Index", "Aluno")">CANCELAR</a>
+                                <button type="submit" id="salvar" class="btn btn-primary btn-success btn-sm"><i class="fas fa-save"></i> SALVAR</button>
+                                <a id="cancelar" class="btn btn-danger btn-sm" href="@Url.Action("Index", "Aluno")">CANCELAR</a>
                             </div>
                         }
                     </div>

@@ -25,8 +25,8 @@
                             @Html.DropDownListFor(model => model.CursoSelecionado, Model.Cursos, "Selecione um curso", new { @class = "form-control form-control-user" })
                         </div>
                         <div class="col-md-3">
-                            <button type="submit" class="btn btn-primary btn-user btn-sm"><i class="fas fa-search"></i> PESQUISAR</button>
-                            <a class="btn btn-primary btn-user btn-sm" href="@Url.Action("Index", "Disciplina")">LIMPAR FILTRO</a>
+                            <button id="pesquisar" type="submit" class="btn btn-primary btn-user btn-sm"><i class="fas fa-search"></i> PESQUISAR</button>
+                            <a id="limpar" class="btn btn-primary btn-user btn-sm" href="@Url.Action("Index", "Disciplina")">LIMPAR FILTRO</a>
                         </div>
                         <div class="col-md-1"></div>
                     </div>
@@ -49,8 +49,8 @@
                                     <td>@item.Descricao</td>
                                     <td>@item.Curso.Nome</td>
                                     <td>@item.CadastroData</td>
-                                    <td class="text-center"><a class="btn btn-warning btn-sm" href="@Url.Action("Edit", "Disciplina", new SistemaMatricula.Controllers.DisciplinaView { IdDisciplina = item.IdDisciplina, CursoSelecionado = item.Curso.IdCurso }))"><i class="fas fa-pen"></i> EDITAR</a></td>
-                                    <td class="text-center"><a class="btn btn-danger btn-sm" href="@Url.Action("Delete", "Disciplina", new SistemaMatricula.Controllers.DisciplinaView { IdDisciplina = item.IdDisciplina }))"><i class="fas fa-trash"></i> EXCLUIR</a></td>
+                                    <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Disciplina", new SistemaMatricula.Controllers.DisciplinaView { IdDisciplina = item.IdDisciplina, CursoSelecionado = item.Curso.IdCurso }))"><i class="fas fa-pen"></i> EDITAR</a></td>
+                                    <td class="text-center"><a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Disciplina", new SistemaMatricula.Controllers.DisciplinaView { IdDisciplina = item.IdDisciplina }))"><i class="fas fa-trash"></i> EXCLUIR</a></td>
                                 </tr>
                             }
                             @if (ViewBag.Disciplinas.Count <= 0)
@@ -63,7 +63,7 @@
                         <tfoot>
                             <tr>
                                 <th colspan="6">
-                                    <a class="btn btn-primary btn-user btn-sm" href="@Url.Action("Edit", "Disciplina")"><i class="fas fa-plus"></i> ADICIONAR DISCIPLINA</a>
+                                    <a id="adicionar" class="btn btn-primary btn-user btn-sm" href="@Url.Action("Edit", "Disciplina")"><i class="fas fa-plus"></i> ADICIONAR DISCIPLINA</a>
                                 </th>
                             </tr>
                         </tfoot>

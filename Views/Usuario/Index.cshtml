@@ -22,8 +22,8 @@
                             @Html.TextBoxFor(model => model.Email, new { @class = "form-control form-control-user", @required = "required", @placeholder = "O que você está procurando?", @maxlenth = 100 })
                         </div>
                         <div class="col-md-3">
-                            <button type="submit" class="btn btn-primary btn-user btn-sm"><i class="fas fa-search"></i> PESQUISAR</button>
-                            <a class="btn btn-primary btn-user btn-sm" href="@Url.Action("Index", "Usuario")">LIMPAR FILTRO</a>
+                            <button type="submit" id="pesquisar" class="btn btn-primary btn-user btn-sm"><i class="fas fa-search"></i> PESQUISAR</button>
+                            <a id="limpar" class="btn btn-primary btn-user btn-sm" href="@Url.Action("Index", "Usuario")">LIMPAR FILTRO</a>
                         </div>
                         <div class="col-md-4"></div>
                     </div>
@@ -33,6 +33,7 @@
                         <thead>
                             <tr>
                                 <th>Login</th>
+                                <th>E-mail</th>
                                 <th>Data de Cadastro</th>
                             </tr>
                         </thead>
@@ -40,10 +41,11 @@
                             @foreach (var item in ViewBag.Usuarios)
                             {
                                 <tr>
+                                    <td>@item.Login</td>
                                     <td>@item.Email</td>
                                     <td>@item.CadastroData</td>
-                                    <td class="text-center"><a class="btn btn-warning btn-sm" href="@Url.Action("Edit", "Usuario", new SistemaMatricula.Models.Usuario { IdUsuario = item.IdUsuario })"><i class="fas fa-pen"></i> EDITAR</a></td>
-                                    <td class="text-center"><a class="btn btn-danger btn-sm" href="@Url.Action("Delete", "Usuario", new SistemaMatricula.Models.Usuario { IdUsuario = item.IdUsuario })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
+                                    <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Usuario", new SistemaMatricula.Models.RegisterViewModel { Id = item.IdUsuario.ToString() })"><i class="fas fa-pen"></i> EDITAR</a></td>
+                                    <td class="text-center"><a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Usuario", new SistemaMatricula.Models.Usuario { IdUsuario = item.IdUsuario })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
                                 </tr>
                             }
                             @if (ViewBag.Usuarios.Count <= 0)
@@ -56,7 +58,7 @@
                         <tfoot>
                             <tr>
                                 <th colspan="6">
-                                    <a class="btn btn-primary btn-user btn-sm" href="@Url.Action("Edit", "Usuario")"><i class="fas fa-plus"></i> ADICIONAR USUÁRIO</a>
+                                    <a id="adicionar" class="btn btn-primary btn-user btn-sm" href="@Url.Action("Edit", "Usuario")"><i class="fas fa-plus"></i> ADICIONAR USUÁRIO</a>
                                 </th>
                             </tr>
                         </tfoot>

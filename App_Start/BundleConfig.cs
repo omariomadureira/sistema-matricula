@@ -16,7 +16,7 @@ namespace SistemaMatricula
                         "~/Content/jquery/jquery.min.js",
                         "~/Content/bootstrap/js/bootstrap.bundle.min.js",
                         "~/Content/jquery-easing/jquery.easing.min.js",
-                        "~/Content/sb-admin-2.min.js",
+                        "~/Content/sb-admin-2.js",
                         "~/Content/chart.js/Chart.min.js",
                         "~/Content/demo/chart-area-demo.js",
                         "~/Content/demo/chart-pie-demo.js"));

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SistemaMatricula.Models
@@ -64,6 +65,13 @@ namespace SistemaMatricula.Models
 
     public class RegisterViewModel
     {
+        public string Id { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "O/A {0} deve ter no mínimo {2} caracteres.", MinimumLength = 6)]
+        [Display(Name = "Login")]
+        public string Login { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

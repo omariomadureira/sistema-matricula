@@ -22,7 +22,7 @@ namespace SistemaMatricula.Controllers
         {
         }
 
-        public UsuarioController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public UsuarioController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +34,9 @@ namespace SistemaMatricula.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -53,13 +53,13 @@ namespace SistemaMatricula.Controllers
         }
         #endregion
 
-        public ActionResult Index(Usuario item)
+        public ActionResult Index(Usuario model)
         {
             ModelState.Clear();
 
             try
             {
-                ViewBag.Usuarios = Usuario.Listar(item.Email);
+                ViewBag.Usuarios = Usuario.Listar(model.Email);
 
                 if (ViewBag.Usuarios == null)
                 {
@@ -71,13 +71,42 @@ namespace SistemaMatricula.Controllers
                 ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
             }
 
-            return View(item);
+            return View(model);
         }
 
         //[AllowAnonymous]
-        public ActionResult Edit()
+        public ActionResult Edit(RegisterViewModel model)
         {
             ViewBag.HideScreen = false;
+            ModelState.Clear();
+
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(model.Id))
+                {
+                    ApplicationUser usuario = UserManager.FindById(model.Id);
+
+                    if (usuario == null)
+                    {
+                        ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
+                        ViewBag.HideScreen = true;
+                    }
+
+                    model = new RegisterViewModel()
+                    {
+                        Id = usuario.Id,
+                        Login = usuario.UserName,
+                        Email = usuario.Email
+                    };
+
+                    return View(model);
+                }
+            }
+            catch
+            {
+                ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+                ViewBag.HideScreen = true;
+            }
 
             return View();
         }
@@ -85,31 +114,113 @@ namespace SistemaMatricula.Controllers
         [HttpPost]
         //[AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(RegisterViewModel model)
+        public async Task<ActionResult> Update(RegisterViewModel model)
         {
             ViewBag.HideScreen = false;
 
-            if (ModelState.IsValid)
+            try
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                if (ModelState.IsValid)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    if (!string.IsNullOrWhiteSpace(model.Id))
+                    {
+                        ApplicationUser usuario = UserManager.FindById(model.Id);
 
-                    // Para obter mais informações sobre como habilitar a confirmação da conta e redefinição de senha, visite https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Enviar um email com este link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirmar sua conta", "Confirme sua conta clicando <a href=\"" + callbackUrl + "\">aqui</a>");
+                        if (usuario == null)
+                        {
+                            ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
+                            ViewBag.HideScreen = true;
+                            return View(model);
+                        }
 
-                    return RedirectToAction("Index", "Usuario");
+                        usuario.PasswordHash = UserManager.PasswordHasher.HashPassword(model.Password);
+
+                        if (!string.Equals(model.Email, usuario.Email))
+                            usuario.Email = model.Email;
+
+                        var atualiza = await UserManager.UpdateAsync(usuario);
+
+                        if (atualiza.Succeeded)
+                        {
+                            //await SignInManager.SignInAsync(atualiza, isPersistent: false, rememberBrowser: false);
+                            return RedirectToAction("Index", "Usuario");
+                        }
+                        else
+                        {
+                            ViewBag.Message = "Não foi possível atualizar o registro. Analise os erros.";
+                            AddErrors(atualiza);
+                        }
+                    }
+                    else
+                    {
+                        var usuario = new ApplicationUser { UserName = model.Login, Email = model.Email };
+                        var registro = await UserManager.CreateAsync(usuario, model.Password);
+
+                        if (registro.Succeeded)
+                        {
+                            return RedirectToAction("Index", "Usuario");
+                        }
+                        else
+                        {
+                            ViewBag.Message = "Não foi possível incluir um novo registro. Analise os erros.";
+                            AddErrors(registro);
+                        }
+                    }
                 }
-                AddErrors(result);
+                else
+                {
+                    ViewBag.Message = "Não foi possível atualizar o registro. Revise o preenchimento dos campos.";
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+                ViewBag.HideScreen = true;
             }
 
-            // Se chegamos até aqui e houver alguma falha, exiba novamente o formulário
-            return View(model);
+            return View("Edit", model);
+        }
+
+        //
+        // GET: /Account/ResetPassword
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string code)
+        {
+            return code == null ? View("Error") : View();
+        }
+
+        //
+        // POST: /Account/ResetPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await UserManager.FindByNameAsync(model.Email);
+            if (user == null)
+            {
+                // Não revelar que o usuário não existe
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            AddErrors(result);
+            return View();
+        }
+
+        //
+        // GET: /Account/ResetPasswordConfirmation
+        [AllowAnonymous]
+        public ActionResult ResetPasswordConfirmation()
+        {
+            return View();
         }
 
         #region Métodos auxiliares geradas pelo sistema
@@ -181,7 +292,7 @@ namespace SistemaMatricula.Controllers
             // Se um usuário inserir códigos incorretos para uma quantidade especificada de tempo, então a conta de usuário 
             // será bloqueado por um período especificado de tempo. 
             // Você pode configurar os ajustes de bloqueio da conta em IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -248,48 +359,6 @@ namespace SistemaMatricula.Controllers
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
-        {
-            return View();
-        }
-
-        //
-        // GET: /Account/ResetPassword
-        [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
-        {
-            return code == null ? View("Error") : View();
-        }
-
-        //
-        // POST: /Account/ResetPassword
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var user = await UserManager.FindByNameAsync(model.Email);
-            if (user == null)
-            {
-                // Não revelar que o usuário não existe
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
-            AddErrors(result);
-            return View();
-        }
-
-        //
-        // GET: /Account/ResetPasswordConfirmation
-        [AllowAnonymous]
-        public ActionResult ResetPasswordConfirmation()
         {
             return View();
         }
