@@ -181,6 +181,54 @@ namespace SistemaMatricula.Controllers
             return View("Edit", model);
         }
 
+        public ActionResult Delete(RegisterViewModel item, bool? Delete)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(item.Id))
+                {
+                    if (Delete.HasValue && Delete.Value)
+                    {
+                        if (Usuario.Desativar(Guid.Parse(item.Id)))
+                        {
+                            return RedirectToAction("Index", "Usuario");
+                        }
+                        else
+                        {
+                            ViewBag.Message = "Não foi possível apagar o registro. Erro de execução.";
+                            return View();
+                        }
+                    }
+
+                    ApplicationUser usuario = UserManager.FindById(item.Id);
+
+                    if (usuario == null)
+                    {
+                        ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
+                        ViewBag.HideScreen = true;
+                    }
+
+                    item = new RegisterViewModel()
+                    {
+                        Id = usuario.Id,
+                        Login = usuario.UserName,
+                        Email = usuario.Email
+                    };
+                }
+                else
+                {
+                    ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
+                }
+            }
+            catch
+            {
+                ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+            }
+
+            return View(item);
+        }
+
+        #region Métodos auxiliares geradas pelo sistema
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
@@ -223,7 +271,6 @@ namespace SistemaMatricula.Controllers
             return View();
         }
 
-        #region Métodos auxiliares geradas pelo sistema
         //
         // GET: /Account/Login
         [AllowAnonymous]

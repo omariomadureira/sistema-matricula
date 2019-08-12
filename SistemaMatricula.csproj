@@ -310,6 +310,7 @@
     <Content Include="Views\Usuario\VerifyCode.cshtml" />
     <Content Include="Views\Usuario\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Usuario\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
