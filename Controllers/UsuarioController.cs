@@ -75,16 +75,16 @@ namespace SistemaMatricula.Controllers
         }
 
         //[AllowAnonymous]
-        public ActionResult Edit(RegisterViewModel model)
+        public ActionResult Edit(RegisterViewModel view)
         {
             ViewBag.HideScreen = false;
             ModelState.Clear();
 
             try
             {
-                if (!string.IsNullOrWhiteSpace(model.Id))
+                if (!string.IsNullOrWhiteSpace(view.Id))
                 {
-                    ApplicationUser usuario = UserManager.FindById(model.Id);
+                    ApplicationUser usuario = UserManager.FindById(view.Id);
 
                     if (usuario == null)
                     {
@@ -92,14 +92,9 @@ namespace SistemaMatricula.Controllers
                         ViewBag.HideScreen = true;
                     }
 
-                    model = new RegisterViewModel()
-                    {
-                        Id = usuario.Id,
-                        Login = usuario.UserName,
-                        Email = usuario.Email
-                    };
+                    view = RegisterViewModel.Converter(usuario);
 
-                    return View(model);
+                    return View(view);
                 }
             }
             catch
@@ -181,15 +176,15 @@ namespace SistemaMatricula.Controllers
             return View("Edit", model);
         }
 
-        public ActionResult Delete(RegisterViewModel item, bool? Delete)
+        public ActionResult Delete(RegisterViewModel model, bool? Delete)
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(item.Id))
+                if (!string.IsNullOrWhiteSpace(model.Id))
                 {
                     if (Delete.HasValue && Delete.Value)
                     {
-                        if (Usuario.Desativar(Guid.Parse(item.Id)))
+                        if (Usuario.Desativar(Guid.Parse(model.Id)))
                         {
                             return RedirectToAction("Index", "Usuario");
                         }
@@ -200,7 +195,7 @@ namespace SistemaMatricula.Controllers
                         }
                     }
 
-                    ApplicationUser usuario = UserManager.FindById(item.Id);
+                    ApplicationUser usuario = UserManager.FindById(model.Id);
 
                     if (usuario == null)
                     {
@@ -208,12 +203,7 @@ namespace SistemaMatricula.Controllers
                         ViewBag.HideScreen = true;
                     }
 
-                    item = new RegisterViewModel()
-                    {
-                        Id = usuario.Id,
-                        Login = usuario.UserName,
-                        Email = usuario.Email
-                    };
+                    model = RegisterViewModel.Converter(usuario);
                 }
                 else
                 {
@@ -225,7 +215,47 @@ namespace SistemaMatricula.Controllers
                 ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
             }
 
-            return View(item);
+            return View(model);
+        }
+
+        //
+        // GET: /Account/Login
+        [AllowAnonymous]
+        public ActionResult Login(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View("Login", "_Login");
+        }
+
+        //
+        // POST: /Account/Login
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Login", "_Login", model);
+            }
+
+            // Isso não conta falhas de login em relação ao bloqueio de conta
+            // Para permitir que falhas de senha acionem o bloqueio da conta, altere para shouldLockout: true
+            var result = await SignInManager.PasswordSignInAsync(model.Usuario, model.Password, model.RememberMe, shouldLockout: false);
+
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Tentativa de login inválida.");
+                    return View("Login", "_Login", model);
+            }
         }
 
         #region Métodos auxiliares geradas pelo sistema
@@ -269,45 +299,6 @@ namespace SistemaMatricula.Controllers
         public ActionResult ResetPasswordConfirmation()
         {
             return View();
-        }
-
-        //
-        // GET: /Account/Login
-        [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
-        }
-
-        //
-        // POST: /Account/Login
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            // Isso não conta falhas de login em relação ao bloqueio de conta
-            // Para permitir que falhas de senha acionem o bloqueio da conta, altere para shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Tentativa de login inválida.");
-                    return View(model);
-            }
         }
 
         //

@@ -14,6 +14,8 @@ namespace SistemaMatricula.Models
         public DateTime? ExclusaoData { get; set; }
         public Guid? ExclusaoPor { get; set; }
 
+        public static string ROLE_ADMINISTRADOR = "ADMINISTRADOR";
+
         public static List<Usuario> Listar(string palavra = null)
         {
             return UsuarioDAO.Listar(palavra);

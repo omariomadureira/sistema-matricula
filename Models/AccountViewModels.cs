@@ -50,9 +50,8 @@ namespace SistemaMatricula.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Usuário")]
+        public string Usuario { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -87,6 +86,23 @@ namespace SistemaMatricula.Models
         [Display(Name = "Confirmar Senha")]
         [Compare("Password", ErrorMessage = "A senha e a senha de confirmação não correspondem.")]
         public string ConfirmPassword { get; set; }
+
+        public static RegisterViewModel Converter(ApplicationUser item)
+        {
+            try
+            {
+                return new RegisterViewModel
+                {
+                    Id = item.Id,
+                    Login = item.UserName,
+                    Email = item.Email
+                };
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 
     public class ResetPasswordViewModel
