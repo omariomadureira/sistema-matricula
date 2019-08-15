@@ -53,6 +53,7 @@ namespace SistemaMatricula.Controllers
         }
         #endregion
 
+        [Authorize]
         public ActionResult Index(Usuario model)
         {
             ModelState.Clear();
@@ -74,7 +75,7 @@ namespace SistemaMatricula.Controllers
             return View(model);
         }
 
-        //[AllowAnonymous]
+        [Authorize]
         public ActionResult Edit(RegisterViewModel view)
         {
             ViewBag.HideScreen = false;
@@ -107,7 +108,7 @@ namespace SistemaMatricula.Controllers
         }
 
         [HttpPost]
-        //[AllowAnonymous]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Update(RegisterViewModel model)
         {
@@ -176,6 +177,7 @@ namespace SistemaMatricula.Controllers
             return View("Edit", model);
         }
 
+        [Authorize]
         public ActionResult Delete(RegisterViewModel model, bool? Delete)
         {
             try
@@ -223,6 +225,11 @@ namespace SistemaMatricula.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             ViewBag.ReturnUrl = returnUrl;
             return View("Login", "_Login");
         }
@@ -256,6 +263,17 @@ namespace SistemaMatricula.Controllers
                     ModelState.AddModelError("", "Tentativa de login inválida.");
                     return View("Login", "_Login", model);
             }
+        }
+
+        //
+        // POST: /Account/LogOff
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Login", "Usuario");
         }
 
         #region Métodos auxiliares geradas pelo sistema
@@ -513,16 +531,6 @@ namespace SistemaMatricula.Controllers
 
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
-        }
-
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
-        {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
         }
 
         //

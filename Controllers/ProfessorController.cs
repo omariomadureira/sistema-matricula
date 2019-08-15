@@ -3,6 +3,7 @@ using System.Web.Mvc;
 
 namespace SistemaMatricula.Controllers
 {
+    [Authorize]
     public class ProfessorController : Controller
     {
         public ActionResult Index(FormCollection formulario)

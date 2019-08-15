@@ -4,6 +4,7 @@ using System.Web.Mvc;
 
 namespace SistemaMatricula.Controllers
 {
+    [Authorize]
     public class DisciplinaController : Controller
     {
         public ActionResult Index(DisciplinaView item)
