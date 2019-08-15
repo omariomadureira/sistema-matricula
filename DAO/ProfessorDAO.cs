@@ -1,33 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SistemaMatricula.Database;
 using SistemaMatricula.Models;
 
 namespace SistemaMatricula.DAO
 {
     public class ProfessorDAO
     {
-        public Guid IdProfessor { get; set; }
-        public string Nome { get; set; }
-        public string Descricao { get; set; }
-        public DateTime DataCadastro { get; set; }
-        public DateTime? DataExclusao { get; set; }
-
-        public static bool Incluir(string Nome, string Descricao)
+        public static bool Incluir(Professor item)
         {
             try
             {
-                /*
-                string[] row = { Guid.NewGuid().ToString(), Nome, Descricao, DateTime.Now.ToString(), string.Empty };
+                ProfessorData Professor = new ProfessorData
+                {
+                    IdProfessor = Guid.NewGuid(),
+                    Nome = item.Nome,
+                    DataNascimento = item.DataNascimento,
+                    Email = item.Email,
+                    CPF = item.CPF,
+                    Curriculo = item.Curriculo,
+                    CadastroData = DateTime.Now,
+                    CadastroPor = Guid.Empty //TODO: Alterar para ID do usuário logado
+                };
 
-                TextFile t = new TextFile("Professor");
-                t.Add(row);
-
-                */
+                Entities db = new Entities();
+                db.ProfessorData.Add(Professor);
+                db.SaveChanges();
+                db.Dispose();
 
                 return true;
             }
-            catch
+            catch (Exception e)
             {
                 return false;
             }
@@ -37,29 +41,13 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                /*
-                TextFile t = new TextFile("Professor");
-                string[] lines = t.Read();
+                Entities db = new Entities();
 
-                for (int i = 0; i < lines.Length; i += 5)
-                {
-                    if (Guid.TryParse(lines[i], out _) && Guid.Parse(lines[i]) == IdProfessor)
-                    {
-                        ProfessorDAO Professor = new ProfessorDAO
-                        {
-                            IdProfessor = Guid.Parse(lines[i]),
-                            Nome = lines[i + 1],
-                            Descricao = lines[i + 2],
-                            DataCadastro = DateTime.Parse(lines[i + 3])
-                        };
+                ProfessorData Professor = db.ProfessorData.FirstOrDefault(x => x.IdProfessor == IdProfessor);
 
-                        if (!string.IsNullOrEmpty(lines[i + 4]))
-                            Professor.DataExclusao = DateTime.Parse(lines[i + 4]);
+                db.Dispose();
 
-                        return Converter(Professor);
-                    }
-                }
-                */
+                return Converter(Professor);
             }
             catch { }
 
@@ -70,65 +58,47 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                /*
-                TextFile t = new TextFile("Professor");
-                string[] lines = t.Read();
+                Entities db = new Entities();
 
-                List<ProfessorDAO> Professores = new List<ProfessorDAO>();
-
-                for (int i = 0; i < lines.Length; i += 5)
-                {
-                    ProfessorDAO Professor = new ProfessorDAO
-                    {
-                        IdProfessor = Guid.Parse(lines[i]),
-                        Nome = lines[i + 1],
-                        Descricao = lines[i + 2],
-                        DataCadastro = DateTime.Parse(lines[i + 3])
-                    };
-
-                    if (!string.IsNullOrEmpty(lines[i + 4]))
-                        Professor.DataExclusao = DateTime.Parse(lines[i + 4]);
-
-                    Professores.Add(Professor);
-                }
-
-                IEnumerable<ProfessorDAO> query = Professores.Where(x => x.DataExclusao == null);
+                IEnumerable<ProfessorData> query = db.ProfessorData.Where(x => x.ExclusaoData == null);
 
                 if (!string.IsNullOrWhiteSpace(palavra))
-                    query = query.Where(x => x.Nome.ToLower().Contains(palavra.ToLower()) || x.Descricao.ToLower().Contains(palavra.ToLower()));
+                    query = query.Where(x => x.Nome.ToLower().Contains(palavra.ToLower()) || x.Email.ToLower().Contains(palavra.ToLower()));
 
-                return query.Select(x => Converter(x)).ToList();
-                */
+                List<Professor> Professors = query.Select(x => Converter(x)).ToList();
+
+                db.Dispose();
+
+                return Professors;
             }
             catch (Exception e)
             {
                 return null;
             }
-
-            return null;
         }
 
-        public static bool Alterar(Guid IdProfessor, string Nome, string Descricao)
+        public static bool Alterar(Professor item)
         {
             try
             {
-                /*
-                TextFile t = new TextFile("Professor");
-                string[] lines = t.Read();
+                Entities db = new Entities();
+                ProfessorData Professor = db.ProfessorData.FirstOrDefault(x => x.IdProfessor == item.IdProfessor);
 
-                for (int i = 0; i < lines.Length; i += 5)
+                if (Professor != null)
                 {
-                    if (Guid.TryParse(lines[i], out _) && Guid.Parse(lines[i]) == IdProfessor)
-                    {
-                        lines[i + 1] = Nome;
-                        lines[i + 2] = Descricao;
+                    Professor.Nome = item.Nome;
+                    Professor.DataNascimento = item.DataNascimento;
+                    Professor.Email = item.Email;
+                    Professor.CPF = item.CPF;
+                    Professor.Curriculo = item.Curriculo;
 
-                        t.Update(lines);
+                    db.SaveChanges();
+                    db.Dispose();
 
-                        return true;
-                    }
+                    return true;
                 }
-                */
+
+                db.Dispose();
             }
             catch { }
 
@@ -139,39 +109,44 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                /*
-                TextFile t = new TextFile("Professor");
-                string[] lines = t.Read();
+                Entities db = new Entities();
+                ProfessorData Professor = db.ProfessorData.FirstOrDefault(x => x.IdProfessor == IdProfessor);
 
-                for (int i = 0; i < lines.Length; i += 5)
+                if (Professor != null)
                 {
-                    if (Guid.TryParse(lines[i], out _) && Guid.Parse(lines[i]) == IdProfessor)
-                    {
-                        lines[i + 4] = DateTime.Now.ToString();
-                        t.Update(lines);
+                    Professor.ExclusaoData = DateTime.Now;
+                    Professor.ExclusaoPor = Guid.Empty; //TODO: Alterar para ID do usuário logado
 
-                        return true;
-                    }
+                    db.SaveChanges();
+                    db.Dispose();
+
+                    return true;
                 }
-                */
+
+                db.Dispose();
             }
             catch { }
 
             return false;
         }
 
-        public static Professor Converter(ProfessorDAO a)
+        public static Professor Converter(ProfessorData a)
         {
             try
             {
-                Professor b = new Professor();
-                b.IdProfessor = a.IdProfessor;
-                b.Nome = a.Nome;
-                b.Descricao = a.Descricao;
-                b.DataCadastro = a.DataCadastro;
-                b.DataExclusao = a.DataExclusao;
-
-                return b;
+                return new Professor
+                {
+                    IdProfessor = a.IdProfessor,
+                    Nome = a.Nome,
+                    DataNascimento = a.DataNascimento,
+                    Email = a.Email,
+                    CPF = a.CPF,
+                    Curriculo = a.Curriculo,
+                    CadastroData = a.CadastroData,
+                    CadastroPor = a.CadastroPor,
+                    ExclusaoData = a.ExclusaoData,
+                    ExclusaoPor = a.ExclusaoPor
+                };
             }
             catch
             {

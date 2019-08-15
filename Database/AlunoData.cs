@@ -18,7 +18,7 @@ namespace SistemaMatricula.Database
         public string Nome { get; set; }
         public System.DateTime DataNascimento { get; set; }
         public string Email { get; set; }
-        public int CPF { get; set; }
+        public string CPF { get; set; }
         public System.DateTime CadastroData { get; set; }
         public System.Guid CadastroPor { get; set; }
         public Nullable<System.DateTime> ExclusaoData { get; set; }

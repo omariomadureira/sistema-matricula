@@ -6,19 +6,13 @@ namespace SistemaMatricula.Controllers
     [Authorize]
     public class ProfessorController : Controller
     {
-        public ActionResult Index(FormCollection formulario)
+        public ActionResult Index(Professor view)
         {
+            ModelState.Clear();
+
             try
             {
-                if (formulario.Count > 0 && !string.IsNullOrWhiteSpace(formulario["palavra"]))
-                {
-                    ViewBag.Professores = Professor.Listar(formulario["palavra"]);
-                    ViewBag.Palavra = formulario["palavra"];
-                }
-                else
-                {
-                    ViewBag.Professores = Professor.Listar();
-                }
+                ViewBag.Professores = Professor.Listar(view.Nome);
 
                 if (ViewBag.Professores == null)
                 {
@@ -30,64 +24,28 @@ namespace SistemaMatricula.Controllers
                 ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
             }
 
-            return View();
+            return View(view);
         }
 
-        public ActionResult Edit(FormCollection formulario, System.Guid? Id)
+        [HttpGet]
+        public ActionResult Edit(Professor view)
         {
             ViewBag.HideScreen = false;
+            ModelState.Clear();
 
             try
             {
-                if (formulario.Count > 0)
+                if (!Equals(view.IdProfessor, System.Guid.Empty))
                 {
-                    if (!string.IsNullOrWhiteSpace(formulario["nome"])
-                        && !string.IsNullOrWhiteSpace(formulario["descricao"]))
-                    {
-                        if (Id.HasValue && !System.Guid.Equals(Id, System.Guid.Empty))
-                        {
-                            if (Professor.Alterar(Id.Value, formulario["nome"], formulario["descricao"]))
-                            {
-                                return RedirectToAction("Index", "Professor");
-                            }
-                            else
-                            {
-                                ViewBag.Message = "Não foi possível atualizar o registro. Erro de execução.";
-                                ViewBag.HideScreen = true;
-                                return View();
-                            }
-                        }
+                    view = Professor.Consultar(view.IdProfessor);
 
-                        if (Professor.Incluir(formulario["nome"], formulario["descricao"]))
-                        {
-                            return RedirectToAction("Index", "Professor");
-                        }
-                        else
-                        {
-                            ViewBag.Message = "Não foi possível incluir um novo registro. Erro de execução.";
-                            ViewBag.HideScreen = true;
-                            return View();
-                        }
-                    }
-                    else
-                    {
-                        ViewBag.Message = "Não foi possível atualizar o registro. Um ou mais campos não foram preenchidos.";
-                    }
-                }
-
-                if (Id.HasValue && !System.Guid.Equals(Id, System.Guid.Empty))
-                {
-                    ViewBag.Professor = Professor.Consultar(Id.Value);
-
-                    if (ViewBag.Professor == null)
+                    if (view == null)
                     {
                         ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
                         ViewBag.HideScreen = true;
                     }
-                }
-                else
-                {
-                    ViewBag.Professor = new Professor();
+
+                    return View(view);
                 }
             }
             catch
@@ -99,15 +57,68 @@ namespace SistemaMatricula.Controllers
             return View();
         }
 
-        public ActionResult Delete(System.Guid? Id, bool? Delete)
+        [HttpPost]
+        public ActionResult Update(Professor view)
+        {
+            ViewBag.HideScreen = false;
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    view.CPF = view.CPF.Trim();
+                    view.Email = view.Email.Trim();
+                    view.Nome = view.Nome.Trim();
+                    view.Curriculo = view.Curriculo.Trim();
+
+                    if (!Equals(view.IdProfessor, System.Guid.Empty))
+                    {
+                        if (Professor.Alterar(view))
+                        {
+                            return RedirectToAction("Index", "Professor");
+                        }
+                        else
+                        {
+                            ViewBag.Message = "Não foi possível atualizar o registro. Erro de execução.";
+                            ViewBag.HideScreen = true;
+                        }
+                    }
+                    else
+                    {
+                        if (Professor.Incluir(view))
+                        {
+                            return RedirectToAction("Index", "Professor");
+                        }
+                        else
+                        {
+                            ViewBag.Message = "Não foi possível incluir um novo registro. Erro de execução.";
+                            ViewBag.HideScreen = true;
+                        }
+                    }
+                }
+                else
+                {
+                    ViewBag.Message = "Não foi possível atualizar o registro. Revise o preenchimento dos campos.";
+                }
+            }
+            catch
+            {
+                ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+                ViewBag.HideScreen = true;
+            }
+
+            return View("Edit", view);
+        }
+
+        public ActionResult Delete(Professor view, bool? Delete)
         {
             try
             {
-                if (Id.HasValue && !System.Guid.Equals(Id.Value, System.Guid.Empty))
+                if (!Equals(view.IdProfessor, System.Guid.Empty))
                 {
                     if (Delete.HasValue && Delete.Value)
                     {
-                        if (Professor.Desativar(Id.Value))
+                        if (Professor.Desativar(view.IdProfessor))
                         {
                             return RedirectToAction("Index", "Professor");
                         }
@@ -118,9 +129,9 @@ namespace SistemaMatricula.Controllers
                         }
                     }
 
-                    ViewBag.Professor = Professor.Consultar(Id.Value);
+                    view = Professor.Consultar(view.IdProfessor);
 
-                    if (ViewBag.Professor == null)
+                    if (view == null)
                     {
                         ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
                     }
@@ -135,7 +146,7 @@ namespace SistemaMatricula.Controllers
                 ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
             }
 
-            return View();
+            return View(view);
         }
     }
 }

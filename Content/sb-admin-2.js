@@ -68,4 +68,16 @@
         $(this).fadeTo("fast", 0.50);
     });
 
+    $(".cpf").inputmask("mask", {
+        "mask": "999.999.999-99"
+    }, {
+         reverse: true
+        });
+
+    $(".nascimento").inputmask("mask", {
+        "mask": "99/99/9999"
+    }, {
+            reverse: true
+        });
+
 })(jQuery); // End of use strict

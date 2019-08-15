@@ -66,6 +66,9 @@ namespace SistemaMatricula.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    item.Descricao = item.Descricao.Trim();
+                    item.Nome = item.Nome.Trim();
+
                     if (!Equals(item.IdCurso, System.Guid.Empty))
                     {
                         if (Curso.Alterar(item))

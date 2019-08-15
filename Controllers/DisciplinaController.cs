@@ -7,7 +7,7 @@ namespace SistemaMatricula.Controllers
     [Authorize]
     public class DisciplinaController : Controller
     {
-        public ActionResult Index(DisciplinaView item)
+        public ActionResult Index(DisciplinaView view)
         {
             ModelState.Clear();
 
@@ -21,12 +21,12 @@ namespace SistemaMatricula.Controllers
                     return View();
                 }
 
-                item.Cursos = new SelectList(Cursos, "IdCurso", "Nome");
+                view.Cursos = new SelectList(Cursos, "IdCurso", "Nome");
 
-                if (item.CursoSelecionado != null)
-                    item.Curso = new Curso { IdCurso = item.CursoSelecionado };
+                if (view.CursoSelecionado != null)
+                    view.Curso = new Curso { IdCurso = view.CursoSelecionado };
 
-                ViewBag.Disciplinas = Disciplina.Listar(item);
+                ViewBag.Disciplinas = Disciplina.Listar(view);
 
                 if (ViewBag.Disciplinas == null)
                 {
@@ -38,11 +38,11 @@ namespace SistemaMatricula.Controllers
                 ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
             }
 
-            return View(item);
+            return View(view);
         }
 
         [HttpGet]
-        public ActionResult Edit(DisciplinaView item)
+        public ActionResult Edit(DisciplinaView view)
         {
             ViewBag.HideScreen = false;
             ModelState.Clear();
@@ -58,11 +58,11 @@ namespace SistemaMatricula.Controllers
                     return View();
                 }
 
-                item.Cursos = new SelectList(Cursos, "IdCurso", "Nome");
+                view.Cursos = new SelectList(Cursos, "IdCurso", "Nome");
 
-                if (!Equals(item.IdDisciplina, System.Guid.Empty))
+                if (!Equals(view.IdDisciplina, System.Guid.Empty))
                 {
-                    var disciplina = Disciplina.Consultar(item.IdDisciplina);
+                    var disciplina = Disciplina.Consultar(view.IdDisciplina);
 
                     if (disciplina == null)
                     {
@@ -71,9 +71,9 @@ namespace SistemaMatricula.Controllers
                         return View();
                     }
 
-                    item = DisciplinaView.Converter(disciplina);
-                    item.Cursos = new SelectList(Cursos, "IdCurso", "Nome", item.Curso.IdCurso);
-                    item.CursoSelecionado = item.Curso.IdCurso;
+                    view = DisciplinaView.Converter(disciplina);
+                    view.Cursos = new SelectList(Cursos, "IdCurso", "Nome", view.Curso.IdCurso);
+                    view.CursoSelecionado = view.Curso.IdCurso;
                 }
             }
             catch
@@ -82,11 +82,11 @@ namespace SistemaMatricula.Controllers
                 ViewBag.HideScreen = true;
             }
 
-            return View(item);
+            return View(view);
         }
 
         [HttpPost]
-        public ActionResult Update(DisciplinaView item)
+        public ActionResult Update(DisciplinaView view)
         {
             ViewBag.HideScreen = false;
 
@@ -94,11 +94,13 @@ namespace SistemaMatricula.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    item.Curso = new Curso { IdCurso = item.CursoSelecionado };
+                    view.Curso = new Curso { IdCurso = view.CursoSelecionado };
+                    view.Nome = view.Nome.Trim();
+                    view.Descricao = view.Descricao.Trim();
 
-                    if (!Equals(item.IdDisciplina, System.Guid.Empty))
+                    if (!Equals(view.IdDisciplina, System.Guid.Empty))
                     {
-                        if (Disciplina.Alterar(item))
+                        if (Disciplina.Alterar(view))
                         {
                             return RedirectToAction("Index", "Disciplina");
                         }
@@ -111,7 +113,7 @@ namespace SistemaMatricula.Controllers
                     }
                     else
                     {
-                        if (Disciplina.Incluir(item))
+                        if (Disciplina.Incluir(view))
                         {
                             return RedirectToAction("Index", "Disciplina");
                         }
@@ -137,7 +139,7 @@ namespace SistemaMatricula.Controllers
                     return View();
                 }
 
-                item.Cursos = new SelectList(Cursos, "IdCurso", "Nome");
+                view.Cursos = new SelectList(Cursos, "IdCurso", "Nome");
             }
             catch
             {
@@ -145,18 +147,18 @@ namespace SistemaMatricula.Controllers
                 ViewBag.HideScreen = true;
             }
 
-            return View("Edit", item);
+            return View("Edit", view);
         }
 
-        public ActionResult Delete(DisciplinaView item, bool? Delete)
+        public ActionResult Delete(DisciplinaView view, bool? Delete)
         {
             try
             {
-                if (!Equals(item.IdDisciplina, System.Guid.Empty))
+                if (!Equals(view.IdDisciplina, System.Guid.Empty))
                 {
                     if (Delete.HasValue && Delete.Value)
                     {
-                        if (Disciplina.Desativar(item.IdDisciplina))
+                        if (Disciplina.Desativar(view.IdDisciplina))
                         {
                             return RedirectToAction("Index", "Disciplina");
                         }
@@ -167,14 +169,14 @@ namespace SistemaMatricula.Controllers
                         }
                     }
 
-                    var disciplina = Disciplina.Consultar(item.IdDisciplina);
+                    var disciplina = Disciplina.Consultar(view.IdDisciplina);
 
                     if (disciplina == null)
                     {
                         ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
                     }
 
-                    item = DisciplinaView.Converter(disciplina);
+                    view = DisciplinaView.Converter(disciplina);
                 }
                 else
                 {
@@ -186,7 +188,7 @@ namespace SistemaMatricula.Controllers
                 ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
             }
 
-            return View(item);
+            return View(view);
         }
     }
 

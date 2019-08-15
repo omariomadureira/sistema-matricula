@@ -10,20 +10,6 @@
     <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
     <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
   </EntityType>
-  <EntityType Name="AlunoData">
-    <Key>
-      <PropertyRef Name="IdAluno" />
-    </Key>
-    <Property Name="IdAluno" Type="Guid" Nullable="false" />
-    <Property Name="Nome" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="DataNascimento" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="Email" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="CPF" Type="Int32" Nullable="false" />
-    <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="CadastroPor" Type="Guid" Nullable="false" />
-    <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
-    <Property Name="ExclusaoPor" Type="Guid" />
-  </EntityType>
   <EntityType Name="AspNetRoles">
     <Key>
       <PropertyRef Name="Id" />
@@ -102,21 +88,6 @@
     <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
     <Property Name="ExclusaoPor" Type="Guid" />
   </EntityType>
-  <EntityType Name="ProfessorData">
-    <Key>
-      <PropertyRef Name="IdProfessor" />
-    </Key>
-    <Property Name="IdProfessor" Type="Guid" Nullable="false" />
-    <Property Name="Nome" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="DataNascimento" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="Email" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="CPF" Type="Int32" Nullable="false" />
-    <Property Name="Curriculo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="CadastroPor" Type="Guid" Nullable="false" />
-    <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
-    <Property Name="ExclusaoPor" Type="Guid" />
-  </EntityType>
   <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
     <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -151,14 +122,12 @@
   </Association>
   <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
-    <EntitySet Name="AlunoData" EntityType="Self.AlunoData" />
     <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
     <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" />
     <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" />
     <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" />
     <EntitySet Name="CursoData" EntityType="Self.CursoData" />
     <EntitySet Name="DisciplinaData" EntityType="Self.DisciplinaData" />
-    <EntitySet Name="ProfessorData" EntityType="Self.ProfessorData" />
     <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
       <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -171,5 +140,36 @@
       <End Role="AspNetRoles" EntitySet="AspNetRoles" />
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
     </AssociationSet>
+    <EntitySet Name="AlunoData" EntityType="Model.AlunoData" />
+    <EntitySet Name="ProfessorData" EntityType="Model.ProfessorData" />
   </EntityContainer>
+  <EntityType Name="AlunoData">
+    <Key>
+      <PropertyRef Name="IdAluno" />
+    </Key>
+    <Property Name="IdAluno" Type="Guid" Nullable="false" />
+    <Property Name="Nome" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+    <Property Name="DataNascimento" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+    <Property Name="CPF" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
+    <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CadastroPor" Type="Guid" Nullable="false" />
+    <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
+    <Property Name="ExclusaoPor" Type="Guid" />
+  </EntityType>
+  <EntityType Name="ProfessorData">
+    <Key>
+      <PropertyRef Name="IdProfessor" />
+    </Key>
+    <Property Name="IdProfessor" Type="Guid" Nullable="false" />
+    <Property Name="Nome" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+    <Property Name="DataNascimento" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+    <Property Name="CPF" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
+    <Property Name="Curriculo" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CadastroPor" Type="Guid" Nullable="false" />
+    <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
+    <Property Name="ExclusaoPor" Type="Guid" />
+  </EntityType>
 </Schema>

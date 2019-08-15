@@ -66,6 +66,10 @@ namespace SistemaMatricula.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    item.CPF = item.CPF.Trim();
+                    item.Email = item.Email.Trim();
+                    item.Nome = item.Nome.Trim();
+
                     if (!Equals(item.IdAluno, System.Guid.Empty))
                     {
                         if (Aluno.Alterar(item))

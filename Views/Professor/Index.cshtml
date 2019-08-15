@@ -15,10 +15,11 @@
             }
             else
             {
-                <form method="post">
+                using (Html.BeginForm("Index", "Professor"))
+                {
                     <div class="row">
                         <div class="col-md-5">
-                            <input type="search" class="form-control form-control-user" required name="palavra" value="@ViewBag.Palavra" placeholder="O que você está procurando?">
+                            @Html.TextBoxFor(model => model.Nome, new { @class = "form-control form-control-user", @required = "required", @placeholder = "O que você está procurando?", @maxlenth = 100 })
                         </div>
                         <div class="col-md-3">
                             <button id="pesquisar" type="submit" class="btn btn-primary btn-user btn-sm"><i class="fas fa-search"></i> PESQUISAR</button>
@@ -26,7 +27,7 @@
                         </div>
                         <div class="col-md-4"></div>
                     </div>
-                </form>
+                }
                 <div class="table-responsive">
                     <table class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
@@ -41,20 +42,20 @@
                                 <tr>
                                     <td>@item.Nome</td>
                                     <td>@item.CadastroData</td>
-                                    <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Professor", new { Id = item.IdProfessor })"><i class="fas fa-pen"></i> EDITAR</a></td>
-                                    <td class="text-center"><a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Professor", new { Id = item.IdProfessor })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
+                                    <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Professor", new SistemaMatricula.Models.Professor { IdProfessor = item.IdProfessor })"><i class="fas fa-pen"></i> EDITAR</a></td>
+                                    <td class="text-center"><a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Professor", new SistemaMatricula.Models.Professor { IdProfessor = item.IdProfessor })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
                                 </tr>
                             }
                             @if (ViewBag.Professores.Count <= 0)
                             {
                                 <tr>
-                                    <td colspan="4">Não há registros para listar.</td>
+                                    <td colspan="6">Não há registros para listar.</td>
                                 </tr>
                             }
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="5">
+                                <th colspan="6">
                                     <a id="adicionar" class="btn btn-primary btn-user btn-sm" href="@Url.Action("Edit", "Professor")"><i class="fas fa-plus"></i> ADICIONAR PROFESSOR</a>
                                 </th>
                             </tr>

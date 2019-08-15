@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -23,7 +23,7 @@
           <Property Name="Nome" Type="nchar" MaxLength="100" Nullable="false" />
           <Property Name="DataNascimento" Type="datetime" Nullable="false" />
           <Property Name="Email" Type="nchar" MaxLength="100" Nullable="false" />
-          <Property Name="CPF" Type="int" Nullable="false" />
+          <Property Name="CPF" Type="nchar" MaxLength="15" Nullable="false" />
           <Property Name="CadastroData" Type="datetime" Nullable="false" />
           <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ExclusaoData" Type="datetime" />
@@ -117,7 +117,7 @@
           <Property Name="Nome" Type="nchar" MaxLength="100" Nullable="false" />
           <Property Name="DataNascimento" Type="datetime" Nullable="false" />
           <Property Name="Email" Type="nchar" MaxLength="100" Nullable="false" />
-          <Property Name="CPF" Type="int" Nullable="false" />
+          <Property Name="CPF" Type="nchar" MaxLength="15" Nullable="false" />
           <Property Name="Curriculo" Type="text" Nullable="false" />
           <Property Name="CadastroData" Type="datetime" Nullable="false" />
           <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
@@ -208,8 +208,7 @@
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -222,20 +221,6 @@
           <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
           <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
-        </EntityType>
-        <EntityType Name="AlunoData">
-          <Key>
-            <PropertyRef Name="IdAluno" />
-          </Key>
-          <Property Name="IdAluno" Type="Guid" Nullable="false" />
-          <Property Name="Nome" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="DataNascimento" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="CPF" Type="Int32" Nullable="false" />
-          <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CadastroPor" Type="Guid" Nullable="false" />
-          <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
-          <Property Name="ExclusaoPor" Type="Guid" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -315,21 +300,6 @@
           <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
           <Property Name="ExclusaoPor" Type="Guid" />
         </EntityType>
-        <EntityType Name="ProfessorData">
-          <Key>
-            <PropertyRef Name="IdProfessor" />
-          </Key>
-          <Property Name="IdProfessor" Type="Guid" Nullable="false" />
-          <Property Name="Nome" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="DataNascimento" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="CPF" Type="Int32" Nullable="false" />
-          <Property Name="Curriculo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CadastroPor" Type="Guid" Nullable="false" />
-          <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
-          <Property Name="ExclusaoPor" Type="Guid" />
-        </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -364,14 +334,12 @@
         </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
-          <EntitySet Name="AlunoData" EntityType="Self.AlunoData" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" />
           <EntitySet Name="CursoData" EntityType="Self.CursoData" />
           <EntitySet Name="DisciplinaData" EntityType="Self.DisciplinaData" />
-          <EntitySet Name="ProfessorData" EntityType="Self.ProfessorData" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -384,7 +352,38 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="AlunoData" EntityType="Model.AlunoData" />
+          <EntitySet Name="ProfessorData" EntityType="Model.ProfessorData" />
         </EntityContainer>
+        <EntityType Name="AlunoData">
+          <Key>
+            <PropertyRef Name="IdAluno" />
+          </Key>
+          <Property Name="IdAluno" Type="Guid" Nullable="false" />
+          <Property Name="Nome" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="DataNascimento" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="CPF" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
+          <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CadastroPor" Type="Guid" Nullable="false" />
+          <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
+          <Property Name="ExclusaoPor" Type="Guid" />
+        </EntityType>
+        <EntityType Name="ProfessorData">
+          <Key>
+            <PropertyRef Name="IdProfessor" />
+          </Key>
+          <Property Name="IdProfessor" Type="Guid" Nullable="false" />
+          <Property Name="Nome" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="DataNascimento" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="CPF" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
+          <Property Name="Curriculo" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CadastroPor" Type="Guid" Nullable="false" />
+          <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
+          <Property Name="ExclusaoPor" Type="Guid" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -398,21 +397,6 @@
                 <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
                 <ScalarProperty Name="Model" ColumnName="Model" />
                 <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AlunoData">
-            <EntityTypeMapping TypeName="Model.AlunoData">
-              <MappingFragment StoreEntitySet="AlunoData">
-                <ScalarProperty Name="IdAluno" ColumnName="IdAluno" />
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
-                <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="CPF" ColumnName="CPF" />
-                <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-                <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-                <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-                <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -492,22 +476,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ProfessorData">
-            <EntityTypeMapping TypeName="Model.ProfessorData">
-              <MappingFragment StoreEntitySet="ProfessorData">
-                <ScalarProperty Name="IdProfessor" ColumnName="IdProfessor" />
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
-                <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="CPF" ColumnName="CPF" />
-                <ScalarProperty Name="Curriculo" ColumnName="Curriculo" />
-                <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-                <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-                <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-                <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <AssociationSetMapping Name="AspNetUserRoles" TypeName="Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
             <EndProperty Name="AspNetRoles">
               <ScalarProperty Name="Id" ColumnName="RoleId" />
@@ -516,6 +484,37 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="AlunoData">
+            <EntityTypeMapping TypeName="Model.AlunoData">
+              <MappingFragment StoreEntitySet="AlunoData">
+                <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
+                <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
+                <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
+                <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
+                <ScalarProperty Name="CPF" ColumnName="CPF" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="IdAluno" ColumnName="IdAluno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProfessorData">
+            <EntityTypeMapping TypeName="Model.ProfessorData">
+              <MappingFragment StoreEntitySet="ProfessorData">
+                <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
+                <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
+                <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
+                <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
+                <ScalarProperty Name="Curriculo" ColumnName="Curriculo" />
+                <ScalarProperty Name="CPF" ColumnName="CPF" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="IdProfessor" ColumnName="IdProfessor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

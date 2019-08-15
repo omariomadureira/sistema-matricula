@@ -18,7 +18,7 @@
     <Property Name="Nome" Type="nchar" MaxLength="100" Nullable="false" />
     <Property Name="DataNascimento" Type="datetime" Nullable="false" />
     <Property Name="Email" Type="nchar" MaxLength="100" Nullable="false" />
-    <Property Name="CPF" Type="int" Nullable="false" />
+    <Property Name="CPF" Type="nchar" MaxLength="15" Nullable="false" />
     <Property Name="CadastroData" Type="datetime" Nullable="false" />
     <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
     <Property Name="ExclusaoData" Type="datetime" />
@@ -112,7 +112,7 @@
     <Property Name="Nome" Type="nchar" MaxLength="100" Nullable="false" />
     <Property Name="DataNascimento" Type="datetime" Nullable="false" />
     <Property Name="Email" Type="nchar" MaxLength="100" Nullable="false" />
-    <Property Name="CPF" Type="int" Nullable="false" />
+    <Property Name="CPF" Type="nchar" MaxLength="15" Nullable="false" />
     <Property Name="Curriculo" Type="text" Nullable="false" />
     <Property Name="CadastroData" Type="datetime" Nullable="false" />
     <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />

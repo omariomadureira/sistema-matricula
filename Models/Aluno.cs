@@ -9,15 +9,16 @@ namespace SistemaMatricula.Models
     {
         public Guid IdAluno { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
+        [StringLength(100, ErrorMessage = "O campo deve ter no máximo 100 caracteres.")]
         public string Nome { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public DateTime DataNascimento { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         [EmailAddress(ErrorMessage = "Preencha um e-mail válido")]
+        [StringLength(100, ErrorMessage = "O campo deve ter no máximo 100 caracteres.")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
-        [Range(1, 11, ErrorMessage = "Preencha um número válido")]
-        public int CPF { get; set; }
+        public string CPF { get; set; }
         public DateTime CadastroData { get; set; }
         public Guid CadastroPor { get; set; }
         public DateTime? ExclusaoData { get; set; }

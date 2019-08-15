@@ -10,6 +10,7 @@ namespace SistemaMatricula.Models
         public Guid IdDisciplina { get; set; }
         public Curso Curso { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
+        [StringLength(100, ErrorMessage = "O campo deve ter no máximo 100 caracteres.")]
         public string Nome { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public string Descricao { get; set; }

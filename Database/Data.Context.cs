@@ -26,13 +26,13 @@ namespace SistemaMatricula.Database
         }
     
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
-        public virtual DbSet<AlunoData> AlunoData { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<CursoData> CursoData { get; set; }
         public virtual DbSet<DisciplinaData> DisciplinaData { get; set; }
+        public virtual DbSet<AlunoData> AlunoData { get; set; }
         public virtual DbSet<ProfessorData> ProfessorData { get; set; }
     }
 }

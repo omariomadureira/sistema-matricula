@@ -54,13 +54,13 @@ namespace SistemaMatricula.Controllers
         #endregion
 
         [Authorize]
-        public ActionResult Index(Usuario model)
+        public ActionResult Index(Usuario view)
         {
             ModelState.Clear();
 
             try
             {
-                ViewBag.Usuarios = Usuario.Listar(model.Email);
+                ViewBag.Usuarios = Usuario.Listar(view.Email);
 
                 if (ViewBag.Usuarios == null)
                 {
@@ -72,7 +72,7 @@ namespace SistemaMatricula.Controllers
                 ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
             }
 
-            return View(model);
+            return View(view);
         }
 
         [Authorize]
@@ -83,9 +83,9 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                if (!string.IsNullOrWhiteSpace(view.Id))
+                if (!string.IsNullOrWhiteSpace(view.Login))
                 {
-                    ApplicationUser usuario = UserManager.FindById(view.Id);
+                    ApplicationUser usuario = UserManager.FindByName(view.Login);
 
                     if (usuario == null)
                     {
@@ -110,7 +110,7 @@ namespace SistemaMatricula.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Update(RegisterViewModel model)
+        public async Task<ActionResult> Update(RegisterViewModel view)
         {
             ViewBag.HideScreen = false;
 
@@ -118,21 +118,24 @@ namespace SistemaMatricula.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (!string.IsNullOrWhiteSpace(model.Id))
+                    view.Email = view.Email.Trim();
+                    view.Login = view.Login.Trim();
+
+                    if (!string.IsNullOrWhiteSpace(view.Id))
                     {
-                        ApplicationUser usuario = UserManager.FindById(model.Id);
+                        ApplicationUser usuario = UserManager.FindById(view.Id);
 
                         if (usuario == null)
                         {
                             ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
                             ViewBag.HideScreen = true;
-                            return View(model);
+                            return View(view);
                         }
 
-                        usuario.PasswordHash = UserManager.PasswordHasher.HashPassword(model.Password);
+                        usuario.PasswordHash = UserManager.PasswordHasher.HashPassword(view.Password);
 
-                        if (!string.Equals(model.Email, usuario.Email))
-                            usuario.Email = model.Email;
+                        if (!string.Equals(view.Email, usuario.Email))
+                            usuario.Email = view.Email;
 
                         var atualiza = await UserManager.UpdateAsync(usuario);
 
@@ -149,8 +152,8 @@ namespace SistemaMatricula.Controllers
                     }
                     else
                     {
-                        var usuario = new ApplicationUser { UserName = model.Login, Email = model.Email };
-                        var registro = await UserManager.CreateAsync(usuario, model.Password);
+                        var usuario = new ApplicationUser { UserName = view.Login, Email = view.Email };
+                        var registro = await UserManager.CreateAsync(usuario, view.Password);
 
                         if (registro.Succeeded)
                         {
@@ -174,19 +177,19 @@ namespace SistemaMatricula.Controllers
                 ViewBag.HideScreen = true;
             }
 
-            return View("Edit", model);
+            return View("Edit", view);
         }
 
         [Authorize]
-        public ActionResult Delete(RegisterViewModel model, bool? Delete)
+        public ActionResult Delete(RegisterViewModel view, bool? Delete)
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(model.Id))
+                if (!string.IsNullOrWhiteSpace(view.Id))
                 {
                     if (Delete.HasValue && Delete.Value)
                     {
-                        if (Usuario.Desativar(Guid.Parse(model.Id)))
+                        if (Usuario.Desativar(Guid.Parse(view.Id)))
                         {
                             return RedirectToAction("Index", "Usuario");
                         }
@@ -197,7 +200,7 @@ namespace SistemaMatricula.Controllers
                         }
                     }
 
-                    ApplicationUser usuario = UserManager.FindById(model.Id);
+                    ApplicationUser usuario = UserManager.FindById(view.Id);
 
                     if (usuario == null)
                     {
@@ -205,7 +208,7 @@ namespace SistemaMatricula.Controllers
                         ViewBag.HideScreen = true;
                     }
 
-                    model = RegisterViewModel.Converter(usuario);
+                    view = RegisterViewModel.Converter(usuario);
                 }
                 else
                 {
@@ -217,7 +220,7 @@ namespace SistemaMatricula.Controllers
                 ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
             }
 
-            return View(model);
+            return View(view);
         }
 
         //

@@ -44,7 +44,7 @@
                                     <td>@item.Login</td>
                                     <td>@item.Email</td>
                                     <td>@item.CadastroData</td>
-                                    <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Usuario", new SistemaMatricula.Models.RegisterViewModel { Id = item.IdUsuario.ToString() })"><i class="fas fa-pen"></i> EDITAR</a></td>
+                                    <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Usuario", new SistemaMatricula.Models.RegisterViewModel { Login = item.Login })"><i class="fas fa-pen"></i> EDITAR</a></td>
                                     <td class="text-center"><a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Usuario", new SistemaMatricula.Models.RegisterViewModel { Id = item.IdUsuario.ToString() })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
                                 </tr>
                             }

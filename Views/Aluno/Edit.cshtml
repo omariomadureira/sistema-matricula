@@ -29,21 +29,21 @@
                         {
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    @Html.TextBoxFor(model => model.Nome, new { @class = "form-control form-control-user", @required = "required", @placeholder = "Digite o nome", @maxlenth = 100 })
+                                    @Html.TextBoxFor(model => model.Nome, new { @class = "form-control form-control-user", @required = "required", @placeholder = "Digite o nome" })
                                     @Html.ValidationMessageFor(model => model.Nome)
                                 </div>
                                 <div class="col-sm-6">
-                                    @Html.TextBoxFor(model => model.DataNascimento, new { @class = "form-control form-control-user", @required = "required", @placeholder = "Digite a data de nascimento", @type = "date" })
+                                    @Html.TextBoxFor(model => model.DataNascimento, new { @class = "form-control form-control-user nascimento", @required = "required", @placeholder = "Digite a data de nascimento" })
                                     @Html.ValidationMessageFor(model => model.DataNascimento)
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control form-control-user", @required = "required", @placeholder = "Digite o e-mail", @maxlenth = 100 })
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control form-control-user", @required = "required", @placeholder = "Digite o e-mail" })
                                     @Html.ValidationMessageFor(model => model.Email)
                                 </div>
                                 <div class="col-sm-6">
-                                    @Html.TextBoxFor(model => model.CPF, new { @class = "form-control form-control-user", @required = "required", @placeholder = "Digite o CPF" })
+                                    @Html.TextBoxFor(model => model.CPF, new { @class = "form-control form-control-user cpf", @required = "required", @placeholder = "Digite o CPF" })
                                     @Html.ValidationMessageFor(model => model.CPF)
                                 </div>
                             </div>

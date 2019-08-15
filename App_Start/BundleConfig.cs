@@ -14,6 +14,7 @@ namespace SistemaMatricula
 
             bundles.Add(new ScriptBundle("~/bundles/scripts").Include(
                         "~/Content/jquery/jquery.min.js",
+                        "~/Content/jquery/jquery.inputmask.min.js",
                         "~/Content/bootstrap/js/bootstrap.bundle.min.js",
                         "~/Content/jquery-easing/jquery.easing.min.js",
                         "~/Content/sb-admin-2.js",
