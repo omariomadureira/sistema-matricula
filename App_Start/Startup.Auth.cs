@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
@@ -63,6 +64,34 @@ namespace SistemaMatricula
             //    ClientId = "",
             //    ClientSecret = ""
             //});
+        }
+
+        private void CreateUserRoles()
+        {
+            ApplicationDbContext context = new ApplicationDbContext();
+
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+
+            if (!roleManager.RoleExists(Usuario.ROLE_ADMINISTRADOR))
+            {
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                role.Name = Usuario.ROLE_ADMINISTRADOR;
+                roleManager.Create(role);
+            }
+
+            if (!roleManager.RoleExists(Usuario.ROLE_ALUNO))
+            {
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                role.Name = Usuario.ROLE_ALUNO;
+                roleManager.Create(role);
+            }
+
+            if (!roleManager.RoleExists(Usuario.ROLE_PROFESSOR))
+            {
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                role.Name = Usuario.ROLE_PROFESSOR;
+                roleManager.Create(role);
+            }
         }
     }
 }

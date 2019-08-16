@@ -56,6 +56,24 @@ namespace SistemaMatricula.DAO
             return false;
         }
 
+        public static bool EhAtivo(string Login)
+        {
+            try
+            {
+                Entities db = new Entities();
+                AspNetUsers Usuario = db.AspNetUsers.FirstOrDefault(x => x.UserName == Login);
+                db.Dispose();
+
+                if (Usuario != null && Usuario.ExclusaoData == null)
+                {
+                    return true;
+                }
+            }
+            catch { }
+
+            return false;
+        }
+
         public static Usuario Converter(AspNetUsers a)
         {
             try

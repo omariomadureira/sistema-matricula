@@ -4,7 +4,7 @@ using System.Web.Mvc;
 
 namespace SistemaMatricula.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = Usuario.ROLE_ADMINISTRADOR)]
     public class DisciplinaController : Controller
     {
         public ActionResult Index(DisciplinaView view)

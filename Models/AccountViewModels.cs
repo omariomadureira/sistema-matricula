@@ -87,6 +87,11 @@ namespace SistemaMatricula.Models
         [Compare("Password", ErrorMessage = "A senha e a senha de confirmação não correspondem.")]
         public string ConfirmPassword { get; set; }
 
+        public System.Web.Mvc.SelectList Roles { get; set; }
+        [Required]
+        [Display(Name = "Perfil")]
+        public string RoleSelecionado { get; set; }
+
         public static RegisterViewModel Converter(ApplicationUser item)
         {
             try
@@ -95,7 +100,8 @@ namespace SistemaMatricula.Models
                 {
                     Id = item.Id,
                     Login = item.UserName,
-                    Email = item.Email
+                    Email = item.Email,
+                    RoleSelecionado = string.Empty
                 };
             }
             catch

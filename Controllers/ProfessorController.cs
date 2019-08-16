@@ -3,7 +3,7 @@ using System.Web.Mvc;
 
 namespace SistemaMatricula.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = Usuario.ROLE_ADMINISTRADOR)]
     public class ProfessorController : Controller
     {
         public ActionResult Index(Professor view)

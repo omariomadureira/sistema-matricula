@@ -38,6 +38,16 @@
                             <div class="form-group">
                                 @Html.TextBoxFor(model => model.Email, new { @class = "form-control form-control-user", @required = "required", @placeholder = "Digite o e-mail", @maxlenth = 100, @type = "email" })
                             </div>
+                            if (User.IsInRole(SistemaMatricula.Models.Usuario.ROLE_ADMINISTRADOR))
+                            {
+                                <div class="form-group">
+                                    @Html.DropDownListFor(model => model.RoleSelecionado, Model.Roles, "Selecione um perfil", new { @required = "required", @class = "form-control" })
+                                </div>
+                            }
+                            else
+                            {
+                                @Html.HiddenFor(model => model.RoleSelecionado)
+                            }
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     @Html.PasswordFor(model => model.Password, new { @class = "form-control form-control-user", @required = "required", @placeholder = "Digite a senha" })

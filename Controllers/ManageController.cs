@@ -10,7 +10,7 @@ using SistemaMatricula.Models;
 
 namespace SistemaMatricula.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = Usuario.ROLE_ADMINISTRADOR)]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;

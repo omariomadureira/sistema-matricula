@@ -35,37 +35,40 @@
                 </a>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+            @if (User.IsInRole(SistemaMatricula.Models.Usuario.ROLE_ADMINISTRADOR))
+            {
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Cadastro
-            </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Cadastro
+                </div>
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("Index", "Curso")">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Curso</span>
-                </a>
-                <a class="nav-link" href="@Url.Action("Index", "Disciplina")">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Disciplina</span>
-                </a>
-                <a class="nav-link" href="@Url.Action("Index", "Professor")">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Professor</span>
-                </a>
-                <a class="nav-link" href="@Url.Action("Index", "Aluno")">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Aluno</span>
-                </a>
-                <a class="nav-link" href="@Url.Action("Index", "Usuario")">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Usuário</span>
-                </a>
-            </li>
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index", "Curso")">
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Curso</span>
+                    </a>
+                    <a class="nav-link" href="@Url.Action("Index", "Disciplina")">
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Disciplina</span>
+                    </a>
+                    <a class="nav-link" href="@Url.Action("Index", "Professor")">
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Professor</span>
+                    </a>
+                    <a class="nav-link" href="@Url.Action("Index", "Aluno")">
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Aluno</span>
+                    </a>
+                    <a class="nav-link" href="@Url.Action("Index", "Usuario")">
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Usuário</span>
+                    </a>
+                </li>
+            }
 
             <!-- Divider -->
             <hr class="sidebar-divider">

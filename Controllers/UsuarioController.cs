@@ -53,7 +53,7 @@ namespace SistemaMatricula.Controllers
         }
         #endregion
 
-        [Authorize]
+        [Authorize(Roles = Usuario.ROLE_ADMINISTRADOR)]
         public ActionResult Index(Usuario view)
         {
             ModelState.Clear();
@@ -83,6 +83,13 @@ namespace SistemaMatricula.Controllers
 
             try
             {
+                if (!User.IsInRole(Usuario.ROLE_ADMINISTRADOR))
+                {
+                    view.Login = User.Identity.GetUserName();
+                }
+
+                view.Roles = new SelectList(Usuario.Roles());
+
                 if (!string.IsNullOrWhiteSpace(view.Login))
                 {
                     ApplicationUser usuario = UserManager.FindByName(view.Login);
@@ -94,17 +101,24 @@ namespace SistemaMatricula.Controllers
                     }
 
                     view = RegisterViewModel.Converter(usuario);
+                    view.Roles = new SelectList(Usuario.Roles());
 
-                    return View(view);
+                    var itens = UserManager.GetRoles(view.Id);
+
+                    if (itens.Count > 0)
+                    {
+                        view.Roles = new SelectList(Usuario.Roles(), itens[0]);
+                        view.RoleSelecionado = itens[0];
+                    }
                 }
             }
-            catch
+            catch (Exception e)
             {
                 ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
                 ViewBag.HideScreen = true;
             }
 
-            return View();
+            return View(view);
         }
 
         [HttpPost]
@@ -118,12 +132,17 @@ namespace SistemaMatricula.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (!User.IsInRole(Usuario.ROLE_ADMINISTRADOR))
+                    {
+                        view.Login = User.Identity.GetUserName();
+                    }
+
                     view.Email = view.Email.Trim();
                     view.Login = view.Login.Trim();
 
                     if (!string.IsNullOrWhiteSpace(view.Id))
                     {
-                        ApplicationUser usuario = UserManager.FindById(view.Id);
+                        ApplicationUser usuario = UserManager.FindByName(view.Login);
 
                         if (usuario == null)
                         {
@@ -141,7 +160,8 @@ namespace SistemaMatricula.Controllers
 
                         if (atualiza.Succeeded)
                         {
-                            //await SignInManager.SignInAsync(atualiza, isPersistent: false, rememberBrowser: false);
+                            UserManager.AddToRole(usuario.Id, view.RoleSelecionado);
+
                             return RedirectToAction("Index", "Usuario");
                         }
                         else
@@ -157,6 +177,9 @@ namespace SistemaMatricula.Controllers
 
                         if (registro.Succeeded)
                         {
+                            usuario = await UserManager.FindByNameAsync(usuario.UserName);
+                            UserManager.AddToRole(usuario.Id, view.RoleSelecionado);
+
                             return RedirectToAction("Index", "Usuario");
                         }
                         else
@@ -170,6 +193,8 @@ namespace SistemaMatricula.Controllers
                 {
                     ViewBag.Message = "Não foi possível atualizar o registro. Revise o preenchimento dos campos.";
                 }
+
+                view.Roles = new SelectList(Usuario.Roles());
             }
             catch (Exception e)
             {
@@ -180,7 +205,7 @@ namespace SistemaMatricula.Controllers
             return View("Edit", view);
         }
 
-        [Authorize]
+        [Authorize(Roles = Usuario.ROLE_ADMINISTRADOR)]
         public ActionResult Delete(RegisterViewModel view, bool? Delete)
         {
             try
@@ -246,6 +271,12 @@ namespace SistemaMatricula.Controllers
         {
             if (!ModelState.IsValid)
             {
+                return View("Login", "_Login", model);
+            }
+
+            if (!Usuario.EhAtivo(model.Usuario))
+            {
+                ModelState.AddModelError("", "Usuário inativo");
                 return View("Login", "_Login", model);
             }
 

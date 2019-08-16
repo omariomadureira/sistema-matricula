@@ -1,6 +1,7 @@
 ﻿using SistemaMatricula.DAO;
 using System;
 using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace SistemaMatricula.Models
 {
@@ -14,7 +15,9 @@ namespace SistemaMatricula.Models
         public DateTime? ExclusaoData { get; set; }
         public Guid? ExclusaoPor { get; set; }
 
-        public static string ROLE_ADMINISTRADOR = "ADMINISTRADOR";
+        public const string ROLE_ADMINISTRADOR = "ADMINISTRADOR";
+        public const string ROLE_ALUNO = "ALUNO";
+        public const string ROLE_PROFESSOR = "PROFESSOR";
 
         public static List<Usuario> Listar(string palavra = null)
         {
@@ -24,6 +27,21 @@ namespace SistemaMatricula.Models
         public static bool Desativar(Guid IdUsuario)
         {
             return UsuarioDAO.Desativar(IdUsuario);
+        }
+
+        public static bool EhAtivo(string Login)
+        {
+            return UsuarioDAO.EhAtivo(Login);
+        }
+
+        public static List<string> Roles()
+        {
+            return new List<string>()
+            {
+                ROLE_ADMINISTRADOR,
+                ROLE_ALUNO,
+                ROLE_PROFESSOR
+            };
         }
     }
 }
