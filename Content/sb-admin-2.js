@@ -80,4 +80,8 @@
             reverse: true
         });
 
+    if ($(".nascimento").val() == "01/01/0001") {
+        $(".nascimento").val("");
+    }
+
 })(jQuery); // End of use strict

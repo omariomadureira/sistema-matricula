@@ -124,6 +124,18 @@
           <Property Name="ExclusaoData" Type="datetime" />
           <Property Name="ExclusaoPor" Type="uniqueidentifier" />
         </EntityType>
+        <EntityType Name="SemestreData">
+          <Key>
+            <PropertyRef Name="IdSemestre" />
+          </Key>
+          <Property Name="IdSemestre" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="InicioData" Type="datetime" Nullable="false" />
+          <Property Name="Periodo" Type="nchar" MaxLength="12" Nullable="false" />
+          <Property Name="CadastroData" Type="datetime" Nullable="false" />
+          <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ExclusaoData" Type="datetime" />
+          <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+        </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -191,6 +203,7 @@
           <EntitySet Name="CursoData" EntityType="Self.CursoData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DisciplinaData" EntityType="Self.DisciplinaData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProfessorData" EntityType="Self.ProfessorData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SemestreData" EntityType="Self.SemestreData" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -354,6 +367,7 @@
           </AssociationSet>
           <EntitySet Name="AlunoData" EntityType="Model.AlunoData" />
           <EntitySet Name="ProfessorData" EntityType="Model.ProfessorData" />
+          <EntitySet Name="SemestreData" EntityType="Model.SemestreData" />
         </EntityContainer>
         <EntityType Name="AlunoData">
           <Key>
@@ -379,6 +393,18 @@
           <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
           <Property Name="CPF" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
           <Property Name="Curriculo" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CadastroPor" Type="Guid" Nullable="false" />
+          <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
+          <Property Name="ExclusaoPor" Type="Guid" />
+        </EntityType>
+        <EntityType Name="SemestreData">
+          <Key>
+            <PropertyRef Name="IdSemestre" />
+          </Key>
+          <Property Name="IdSemestre" Type="Guid" Nullable="false" />
+          <Property Name="InicioData" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Periodo" Type="String" Nullable="false" MaxLength="12" FixedLength="true" Unicode="true" />
           <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CadastroPor" Type="Guid" Nullable="false" />
           <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
@@ -512,6 +538,19 @@
                 <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
                 <ScalarProperty Name="Nome" ColumnName="Nome" />
                 <ScalarProperty Name="IdProfessor" ColumnName="IdProfessor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SemestreData">
+            <EntityTypeMapping TypeName="Model.SemestreData">
+              <MappingFragment StoreEntitySet="SemestreData">
+                <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
+                <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
+                <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
+                <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
+                <ScalarProperty Name="Periodo" ColumnName="Periodo" />
+                <ScalarProperty Name="InicioData" ColumnName="InicioData" />
+                <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

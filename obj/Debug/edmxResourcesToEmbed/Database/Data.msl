@@ -126,5 +126,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="SemestreData">
+      <EntityTypeMapping TypeName="Model.SemestreData">
+        <MappingFragment StoreEntitySet="SemestreData">
+          <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
+          <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
+          <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
+          <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
+          <ScalarProperty Name="Periodo" ColumnName="Periodo" />
+          <ScalarProperty Name="InicioData" ColumnName="InicioData" />
+          <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

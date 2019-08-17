@@ -119,6 +119,18 @@
     <Property Name="ExclusaoData" Type="datetime" />
     <Property Name="ExclusaoPor" Type="uniqueidentifier" />
   </EntityType>
+  <EntityType Name="SemestreData">
+    <Key>
+      <PropertyRef Name="IdSemestre" />
+    </Key>
+    <Property Name="IdSemestre" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="InicioData" Type="datetime" Nullable="false" />
+    <Property Name="Periodo" Type="nchar" MaxLength="12" Nullable="false" />
+    <Property Name="CadastroData" Type="datetime" Nullable="false" />
+    <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ExclusaoData" Type="datetime" />
+    <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+  </EntityType>
   <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
     <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -186,6 +198,7 @@
     <EntitySet Name="CursoData" EntityType="Self.CursoData" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DisciplinaData" EntityType="Self.DisciplinaData" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProfessorData" EntityType="Self.ProfessorData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SemestreData" EntityType="Self.SemestreData" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
       <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />

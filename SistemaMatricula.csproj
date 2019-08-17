@@ -172,11 +172,13 @@
     <Compile Include="Controllers\AlunoController.cs" />
     <Compile Include="Controllers\CursoController.cs" />
     <Compile Include="Controllers\DisciplinaController.cs" />
+    <Compile Include="Controllers\SemestreController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProfessorController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="DAO\AlunoDAO.cs" />
+    <Compile Include="DAO\SemestreDAO.cs" />
     <Compile Include="DAO\CursoDAO.cs" />
     <Compile Include="DAO\DisciplinaDAO.cs" />
     <Compile Include="DAO\ProfessorDAO.cs" />
@@ -223,11 +225,15 @@
     <Compile Include="Database\ProfessorData.cs">
       <DependentUpon>Data.tt</DependentUpon>
     </Compile>
+    <Compile Include="Database\SemestreData.cs">
+      <DependentUpon>Data.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Aluno.cs" />
+    <Compile Include="Models\Semestre.cs" />
     <Compile Include="Models\Curso.cs" />
     <Compile Include="Models\Disciplina.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -311,6 +317,10 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Usuario\Delete.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
+    <Content Include="Views\Semestre\Delete.cshtml" />
+    <Content Include="Views\Semestre\Edit.cshtml" />
+    <Content Include="Views\Semestre\Index.cshtml" />
+    <Content Include="Views\Shared\_MenuLateral.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

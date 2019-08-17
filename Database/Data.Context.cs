@@ -34,5 +34,6 @@ namespace SistemaMatricula.Database
         public virtual DbSet<DisciplinaData> DisciplinaData { get; set; }
         public virtual DbSet<AlunoData> AlunoData { get; set; }
         public virtual DbSet<ProfessorData> ProfessorData { get; set; }
+        public virtual DbSet<SemestreData> SemestreData { get; set; }
     }
 }

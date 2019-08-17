@@ -142,6 +142,7 @@
     </AssociationSet>
     <EntitySet Name="AlunoData" EntityType="Model.AlunoData" />
     <EntitySet Name="ProfessorData" EntityType="Model.ProfessorData" />
+    <EntitySet Name="SemestreData" EntityType="Model.SemestreData" />
   </EntityContainer>
   <EntityType Name="AlunoData">
     <Key>
@@ -167,6 +168,18 @@
     <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
     <Property Name="CPF" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
     <Property Name="Curriculo" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CadastroPor" Type="Guid" Nullable="false" />
+    <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
+    <Property Name="ExclusaoPor" Type="Guid" />
+  </EntityType>
+  <EntityType Name="SemestreData">
+    <Key>
+      <PropertyRef Name="IdSemestre" />
+    </Key>
+    <Property Name="IdSemestre" Type="Guid" Nullable="false" />
+    <Property Name="InicioData" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Periodo" Type="String" Nullable="false" MaxLength="12" FixedLength="true" Unicode="true" />
     <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="CadastroPor" Type="Guid" Nullable="false" />
     <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
