@@ -143,6 +143,13 @@
     <EntitySet Name="AlunoData" EntityType="Model.AlunoData" />
     <EntitySet Name="ProfessorData" EntityType="Model.ProfessorData" />
     <EntitySet Name="SemestreData" EntityType="Model.SemestreData" />
+    <EntitySet Name="DisciplinaSemestreData" EntityType="Model.DisciplinaSemestreData" />
+    <FunctionImport Name="Grade_ListarCursos" ReturnType="Collection(Model.Grade_ListarCursos_Result)">
+      <Parameter Name="IdSemestre" Mode="In" Type="Guid" />
+      <Parameter Name="IdCurso" Mode="In" Type="Guid" />
+      <Parameter Name="StatusGrade" Mode="In" Type="String" />
+      <Parameter Name="PalavraChave" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <EntityType Name="AlunoData">
     <Key>
@@ -185,4 +192,27 @@
     <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
     <Property Name="ExclusaoPor" Type="Guid" />
   </EntityType>
+  <EntityType Name="DisciplinaSemestreData">
+    <Key>
+      <PropertyRef Name="IdDisciplinaSemestre" />
+    </Key>
+    <Property Name="IdDisciplinaSemestre" Type="Guid" Nullable="false" />
+    <Property Name="IdDisciplina" Type="Guid" Nullable="false" />
+    <Property Name="IdSemestre" Type="Guid" Nullable="false" />
+    <Property Name="IdProfessor" Type="Guid" Nullable="false" />
+    <Property Name="DiaSemana" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
+    <Property Name="Horario" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="true" />
+    <Property Name="Status" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CadastroPor" Type="Guid" Nullable="false" />
+    <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
+    <Property Name="ExclusaoPor" Type="Guid" />
+  </EntityType>
+  <ComplexType Name="Grade_ListarCursos_Result">
+    <Property Type="Guid" Name="IdSemestre" Nullable="false" />
+    <Property Type="String" Name="NomeSemestre" Nullable="true" MaxLength="76" />
+    <Property Type="Guid" Name="IdCurso" Nullable="false" />
+    <Property Type="String" Name="NomeCurso" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="StatusGrade" Nullable="false" MaxLength="10" />
+  </ComplexType>
 </Schema>

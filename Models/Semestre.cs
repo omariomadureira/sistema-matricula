@@ -8,6 +8,13 @@ namespace SistemaMatricula.Models
     public class Semestre
     {
         public Guid IdSemestre { get; set; }
+        public string Nome
+        {
+            get
+            {
+                return string.Format("{0} - {1}", InicioData.ToString("Y").ToUpper(), Periodo);
+            }
+        }
         public string Periodo { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public DateTime InicioData { get; set; }
@@ -15,6 +22,10 @@ namespace SistemaMatricula.Models
         public Guid CadastroPor { get; set; }
         public DateTime? ExclusaoData { get; set; }
         public Guid? ExclusaoPor { get; set; }
+
+        public const string PERIODO_MATUTINO = "MATUTINO";
+        public const string PERIODO_VESPERTINO = "VESPERTINO";
+        public const string PERIODO_NOTURNO = "NOTURNO";
 
         public static bool Incluir(Semestre item)
         {
@@ -45,9 +56,9 @@ namespace SistemaMatricula.Models
         {
             return new List<string>()
             {
-                "MATUTINO",
-                "VESPERTINO",
-                "NOTURNO"
+                PERIODO_MATUTINO,
+                PERIODO_VESPERTINO,
+                PERIODO_NOTURNO
             };
         }
     }

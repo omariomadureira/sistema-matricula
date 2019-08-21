@@ -1,5 +1,5 @@
 ﻿@model SistemaMatricula.Controllers.SemestreView
-@{ViewBag.Title = "Cadastro de Semestres";}
+@{ViewBag.Title = "Manutenção de Semestres";}
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -40,7 +40,7 @@
                             @foreach (var item in ViewBag.Semestres)
                             {
                                 <tr>
-                                    <td>@item.Periodo - @item.InicioData.ToString("Y").ToUpper()</td>
+                                    <td>@item.Nome</td>
                                     <td>@item.CadastroData</td>
                                     <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Semestre", new SistemaMatricula.Models.Semestre { IdSemestre = item.IdSemestre })"><i class="fas fa-pen"></i> EDITAR</a></td>
                                     <td class="text-center"><a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Semestre", new SistemaMatricula.Models.Semestre { IdSemestre = item.IdSemestre })"><i class="fas fa-trash"></i> EXCLUIR</a></td>

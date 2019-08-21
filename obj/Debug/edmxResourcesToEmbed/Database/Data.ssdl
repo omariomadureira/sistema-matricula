@@ -104,6 +104,22 @@
     <Property Name="ExclusaoData" Type="datetime" />
     <Property Name="ExclusaoPor" Type="uniqueidentifier" />
   </EntityType>
+  <EntityType Name="DisciplinaSemestreData">
+    <Key>
+      <PropertyRef Name="IdDisciplinaSemestre" />
+    </Key>
+    <Property Name="IdDisciplinaSemestre" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="IdDisciplina" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="IdSemestre" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="IdProfessor" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="DiaSemana" Type="nchar" MaxLength="15" Nullable="false" />
+    <Property Name="Horario" Type="nchar" MaxLength="5" Nullable="false" />
+    <Property Name="Status" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="CadastroData" Type="datetime" Nullable="false" />
+    <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ExclusaoData" Type="datetime" />
+    <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+  </EntityType>
   <EntityType Name="ProfessorData">
     <Key>
       <PropertyRef Name="IdProfessor" />
@@ -187,6 +203,12 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="Grade_ListarCursos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="IdSemestre" Type="uniqueidentifier" Mode="In" />
+    <Parameter Name="IdCurso" Type="uniqueidentifier" Mode="In" />
+    <Parameter Name="StatusGrade" Type="varchar" Mode="In" />
+    <Parameter Name="PalavraChave" Type="varchar" Mode="In" />
+  </Function>
   <EntityContainer Name="ModelStoreContainer">
     <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AlunoData" EntityType="Self.AlunoData" Schema="dbo" store:Type="Tables" />
@@ -197,6 +219,7 @@
     <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CursoData" EntityType="Self.CursoData" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DisciplinaData" EntityType="Self.DisciplinaData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DisciplinaSemestreData" EntityType="Self.DisciplinaSemestreData" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProfessorData" EntityType="Self.ProfessorData" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SemestreData" EntityType="Self.SemestreData" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">

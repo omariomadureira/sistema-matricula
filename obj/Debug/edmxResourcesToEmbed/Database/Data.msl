@@ -139,5 +139,33 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="DisciplinaSemestreData">
+      <EntityTypeMapping TypeName="Model.DisciplinaSemestreData">
+        <MappingFragment StoreEntitySet="DisciplinaSemestreData">
+          <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
+          <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
+          <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
+          <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Horario" ColumnName="Horario" />
+          <ScalarProperty Name="DiaSemana" ColumnName="DiaSemana" />
+          <ScalarProperty Name="IdProfessor" ColumnName="IdProfessor" />
+          <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
+          <ScalarProperty Name="IdDisciplina" ColumnName="IdDisciplina" />
+          <ScalarProperty Name="IdDisciplinaSemestre" ColumnName="IdDisciplinaSemestre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="Grade_ListarCursos" FunctionName="Model.Store.Grade_ListarCursos">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Model.Grade_ListarCursos_Result">
+          <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
+          <ScalarProperty Name="NomeSemestre" ColumnName="NomeSemestre" />
+          <ScalarProperty Name="IdCurso" ColumnName="IdCurso" />
+          <ScalarProperty Name="NomeCurso" ColumnName="NomeCurso" />
+          <ScalarProperty Name="StatusGrade" ColumnName="StatusGrade" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

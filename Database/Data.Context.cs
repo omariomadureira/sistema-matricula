@@ -12,6 +12,8 @@ namespace SistemaMatricula.Database
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class Entities : DbContext
     {
@@ -35,5 +37,27 @@ namespace SistemaMatricula.Database
         public virtual DbSet<AlunoData> AlunoData { get; set; }
         public virtual DbSet<ProfessorData> ProfessorData { get; set; }
         public virtual DbSet<SemestreData> SemestreData { get; set; }
+        public virtual DbSet<DisciplinaSemestreData> DisciplinaSemestreData { get; set; }
+    
+        public virtual ObjectResult<Grade_ListarCursos_Result> Grade_ListarCursos(Nullable<System.Guid> idSemestre, Nullable<System.Guid> idCurso, string statusGrade, string palavraChave)
+        {
+            var idSemestreParameter = idSemestre.HasValue ?
+                new ObjectParameter("IdSemestre", idSemestre) :
+                new ObjectParameter("IdSemestre", typeof(System.Guid));
+    
+            var idCursoParameter = idCurso.HasValue ?
+                new ObjectParameter("IdCurso", idCurso) :
+                new ObjectParameter("IdCurso", typeof(System.Guid));
+    
+            var statusGradeParameter = statusGrade != null ?
+                new ObjectParameter("StatusGrade", statusGrade) :
+                new ObjectParameter("StatusGrade", typeof(string));
+    
+            var palavraChaveParameter = palavraChave != null ?
+                new ObjectParameter("PalavraChave", palavraChave) :
+                new ObjectParameter("PalavraChave", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Grade_ListarCursos_Result>("Grade_ListarCursos", idSemestreParameter, idCursoParameter, statusGradeParameter, palavraChaveParameter);
+        }
     }
 }

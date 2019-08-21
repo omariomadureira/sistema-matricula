@@ -33,7 +33,6 @@
                         <thead>
                             <tr>
                                 <th>Nome</th>
-                                <th>Descrição</th>
                                 <th>Quantidade de Créditos</th>
                                 <th>Data de Cadastro</th>
                             </tr>
@@ -43,7 +42,6 @@
                             {
                                 <tr>
                                     <td>@item.Nome</td>
-                                    <td>@item.Descricao</td>
                                     <td>@item.Creditos</td>
                                     <td>@item.CadastroData</td>
                                     <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Curso", new SistemaMatricula.Models.Curso { IdCurso = item.IdCurso })"><i class="fas fa-pen"></i> EDITAR</a></td>

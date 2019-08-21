@@ -52,7 +52,7 @@ namespace SistemaMatricula.DAO
             return null;
         }
 
-        public static List<Disciplina> Listar(Disciplina filtros)
+        public static List<Disciplina> Listar(Disciplina filtros = null)
         {
             try
             {

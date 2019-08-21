@@ -29,7 +29,7 @@ namespace SistemaMatricula.Models
             return DisciplinaDAO.Consultar(IdDisciplina);
         }
 
-        public static List<Disciplina> Listar(Disciplina filtros)
+        public static List<Disciplina> Listar(Disciplina filtros = null)
         {
             return DisciplinaDAO.Listar(filtros);
         }
