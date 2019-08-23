@@ -29,7 +29,7 @@ namespace SistemaMatricula.Models
             return DisciplinaSemestreDAO.Consultar(IdDisciplinaSemestre);
         }
 
-        public static DisciplinaSemestre[] Listar(DisciplinaSemestre filtros = null)
+        public static DisciplinaSemestre[] Listar(DisciplinaSemestre filtros = null, bool grade = false)
         {
             //TODO: Adicionar regra na procedure de disciplinas que não devem ser inseridas na grade, pois não atingiram a quantidade de alunos
 
@@ -37,27 +37,36 @@ namespace SistemaMatricula.Models
 
             try
             {
-                Disciplina novoFiltro = new Disciplina()
+                if (filtros.Disciplina != null && filtros.Semestre != null)
                 {
-                    Curso = new Curso { IdCurso = filtros.Disciplina.Curso.IdCurso }
-                };
-                List<Disciplina> disciplinas = Disciplina.Listar(novoFiltro);
-
-                foreach (Disciplina disciplina in disciplinas)
-                {
-                    filtros.Disciplina.IdDisciplina = disciplina.IdDisciplina;
-                    List<DisciplinaSemestre> definidas = DisciplinaSemestreDAO.Listar(filtros);
-
-                    if (definidas.Count == 0)
+                    if (!grade)
                     {
-                        definidas.Add(new DisciplinaSemestre()
-                        {
-                            Disciplina = disciplina,
-                            Semestre = filtros.Semestre
-                        });
+                        return DisciplinaSemestreDAO.Listar(filtros).ToArray();
                     }
 
-                    lista.AddRange(definidas);
+                    Disciplina novoFiltro = new Disciplina()
+                    {
+                        Curso = new Curso { IdCurso = filtros.Disciplina.Curso.IdCurso }
+                    };
+
+                    List<Disciplina> disciplinas = Disciplina.Listar(novoFiltro);
+
+                    foreach (Disciplina disciplina in disciplinas)
+                    {
+                        filtros.Disciplina.IdDisciplina = disciplina.IdDisciplina;
+                        List<DisciplinaSemestre> definidas = DisciplinaSemestreDAO.Listar(filtros);
+
+                        if (definidas.Count == 0)
+                        {
+                            definidas.Add(new DisciplinaSemestre()
+                            {
+                                Disciplina = disciplina,
+                                Semestre = filtros.Semestre
+                            });
+                        }
+
+                        lista.AddRange(definidas);
+                    }
                 }
             }
             catch { }

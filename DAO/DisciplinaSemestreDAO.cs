@@ -71,6 +71,10 @@ namespace SistemaMatricula.DAO
                     if (filtros.Disciplina != null && !Equals(Guid.Empty, filtros.Disciplina.IdDisciplina))
                         query = query.Where(x => x.IdDisciplina == filtros.Disciplina.IdDisciplina);
 
+                    if (filtros.Disciplina != null && filtros.Disciplina.Curso != null &&
+                        !Equals(Guid.Empty, filtros.Disciplina.Curso.IdCurso))
+                        query = query.Where(x => db.DisciplinaData.Where(y => y.IdCurso == filtros.Disciplina.Curso.IdCurso).Select(y => y.IdDisciplina).Contains(x.IdDisciplina));
+
                     if (filtros.Semestre != null && !Equals(Guid.Empty, filtros.Semestre.IdSemestre))
                         query = query.Where(x => x.IdSemestre == filtros.Semestre.IdSemestre);
 

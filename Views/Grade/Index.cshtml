@@ -1,5 +1,5 @@
 ﻿@model SistemaMatricula.Controllers.GradeIndexView
-@{ViewBag.Title = "Grade do Semestre";}
+@{ViewBag.Title = "Grade de Semestres";}
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -51,18 +51,19 @@
                                 <th>Semestre</th>
                                 <th>Curso</th>
                                 <th>Status</th>
-                                <th>Ações</th>
+                                <th colspan="2">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in ViewBag.Grades)
                             {
-                                <tr>
-                                    <td>@item.NomeSemestre</td>
-                                    <td>@item.NomeCurso</td>
-                                    <td>@item.StatusGrade</td>
-                                    <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("EditAll", "Grade", new SistemaMatricula.Controllers.GradeEditAllView { IdSemestre =  item.IdSemestre, IdCurso = item.IdCurso })"><i class="fas fa-pen"></i> EDITAR</a></td>
-                                </tr>
+                            <tr>
+                                <td>@item.NomeSemestre</td>
+                                <td>@item.NomeCurso</td>
+                                <td>@item.StatusGrade</td>
+                                <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("EditAll", "Grade", new SistemaMatricula.Controllers.GradeEditAllView { IdSemestre =  item.IdSemestre, IdCurso = item.IdCurso })"><i class="fas fa-pen"></i> EDITAR</a></td>
+                                <td class="text-center"><a class="btn btn-primary btn-sm editar" href="@Url.Action("List", "Grade", new SistemaMatricula.Controllers.GradeIndexView { SemestreSelecionado =  item.IdSemestre, CursoSelecionado = item.IdCurso })"><i class="fas fa-search"></i> VER</a></td>
+                            </tr>
                             }
                             @if (ViewBag.Grades.Count <= 0)
                             {

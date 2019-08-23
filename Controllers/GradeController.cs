@@ -56,6 +56,60 @@ namespace SistemaMatricula.Controllers
             return View(view);
         }
 
+        public ActionResult List(GradeIndexView view)
+        {
+            ModelState.Clear();
+
+            try
+            {
+                if (view.SemestreSelecionado != null && view.CursoSelecionado != null
+                    && !Equals(view.SemestreSelecionado, System.Guid.Empty) && !Equals(view.CursoSelecionado, System.Guid.Empty))
+                {
+                    var semestres = Semestre.Listar();
+
+                    if (semestres == null)
+                    {
+                        ViewBag.Message = "Não foi possível listar os semestres. Erro de execução.";
+                        return View();
+                    }
+
+                    var cursos = Curso.Listar();
+
+                    if (cursos == null)
+                    {
+                        ViewBag.Message = "Não foi possível listar os cursos. Erro de execução.";
+                        return View();
+                    }
+
+                    view.slSemestres = new SelectList(semestres, "IdSemestre", "Nome", view.SemestreSelecionado);
+                    view.slCursos = new SelectList(cursos, "IdCurso", "Nome", view.CursoSelecionado);
+
+                    DisciplinaSemestre filtros = new DisciplinaSemestre()
+                    {
+                        Semestre = new Semestre() { IdSemestre = view.SemestreSelecionado.Value },
+                        Disciplina = new Disciplina() { Curso = new Curso { IdCurso = view.CursoSelecionado.Value } }
+                    };
+
+                    ViewBag.Grades = DisciplinaSemestre.Listar(filtros);
+
+                    if (ViewBag.Grades == null)
+                    {
+                        ViewBag.Message = "Não foi possível listar os registros. Erro de execução.";
+                    }
+                }
+                else
+                {
+                    ViewBag.Message = "Não foi possível realizar a solicitação. Identificação inválida.";
+                }
+            }
+            catch
+            {
+                ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+            }
+
+            return View(view);
+        }
+
         [HttpGet]
         public ActionResult EditAll(GradeEditAllView view)
         {
@@ -104,7 +158,7 @@ namespace SistemaMatricula.Controllers
                             Disciplina = new Disciplina { Curso = curso }
                         };
 
-                        DisciplinaSemestre[] lista = DisciplinaSemestre.Listar(filtro);
+                        DisciplinaSemestre[] lista = DisciplinaSemestre.Listar(filtro, true);
 
                         if (lista.Length == 0)
                         {

@@ -1,5 +1,5 @@
 ﻿@model SistemaMatricula.Controllers.GradeIndexView
-@{ViewBag.Title = "Grade do Semestre";}
+@{ViewBag.Title = "Grade de Semestres";}
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -15,63 +15,63 @@
             }
             else
             {
-                using (Html.BeginForm("Index", "Grade"))
+                using (Html.BeginForm("List", "Grade"))
                 {
-                    <div class="card card-body">
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                @Html.TextBoxFor(model => model.PalavraChave, new { @class = "form-control form-control-user", @placeholder = "O que você está procurando?" })
-                                @Html.ValidationMessageFor(model => model.PalavraChave)
-                            </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            @Html.DropDownListFor(model => model.SemestreSelecionado, Model.slSemestres, new { @class = "form-control form-control-user" })
                         </div>
-                        <div class="row mb-2">
-                            <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.SemestreSelecionado, Model.slSemestres, "Selecione um semestre", new { @class = "form-control form-control-user" })
-                            </div>
-                            <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.CursoSelecionado, Model.slCursos, "Selecione um curso", new { @class = "form-control form-control-user" })
-                            </div>
-                            <div class="col-md-4">
-                                @Html.DropDownListFor(model => model.StatusGradeSelecionado, Model.slStatusGrade, "Selecione um status", new { @class = "form-control form-control-user" })
-                            </div>
+                        <div class="col-md-4">
+                            @Html.DropDownListFor(model => model.CursoSelecionado, Model.slCursos, new { @class = "form-control form-control-user" })
                         </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <button id="pesquisar" type="submit" class="btn btn-primary btn-user btn-sm"><i class="fas fa-search"></i> PESQUISAR</button>
-                                <a id="limpar" class="btn btn-primary btn-user btn-sm" href="@Url.Action("Index", "Grade")">LIMPAR FILTRO</a>
-                            </div>
-                            <div class="col-md-8"></div>
+                        <div class="col-md-3">
+                            <button id="pesquisar" type="submit" class="btn btn-primary btn-user btn-sm"><i class="fas fa-search"></i> PESQUISAR</button>
+                            <a id="limpar" class="btn btn-primary btn-user btn-sm" href="@Url.Action("List", "Grade")">LIMPAR FILTRO</a>
                         </div>
+                        <div class="col-md-1"></div>
                     </div>
                 }
                 <div class="table-responsive">
                     <table class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Semestre</th>
-                                <th>Curso</th>
-                                <th>Status</th>
-                                <th>Ações</th>
+                                <th>Disciplina</th>
+                                <th>Professor</th>
+                                <th>Dia</th>
+                                <th>Horário</th>
+                                <th colspan="2">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in ViewBag.Grades)
                             {
                                 <tr>
-                                    <td>@item.NomeSemestre</td>
-                                    <td>@item.NomeCurso</td>
-                                    <td>@item.StatusGrade</td>
-                                    <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Grade", new SistemaMatricula.Controllers.GradeEditView { Semestre = new SistemaMatricula.Models.Semestre { IdSemestre = item.IdSemestre } })"><i class="fas fa-pen"></i> EDITAR</a></td>
+                                    <td>@item.Disciplina.Nome</td>
+                                    <td>@item.Professor.Nome</td>
+                                    <td>@item.DiaSemana</td>
+                                    <td>@item.Horario</td>
+                                    <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Grade", new SistemaMatricula.Controllers.GradeEditView { IdDisciplinaSemestre = item.IdDisciplinaSemestre })"><i class="fas fa-pen"></i> EDITAR</a></td>
+                                    <td class="text-center"><a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Grade", new SistemaMatricula.Controllers.GradeEditView { IdDisciplinaSemestre = item.IdDisciplinaSemestre })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
                                 </tr>
                             }
-                            @if (ViewBag.Grades.Count <= 0)
+                            @if (ViewBag.Grades.Length <= 0)
                             {
                                 <tr>
                                     <td colspan="6">Não há registros para listar.</td>
                                 </tr>
                             }
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="6">
+                                    <a id="adicionar" class="btn btn-primary btn-user btn-sm" href="@Url.Action("Edit", "Grade")"><i class="fas fa-plus"></i> ADICIONAR DISCIPLINA NA GRADE</a>
+                                </th>
+                            </tr>
+                        </tfoot>
                     </table>
+                </div>
+                <div class="text-center">
+                    <a id="voltar" class="btn btn-primary btn-sm" href="@Url.Action("Index", "Grade")">VOLTAR</a>
                 </div>
             }
         }

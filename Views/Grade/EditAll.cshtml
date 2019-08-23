@@ -1,5 +1,5 @@
 ﻿@model SistemaMatricula.Controllers.GradeEditAllView
-@{ViewBag.Title = "Grade do Semestre";}
+@{ViewBag.Title = "Grade de Semestres";}
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -60,7 +60,7 @@
                             @Html.HiddenFor(model => model.IdSemestre)
                             <div class="form-group text-center">
                                 <button type="submit" id="salvar" class="btn btn-primary btn-success btn-sm"><i class="fas fa-save"></i> SALVAR</button>
-                                <a id="cancelar" class="btn btn-danger btn-sm" href="@Url.Action("List", "Grade")">CANCELAR</a>
+                                <a id="cancelar" class="btn btn-danger btn-sm" href="@Url.Action("Index", "Grade")">CANCELAR</a>
                             </div>
                         }
                     </div>
