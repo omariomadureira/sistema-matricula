@@ -126,7 +126,6 @@ namespace SistemaMatricula.DAO
                     disciplina.IdProfessor = item.Professor.IdProfessor;
                     disciplina.DiaSemana = item.DiaSemana;
                     disciplina.Horario = item.Horario;
-                    disciplina.Status = item.Status;
 
                     db.SaveChanges();
                     db.Dispose();
@@ -136,7 +135,7 @@ namespace SistemaMatricula.DAO
 
                 db.Dispose();
             }
-            catch { }
+            catch (Exception e) { }
 
             return false;
         }

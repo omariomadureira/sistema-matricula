@@ -58,6 +58,7 @@ namespace SistemaMatricula.Controllers
 
         public ActionResult List(GradeIndexView view)
         {
+            ViewBag.HideScreen = false;
             ModelState.Clear();
 
             try
@@ -70,6 +71,7 @@ namespace SistemaMatricula.Controllers
                     if (semestres == null)
                     {
                         ViewBag.Message = "Não foi possível listar os semestres. Erro de execução.";
+                        ViewBag.HideScreen = true;
                         return View();
                     }
 
@@ -78,6 +80,7 @@ namespace SistemaMatricula.Controllers
                     if (cursos == null)
                     {
                         ViewBag.Message = "Não foi possível listar os cursos. Erro de execução.";
+                        ViewBag.HideScreen = true;
                         return View();
                     }
 
@@ -95,16 +98,19 @@ namespace SistemaMatricula.Controllers
                     if (ViewBag.Grades == null)
                     {
                         ViewBag.Message = "Não foi possível listar os registros. Erro de execução.";
+                        ViewBag.HideScreen = true;
                     }
                 }
                 else
                 {
                     ViewBag.Message = "Não foi possível realizar a solicitação. Identificação inválida.";
+                    ViewBag.HideScreen = true;
                 }
             }
             catch
             {
                 ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+                ViewBag.HideScreen = true;
             }
 
             return View(view);
@@ -314,28 +320,87 @@ namespace SistemaMatricula.Controllers
         [HttpGet]
         public ActionResult Edit(GradeEditView view)
         {
-            /*
             ViewBag.HideScreen = false;
             ModelState.Clear();
 
             try
             {
-                view.slPeriodos = new SelectList(Grade.Periodos());
+                view.Semestre = Semestre.Consultar(view.IdSemestre);
 
-                if (!Equals(view.IdGrade, System.Guid.Empty))
+                if (view.Semestre != null)
                 {
-                    var semestre = Grade.Consultar(view.IdGrade);
+                    var professores = Professor.Listar();
 
-                    if (semestre == null)
+                    if (professores == null)
                     {
-                        ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
+                        ViewBag.Message = "Não foi possível listar os professores. Erro de execução.";
                         ViewBag.HideScreen = true;
-                        return View();
+                        return View(view);
                     }
 
-                    view = GradeView.Converter(semestre);
-                    view.slPeriodos = new SelectList(Grade.Periodos(), semestre.Periodo.Trim());
-                    view.PeriodoSelecionado = semestre.Periodo.Trim();
+                    var horarios = DisciplinaSemestre.Horarios(view.Semestre.Periodo.Trim());
+
+                    if (horarios == null)
+                    {
+                        ViewBag.Message = "Não foi possível listar os horários. Erro de execução.";
+                        ViewBag.HideScreen = true;
+                        return View(view);
+                    }
+
+                    var dias = DisciplinaSemestre.Dias();
+
+                    if (dias == null)
+                    {
+                        ViewBag.Message = "Não foi possível listar os dias da semana. Erro de execução.";
+                        ViewBag.HideScreen = true;
+                        return View(view);
+                    }
+
+                    view.Disciplina = new Disciplina()
+                    {
+                        Curso = new Curso() { IdCurso = view.IdCurso }
+                    };
+
+                    var disciplinas = Disciplina.Listar(view.Disciplina);
+
+                    if (disciplinas == null)
+                    {
+                        ViewBag.Message = "Não foi possível listar os disciplinas. Erro de execução.";
+                        ViewBag.HideScreen = true;
+                        return View(view);
+                    }
+
+                    view.slProfessores = new SelectList(professores, "IdProfessor", "Nome");
+                    view.slHorarios = new SelectList(horarios);
+                    view.slDias = new SelectList(dias);
+                    view.slDisciplinas = new SelectList(disciplinas, "IdDisciplina", "Nome");
+
+                    if (!Equals(view.IdDisciplinaSemestre, System.Guid.Empty))
+                    {
+                        var disciplina = DisciplinaSemestre.Consultar(view.IdDisciplinaSemestre);
+
+                        if (disciplina == null)
+                        {
+                            ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
+                            ViewBag.HideScreen = true;
+                            return View(view);
+                        }
+
+                        view = GradeEditView.Converter(disciplina);
+                        view.slProfessores = new SelectList(professores, "IdProfessor", "Nome", disciplina.Professor.IdProfessor);
+                        view.ProfessorSelecionado = disciplina.Professor.IdProfessor;
+                        view.slHorarios = new SelectList(horarios, disciplina.Horario.Trim());
+                        view.HorarioSelecionado = view.Horario;
+                        view.slDias = new SelectList(dias, disciplina.DiaSemana.Trim());
+                        view.DiaSemana = disciplina.DiaSemana.Trim();
+                        view.slDisciplinas = new SelectList(disciplinas, "IdDisciplina", "Nome", disciplina.Disciplina.IdDisciplina);
+                        view.DisciplinaSelecionada = disciplina.Disciplina.IdDisciplina;
+                    }
+                }
+                else
+                {
+                    ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
+                    ViewBag.HideScreen = true;
                 }
             }
             catch
@@ -345,46 +410,48 @@ namespace SistemaMatricula.Controllers
             }
 
             return View(view);
-            */
-            return View();
         }
 
         [HttpPost]
         public ActionResult Update(GradeEditView view)
         {
-            /*
             ViewBag.HideScreen = false;
 
             try
             {
+                view.Semestre = Semestre.Consultar(view.IdSemestre);
+
                 if (ModelState.IsValid)
                 {
-                    view.Periodo = view.PeriodoSelecionado.Trim();
+                    view.Disciplina = new Disciplina() { IdDisciplina = view.DisciplinaSelecionada };
+                    view.DiaSemana = view.DiaSelecionado.Trim();
+                    view.Horario = view.HorarioSelecionado.Trim();
+                    view.Professor = new Professor() { IdProfessor = view.ProfessorSelecionado };
 
-                    if (!Equals(view.IdGrade, System.Guid.Empty))
+                    if (!Equals(view.IdDisciplinaSemestre, System.Guid.Empty))
                     {
-                        if (Grade.Alterar(view))
+                        if (DisciplinaSemestre.Alterar(view))
                         {
-                            return RedirectToAction("Index", "Grade");
+                            return RedirectToAction("List", "Grade", new GradeIndexView { CursoSelecionado = view.IdCurso, SemestreSelecionado = view.IdSemestre });
                         }
                         else
                         {
                             ViewBag.Message = "Não foi possível atualizar o registro. Erro de execução.";
                             ViewBag.HideScreen = true;
-                            return View("Edit");
+                            return View("Edit", view);
                         }
                     }
                     else
                     {
-                        if (Grade.Incluir(view))
+                        if (DisciplinaSemestre.Incluir(view))
                         {
-                            return RedirectToAction("Index", "Grade");
+                            return RedirectToAction("List", "Grade", new GradeIndexView { CursoSelecionado = view.IdCurso, SemestreSelecionado = view.IdSemestre });
                         }
                         else
                         {
                             ViewBag.Message = "Não foi possível incluir um novo registro. Erro de execução.";
                             ViewBag.HideScreen = true;
-                            return View("Edit");
+                            return View("Edit", view);
                         }
                     }
                 }
@@ -393,7 +460,59 @@ namespace SistemaMatricula.Controllers
                     ViewBag.Message = "Não foi possível atualizar o registro. Revise o preenchimento dos campos.";
                 }
 
-                view.slPeriodos = new SelectList(Grade.Periodos());
+                if (view.Semestre != null)
+                {
+                    var professores = Professor.Listar();
+
+                    if (professores == null)
+                    {
+                        ViewBag.Message = "Não foi possível listar os professores. Erro de execução.";
+                        ViewBag.HideScreen = true;
+                        return View("Edit", view);
+                    }
+
+                    var horarios = DisciplinaSemestre.Horarios(view.Semestre.Periodo.Trim());
+
+                    if (horarios == null)
+                    {
+                        ViewBag.Message = "Não foi possível listar os horários. Erro de execução.";
+                        ViewBag.HideScreen = true;
+                        return View("Edit", view);
+                    }
+
+                    var dias = DisciplinaSemestre.Dias();
+
+                    if (dias == null)
+                    {
+                        ViewBag.Message = "Não foi possível listar os dias da semana. Erro de execução.";
+                        ViewBag.HideScreen = true;
+                        return View("Edit", view);
+                    }
+
+                    view.Disciplina = new Disciplina()
+                    {
+                        Curso = new Curso() { IdCurso = view.IdCurso }
+                    };
+
+                    var disciplinas = Disciplina.Listar(view.Disciplina);
+
+                    if (disciplinas == null)
+                    {
+                        ViewBag.Message = "Não foi possível listar os disciplinas. Erro de execução.";
+                        ViewBag.HideScreen = true;
+                        return View("Edit", view);
+                    }
+
+                    view.slProfessores = new SelectList(professores, "IdProfessor", "Nome", view.ProfessorSelecionado);
+                    view.slHorarios = new SelectList(horarios, view.HorarioSelecionado);
+                    view.slDias = new SelectList(dias, view.DiaSelecionado);
+                    view.slDisciplinas = new SelectList(disciplinas, "IdDisciplina", "Nome", view.DisciplinaSelecionada);
+                }
+                else
+                {
+                    ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
+                    ViewBag.HideScreen = true;
+                }
             }
             catch
             {
@@ -402,8 +521,6 @@ namespace SistemaMatricula.Controllers
             }
 
             return View("Edit", view);
-            */
-            return View();
         }
 
         public ActionResult Delete(DisciplinaSemestre view, bool? Delete)
@@ -417,7 +534,7 @@ namespace SistemaMatricula.Controllers
                     if (view == null)
                     {
                         ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
-                        return View();
+                        return View(view);
                     }
 
                     if (Delete.HasValue && Delete.Value)
@@ -462,15 +579,20 @@ namespace SistemaMatricula.Controllers
 
     public class GradeEditView : DisciplinaSemestre
     {
+        public System.Guid IdSemestre { get; set; }
+        public System.Guid IdCurso { get; set; }
         public SelectList slProfessores { get; set; }
         public SelectList slHorarios { get; set; }
         public SelectList slDias { get; set; }
+        public SelectList slDisciplinas { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public System.Guid ProfessorSelecionado { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public string HorarioSelecionado { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public string DiaSelecionado { get; set; }
+        [Required(ErrorMessage = "Preenchimento obrigatório")]
+        public System.Guid DisciplinaSelecionada { get; set; }
 
         public static GradeEditView Converter(DisciplinaSemestre a)
         {
@@ -478,6 +600,8 @@ namespace SistemaMatricula.Controllers
             {
                 GradeEditView item = new GradeEditView()
                 {
+                    IdSemestre = a.Semestre == null ? System.Guid.Empty : a.Semestre.IdSemestre,
+                    IdCurso = a.Disciplina == null ? System.Guid.Empty : a.Disciplina.Curso.IdCurso,
                     IdDisciplinaSemestre = a.IdDisciplinaSemestre,
                     Disciplina = a.Disciplina,
                     Semestre = a.Semestre,

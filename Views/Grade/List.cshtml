@@ -12,6 +12,13 @@
                 <div class="alert alert-danger" role="alert">
                     @ViewBag.Message
                 </div>
+
+                if (ViewBag.HideScreen)
+                {
+                    <div class="text-center">
+                        <a id="voltar" class="btn btn-primary btn-sm" href="@Url.Action("Index", "Grade")">VOLTAR</a>
+                    </div>
+                }
             }
             else
             {
@@ -50,7 +57,7 @@
                                     <td>@item.Professor.Nome</td>
                                     <td>@item.DiaSemana</td>
                                     <td>@item.Horario</td>
-                                    <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Grade", new SistemaMatricula.Controllers.GradeEditView { IdDisciplinaSemestre = item.IdDisciplinaSemestre })"><i class="fas fa-pen"></i> EDITAR</a></td>
+                                    <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Grade", new SistemaMatricula.Controllers.GradeEditView { IdDisciplinaSemestre = item.IdDisciplinaSemestre, IdSemestre = Model.SemestreSelecionado.Value, IdCurso = Model.CursoSelecionado.Value })"><i class="fas fa-pen"></i> EDITAR</a></td>
                                     <td class="text-center"><a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Grade", new SistemaMatricula.Models.DisciplinaSemestre { IdDisciplinaSemestre = item.IdDisciplinaSemestre })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
                                 </tr>
                             }
@@ -64,7 +71,7 @@
                         <tfoot>
                             <tr>
                                 <th colspan="6">
-                                    <a id="adicionar" class="btn btn-primary btn-user btn-sm" href="@Url.Action("Edit", "Grade")"><i class="fas fa-plus"></i> ADICIONAR DISCIPLINA NA GRADE</a>
+                                    <a id="adicionar" class="btn btn-primary btn-user btn-sm" href="@Url.Action("Edit", "Grade", new { IdSemestre = Model.SemestreSelecionado, IdCurso = Model.CursoSelecionado })"><i class="fas fa-plus"></i> ADICIONAR DISCIPLINA NA GRADE</a>
                                 </th>
                             </tr>
                         </tfoot>

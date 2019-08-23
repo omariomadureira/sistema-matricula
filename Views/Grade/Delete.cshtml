@@ -13,7 +13,7 @@
                     @ViewBag.Message
                 </div>
                 <div class="text-center">
-                    <a class="btn btn-primary btn-sm" href="@Url.Action("List", "Grade", new { CursoSelecionado = Model.Disciplina.Curso.IdCurso, SemestreSelecionado = Model.Semestre.IdSemestre })">VOLTAR</a>
+                    <a id="voltar" class="btn btn-primary btn-sm" href="@Url.Action("Index", "Grade")">VOLTAR</a>
                 </div>
             }
             else
