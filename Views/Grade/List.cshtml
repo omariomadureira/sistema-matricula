@@ -51,7 +51,7 @@
                                     <td>@item.DiaSemana</td>
                                     <td>@item.Horario</td>
                                     <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Grade", new SistemaMatricula.Controllers.GradeEditView { IdDisciplinaSemestre = item.IdDisciplinaSemestre })"><i class="fas fa-pen"></i> EDITAR</a></td>
-                                    <td class="text-center"><a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Grade", new SistemaMatricula.Controllers.GradeEditView { IdDisciplinaSemestre = item.IdDisciplinaSemestre })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
+                                    <td class="text-center"><a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Grade", new SistemaMatricula.Models.DisciplinaSemestre { IdDisciplinaSemestre = item.IdDisciplinaSemestre })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
                                 </tr>
                             }
                             @if (ViewBag.Grades.Length <= 0)

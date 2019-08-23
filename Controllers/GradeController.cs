@@ -406,34 +406,31 @@ namespace SistemaMatricula.Controllers
             return View();
         }
 
-        public ActionResult Delete(GradeEditView view, bool? Delete)
+        public ActionResult Delete(DisciplinaSemestre view, bool? Delete)
         {
-            /*
             try
             {
-                if (!Equals(view.IdGrade, System.Guid.Empty))
+                if (!Equals(view.IdDisciplinaSemestre, System.Guid.Empty))
                 {
+                    view = DisciplinaSemestre.Consultar(view.IdDisciplinaSemestre);
+
+                    if (view == null)
+                    {
+                        ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
+                        return View();
+                    }
+
                     if (Delete.HasValue && Delete.Value)
                     {
-                        if (Grade.Desativar(view.IdGrade))
+                        if (DisciplinaSemestre.Desativar(view.IdDisciplinaSemestre))
                         {
-                            return RedirectToAction("Index", "Grade");
+                            return RedirectToAction("List", "Grade", new GradeIndexView { CursoSelecionado = view.Disciplina.Curso.IdCurso, SemestreSelecionado = view.Semestre.IdSemestre });
                         }
                         else
                         {
                             ViewBag.Message = "Não foi possível apagar o registro. Erro de execução.";
-                            return View();
                         }
                     }
-
-                    var semestre = Grade.Consultar(view.IdGrade);
-
-                    if (semestre == null)
-                    {
-                        ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
-                    }
-
-                    view = GradeView.Converter(semestre);
                 }
                 else
                 {
@@ -446,8 +443,6 @@ namespace SistemaMatricula.Controllers
             }
 
             return View(view);
-            */
-            return View();
         }
     }
 
