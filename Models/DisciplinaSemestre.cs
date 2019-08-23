@@ -11,9 +11,7 @@ namespace SistemaMatricula.Models
         public Disciplina Disciplina { get; set; }
         public Semestre Semestre { get; set; }
         public Professor Professor { get; set; }
-        [Required(ErrorMessage = "Preenchimento obrigatório")]
         public string DiaSemana { get; set; }
-        [Required(ErrorMessage = "Preenchimento obrigatório")]
         public string Horario { get; set; }
         public string Status { get; set; }
         public DateTime CadastroData { get; set; }
@@ -31,13 +29,45 @@ namespace SistemaMatricula.Models
             return DisciplinaSemestreDAO.Consultar(IdDisciplinaSemestre);
         }
 
-        public static List<DisciplinaSemestre> Listar(DisciplinaSemestre filtros)
+        public static DisciplinaSemestre[] Listar(DisciplinaSemestre filtros = null)
         {
-            return DisciplinaSemestreDAO.Listar(filtros);
+            //TODO: Adicionar regra na procedure de disciplinas que não devem ser inseridas na grade, pois não atingiram a quantidade de alunos
+
+            List<DisciplinaSemestre> lista = new List<DisciplinaSemestre>();
+
+            try
+            {
+                Disciplina novoFiltro = new Disciplina()
+                {
+                    Curso = new Curso { IdCurso = filtros.Disciplina.Curso.IdCurso }
+                };
+                List<Disciplina> disciplinas = Disciplina.Listar(novoFiltro);
+
+                foreach (Disciplina disciplina in disciplinas)
+                {
+                    filtros.Disciplina.IdDisciplina = disciplina.IdDisciplina;
+                    List<DisciplinaSemestre> definidas = DisciplinaSemestreDAO.Listar(filtros);
+
+                    if (definidas.Count == 0)
+                    {
+                        definidas.Add(new DisciplinaSemestre()
+                        {
+                            Disciplina = disciplina,
+                            Semestre = filtros.Semestre
+                        });
+                    }
+
+                    lista.AddRange(definidas);
+                }
+            }
+            catch { }
+
+            return lista.ToArray();
         }
 
         public static object ListarGrade(Guid? IdSemestre = null, Guid? IdCurso = null, string StatusGrade = null, string PalavraChave = null)
         {
+            //TODO: Adicionar regra na procedure de disciplinas que não devem ser inseridas na grade, pois não atingiram a quantidade de alunos
             return DisciplinaSemestreDAO.ListarGrade(IdSemestre, IdCurso, StatusGrade, PalavraChave);
         }
 

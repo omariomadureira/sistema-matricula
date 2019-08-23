@@ -57,6 +57,207 @@ namespace SistemaMatricula.Controllers
         }
 
         [HttpGet]
+        public ActionResult EditAll(GradeEditAllView view)
+        {
+            ViewBag.HideScreen = false;
+            ModelState.Clear();
+
+            try
+            {
+                if (!Equals(view.IdSemestre, System.Guid.Empty) && !Equals(view.IdCurso, System.Guid.Empty))
+                {
+                    var semestre = Semestre.Consultar(view.IdSemestre);
+                    var curso = Curso.Consultar(view.IdCurso);
+
+                    if (semestre != null && curso != null)
+                    {
+                        var professores = Professor.Listar();
+
+                        if (professores == null)
+                        {
+                            ViewBag.Message = "Não foi possível listar os professores. Erro de execução.";
+                            ViewBag.HideScreen = true;
+                            return View();
+                        }
+
+                        var horarios = DisciplinaSemestre.Horarios(semestre.Periodo.Trim());
+
+                        if (horarios == null)
+                        {
+                            ViewBag.Message = "Não foi possível listar os horários. Erro de execução.";
+                            ViewBag.HideScreen = true;
+                            return View();
+                        }
+
+                        var dias = DisciplinaSemestre.Dias();
+
+                        if (dias == null)
+                        {
+                            ViewBag.Message = "Não foi possível listar os dias da semana. Erro de execução.";
+                            ViewBag.HideScreen = true;
+                            return View();
+                        }
+
+                        DisciplinaSemestre filtro = new DisciplinaSemestre()
+                        {
+                            Semestre = semestre,
+                            Disciplina = new Disciplina { Curso = curso }
+                        };
+
+                        DisciplinaSemestre[] lista = DisciplinaSemestre.Listar(filtro);
+
+                        if (lista.Length == 0)
+                        {
+                            ViewBag.Message = "Não foi possível localizar as disciplinas. Erro de execução.";
+                            ViewBag.HideScreen = true;
+                            return View();
+                        }
+
+                        view.itens = GradeEditAllView.Converter(lista, professores, horarios, dias);
+                        view.NomeCurso = curso.Nome;
+                        view.NomeSemestre = semestre.Nome;
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Não foi possível realizar a solicitação. Identificação inválida.";
+                        ViewBag.HideScreen = true;
+                        return View();
+                    }
+                }
+                else
+                {
+                    ViewBag.Message = "Não foi possível realizar a solicitação. Identificação inválida.";
+                    ViewBag.HideScreen = true;
+                    return View();
+                }
+            }
+            catch
+            {
+                ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+                ViewBag.HideScreen = true;
+            }
+
+            return View(view);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateAll(GradeEditAllView view)
+        {
+            ViewBag.HideScreen = false;
+
+            for (int i = 0; i < view.itens.Length; i++)
+            {
+                ModelState[string.Format("itens[{0}].Disciplina.Nome", i)].Errors.Clear();
+                ModelState[string.Format("itens[{0}].Disciplina.Descricao", i)].Errors.Clear();
+            }
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (view.itens != null && view.itens.Length > 0)
+                    {
+                        foreach (GradeEditView item in view.itens)
+                        {
+                            item.DiaSemana = item.DiaSelecionado.Trim();
+                            item.Horario = item.HorarioSelecionado.Trim();
+                            item.Professor = new Professor() { IdProfessor = item.ProfessorSelecionado };
+
+                            if (!Equals(item.IdDisciplinaSemestre, System.Guid.Empty))
+                            {
+                                if (DisciplinaSemestre.Alterar(item))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    ViewBag.Message = "Não foi possível atualizar o registro. Erro de execução.";
+                                    ViewBag.HideScreen = true;
+                                    return View("EditAll");
+                                }
+                            }
+                            else
+                            {
+                                if (DisciplinaSemestre.Incluir(item))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    ViewBag.Message = "Não foi possível incluir um novo registro. Erro de execução.";
+                                    ViewBag.HideScreen = true;
+                                    return View("EditAll");
+                                }
+                            }
+                        }
+
+                        return RedirectToAction("Index", "Grade");
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+                        ViewBag.HideScreen = true;
+                        return View("EditAll");
+                    }
+                }
+                else
+                {
+                    ViewBag.Message = "Não foi possível atualizar os registros. Revise o preenchimento dos campos.";
+                }
+
+                var semestre = Semestre.Consultar(view.IdSemestre);
+                var curso = Curso.Consultar(view.IdCurso);
+
+                if (semestre != null && curso != null)
+                {
+                    var professores = Professor.Listar();
+
+                    if (professores == null)
+                    {
+                        ViewBag.Message = "Não foi possível listar os professores. Erro de execução.";
+                        ViewBag.HideScreen = true;
+                        return View("EditAll");
+                    }
+
+                    var horarios = DisciplinaSemestre.Horarios(semestre.Periodo.Trim());
+
+                    if (horarios == null)
+                    {
+                        ViewBag.Message = "Não foi possível listar os horários. Erro de execução.";
+                        ViewBag.HideScreen = true;
+                        return View("EditAll");
+                    }
+
+                    var dias = DisciplinaSemestre.Dias();
+
+                    if (dias == null)
+                    {
+                        ViewBag.Message = "Não foi possível listar os dias da semana. Erro de execução.";
+                        ViewBag.HideScreen = true;
+                        return View("EditAll");
+                    }
+
+                    view.itens = GradeEditAllView.Converter(view.itens, professores, horarios, dias);
+                    view.NomeCurso = curso.Nome;
+                    view.NomeSemestre = semestre.Nome;
+                }
+                else
+                {
+                    ViewBag.Message = "Não foi possível realizar a solicitação. Identificação inválida.";
+                    ViewBag.HideScreen = true;
+                    return View("EditAll");
+                }
+            }
+            catch
+            {
+                ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+                ViewBag.HideScreen = true;
+            }
+
+            return View("EditAll", view);
+        }
+
+        [HttpGet]
         public ActionResult Edit(GradeEditView view)
         {
             /*
@@ -212,41 +413,74 @@ namespace SistemaMatricula.Controllers
 
     public class GradeEditView : DisciplinaSemestre
     {
-        public SelectList slSemestres { get; set; }
-        public SelectList slDisciplinas { get; set; }
         public SelectList slProfessores { get; set; }
-        public SelectList slCursos { get; set; }
-        [Required(ErrorMessage = "Preenchimento obrigatório")]
-        public string DiaSelecionado { get; set; }
-        [Required(ErrorMessage = "Preenchimento obrigatório")]
-        public string HorarioSelecionado { get; set; }
-        [Required(ErrorMessage = "Preenchimento obrigatório")]
-        public System.Guid SemestreSelecionado { get; set; }
-        [Required(ErrorMessage = "Preenchimento obrigatório")]
-        public System.Guid DisciplinaSelecionada { get; set; }
+        public SelectList slHorarios { get; set; }
+        public SelectList slDias { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public System.Guid ProfessorSelecionado { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
-        public System.Guid CursoSelecionado { get; set; }
+        public string HorarioSelecionado { get; set; }
+        [Required(ErrorMessage = "Preenchimento obrigatório")]
+        public string DiaSelecionado { get; set; }
 
         public static GradeEditView Converter(DisciplinaSemestre a)
         {
             try
             {
-                return new GradeEditView()
+                GradeEditView item = new GradeEditView()
                 {
                     IdDisciplinaSemestre = a.IdDisciplinaSemestre,
                     Disciplina = a.Disciplina,
                     Semestre = a.Semestre,
                     Professor = a.Professor,
-                    DiaSemana = a.DiaSemana,
-                    Horario = a.Horario,
-                    Status = a.Status,
+                    DiaSemana = a.DiaSemana == null ? string.Empty : a.DiaSemana.Trim(),
+                    DiaSelecionado = a.DiaSemana == null ? string.Empty : a.DiaSemana.Trim(),
+                    Horario = a.Horario == null ? string.Empty : a.Horario.Trim(),
+                    HorarioSelecionado = a.Horario == null ? string.Empty : a.Horario.Trim(),
+                    Status = a.Status == null ? string.Empty : a.Status.Trim(),
                     CadastroData = a.CadastroData,
                     CadastroPor = a.CadastroPor,
                     ExclusaoData = a.ExclusaoData,
                     ExclusaoPor = a.ExclusaoPor
                 };
+
+                if (a.Professor != null)
+                    item.ProfessorSelecionado = a.Professor.IdProfessor;
+
+                return item;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+    }
+
+    public class GradeEditAllView
+    {
+        public System.Guid IdSemestre { get; set; }
+        public string NomeSemestre { get; set; }
+        public System.Guid IdCurso { get; set; }
+        public string NomeCurso { get; set; }
+        public GradeEditView[] itens { get; set; }
+
+        public static GradeEditView[] Converter(DisciplinaSemestre[] lista, System.Collections.IEnumerable Professores, System.Collections.IEnumerable Horarios, System.Collections.IEnumerable Dias)
+        {
+            try
+            {
+                GradeEditView[] novaLista = new GradeEditView[lista.Length];
+
+                for (int i = 0; i < lista.Length; i++)
+                {
+                    GradeEditView item = GradeEditView.Converter(lista[i]);
+                    item.slProfessores = new SelectList(Professores, "IdProfessor", "Nome", item.ProfessorSelecionado);
+                    item.slHorarios = new SelectList(Horarios, item.HorarioSelecionado);
+                    item.slDias = new SelectList(Dias, item.DiaSelecionado);
+
+                    novaLista.SetValue(item, i);
+                }
+
+                return novaLista;
             }
             catch
             {

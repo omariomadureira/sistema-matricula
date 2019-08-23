@@ -61,7 +61,7 @@
                                     <td>@item.NomeSemestre</td>
                                     <td>@item.NomeCurso</td>
                                     <td>@item.StatusGrade</td>
-                                    <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Grade", new SistemaMatricula.Controllers.GradeEditView { Semestre = new SistemaMatricula.Models.Semestre { IdSemestre = item.IdSemestre } })"><i class="fas fa-pen"></i> EDITAR</a></td>
+                                    <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("EditAll", "Grade", new SistemaMatricula.Controllers.GradeEditAllView { IdSemestre =  item.IdSemestre, IdCurso = item.IdCurso })"><i class="fas fa-pen"></i> EDITAR</a></td>
                                 </tr>
                             }
                             @if (ViewBag.Grades.Count <= 0)

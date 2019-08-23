@@ -20,7 +20,7 @@ namespace SistemaMatricula.DAO
                     IdProfessor = item.Professor.IdProfessor,
                     DiaSemana = item.DiaSemana,
                     Horario = item.Horario,
-                    Status = item.Status,
+                    Status = "ATIVO",
                     CadastroData = DateTime.Now,
                     CadastroPor = Guid.Empty //TODO: Alterar para ID do usuário logado
                 };
@@ -55,7 +55,7 @@ namespace SistemaMatricula.DAO
             return null;
         }
 
-        public static List<DisciplinaSemestre> Listar(DisciplinaSemestre filtros)
+        public static List<DisciplinaSemestre> Listar(DisciplinaSemestre filtros = null)
         {
             try
             {
