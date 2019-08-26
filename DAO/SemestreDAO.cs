@@ -51,6 +51,23 @@ namespace SistemaMatricula.DAO
             return null;
         }
 
+        public static Semestre ConsultarUltimo()
+        {
+            try
+            {
+                Entities db = new Entities();
+
+                SemestreData Semestre = db.SemestreData.OrderByDescending(x => x.InicioData).FirstOrDefault();
+
+                db.Dispose();
+
+                return Converter(Semestre);
+            }
+            catch { }
+
+            return null;
+        }
+
         public static List<Semestre> Listar(string palavra)
         {
             try

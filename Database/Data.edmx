@@ -214,6 +214,7 @@
           <Parameter Name="StatusGrade" Type="varchar" Mode="In" />
           <Parameter Name="PalavraChave" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="Grade_ListarDisciplinasParaMatricula" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AlunoData" EntityType="Self.AlunoData" Schema="dbo" store:Type="Tables" />
@@ -398,6 +399,7 @@
             <Parameter Name="StatusGrade" Mode="In" Type="String" />
             <Parameter Name="PalavraChave" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="Grade_ListarDisciplinasParaMatricula" ReturnType="Collection(Model.Grade_ListarDisciplinasParaMatricula_Result)" />
         </EntityContainer>
         <EntityType Name="AlunoData">
           <Key>
@@ -462,6 +464,15 @@
           <Property Type="Guid" Name="IdCurso" Nullable="false" />
           <Property Type="String" Name="NomeCurso" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="StatusGrade" Nullable="false" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="Grade_ListarDisciplinasParaMatricula_Result">
+          <Property Type="Guid" Name="IdDisciplinaSemestre" Nullable="false" />
+          <Property Type="String" Name="NomeSemestre" Nullable="true" MaxLength="76" />
+          <Property Type="String" Name="DiaSemana" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Horario" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="NomeCurso" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NomeDisciplina" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NomeProfessor" Nullable="false" MaxLength="100" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -632,6 +643,19 @@
                 <ScalarProperty Name="IdCurso" ColumnName="IdCurso" />
                 <ScalarProperty Name="NomeCurso" ColumnName="NomeCurso" />
                 <ScalarProperty Name="StatusGrade" ColumnName="StatusGrade" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Grade_ListarDisciplinasParaMatricula" FunctionName="Model.Store.Grade_ListarDisciplinasParaMatricula">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Model.Grade_ListarDisciplinasParaMatricula_Result">
+                <ScalarProperty Name="IdDisciplinaSemestre" ColumnName="IdDisciplinaSemestre" />
+                <ScalarProperty Name="NomeSemestre" ColumnName="NomeSemestre" />
+                <ScalarProperty Name="DiaSemana" ColumnName="DiaSemana" />
+                <ScalarProperty Name="Horario" ColumnName="Horario" />
+                <ScalarProperty Name="NomeCurso" ColumnName="NomeCurso" />
+                <ScalarProperty Name="NomeDisciplina" ColumnName="NomeDisciplina" />
+                <ScalarProperty Name="NomeProfessor" ColumnName="NomeProfessor" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

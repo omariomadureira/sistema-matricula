@@ -230,6 +230,9 @@
     <Compile Include="Database\Grade_ListarCursos_Result.cs">
       <DependentUpon>Data.tt</DependentUpon>
     </Compile>
+    <Compile Include="Database\Grade_ListarDisciplinasParaMatricula_Result.cs">
+      <DependentUpon>Data.tt</DependentUpon>
+    </Compile>
     <Compile Include="Database\ProfessorData.cs">
       <DependentUpon>Data.tt</DependentUpon>
     </Compile>
@@ -335,6 +338,7 @@
     <Content Include="Views\Grade\Index.cshtml" />
     <Content Include="Views\Grade\List.cshtml" />
     <Content Include="Views\Grade\EditAll.cshtml" />
+    <Content Include="Views\Grade\Start.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

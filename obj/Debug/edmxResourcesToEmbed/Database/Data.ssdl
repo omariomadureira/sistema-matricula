@@ -209,6 +209,7 @@
     <Parameter Name="StatusGrade" Type="varchar" Mode="In" />
     <Parameter Name="PalavraChave" Type="varchar" Mode="In" />
   </Function>
+  <Function Name="Grade_ListarDisciplinasParaMatricula" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <EntityContainer Name="ModelStoreContainer">
     <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AlunoData" EntityType="Self.AlunoData" Schema="dbo" store:Type="Tables" />

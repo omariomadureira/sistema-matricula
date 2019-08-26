@@ -42,23 +42,31 @@
                     <table class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Disciplina</th>
-                                <th>Professor</th>
                                 <th>Dia</th>
                                 <th>Horário</th>
-                                <th colspan="2">Ações</th>
+                                <th>Disciplina</th>
+                                <th>Professor</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in ViewBag.Grades)
                             {
                                 <tr>
-                                    <td>@item.Disciplina.Nome</td>
-                                    <td>@item.Professor.Nome</td>
                                     <td>@item.DiaSemana</td>
                                     <td>@item.Horario</td>
-                                    <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Grade", new SistemaMatricula.Controllers.GradeEditView { IdDisciplinaSemestre = item.IdDisciplinaSemestre, IdSemestre = Model.SemestreSelecionado.Value, IdCurso = Model.CursoSelecionado.Value })"><i class="fas fa-pen"></i> EDITAR</a></td>
-                                    <td class="text-center"><a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Grade", new SistemaMatricula.Models.DisciplinaSemestre { IdDisciplinaSemestre = item.IdDisciplinaSemestre })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
+                                    <td>@item.Disciplina.Nome</td>
+                                    <td>@item.Professor.Nome</td>
+                                    <td>@item.Status</td>
+                                    @if (item.Status == SistemaMatricula.Models.DisciplinaSemestre.DISCIPLINA_CADASTRADA)
+                                    {
+                                        <td class="text-center">
+                                            <a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Grade", new SistemaMatricula.Controllers.GradeEditView { IdDisciplinaSemestre = item.IdDisciplinaSemestre, IdSemestre = Model.SemestreSelecionado.Value, IdCurso = Model.CursoSelecionado.Value })"><i class="fas fa-pen"></i> EDITAR</a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Grade", new SistemaMatricula.Models.DisciplinaSemestre { IdDisciplinaSemestre = item.IdDisciplinaSemestre })"><i class="fas fa-trash"></i> EXCLUIR</a>
+                                        </td>
+                                    }
                                 </tr>
                             }
                             @if (ViewBag.Grades.Length <= 0)

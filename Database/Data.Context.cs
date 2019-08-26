@@ -59,5 +59,10 @@ namespace SistemaMatricula.Database
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Grade_ListarCursos_Result>("Grade_ListarCursos", idSemestreParameter, idCursoParameter, statusGradeParameter, palavraChaveParameter);
         }
+    
+        public virtual ObjectResult<Grade_ListarDisciplinasParaMatricula_Result> Grade_ListarDisciplinasParaMatricula()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Grade_ListarDisciplinasParaMatricula_Result>("Grade_ListarDisciplinasParaMatricula");
+        }
     }
 }

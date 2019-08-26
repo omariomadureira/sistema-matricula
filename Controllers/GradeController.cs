@@ -41,7 +41,7 @@ namespace SistemaMatricula.Controllers
                 view.slCursos = new SelectList(Cursos, "IdCurso", "Nome");
                 view.slStatusGrade = new SelectList(StatusGrade);
 
-                ViewBag.Grades = DisciplinaSemestre.ListarGrade(view.SemestreSelecionado, view.CursoSelecionado, view.StatusGradeSelecionado, view.PalavraChave);
+                ViewBag.Grades = DisciplinaSemestre.ListarCursos(view.SemestreSelecionado, view.CursoSelecionado, view.StatusGradeSelecionado, view.PalavraChave);
 
                 if (ViewBag.Grades == null)
                 {
@@ -54,6 +54,56 @@ namespace SistemaMatricula.Controllers
             }
 
             return View(view);
+        }
+
+        public ActionResult Start()
+        {
+            ViewBag.HideScreen = false;
+            ModelState.Clear();
+
+            try
+            {
+                ViewBag.Grades = DisciplinaSemestre.ListarGrade();
+
+                if (ViewBag.Grades == null)
+                {
+                    ViewBag.Message = "Não foi possível listar os registros. Erro de execução.";
+                    ViewBag.HideScreen = true;
+                }
+            }
+            catch
+            {
+                ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+                ViewBag.HideScreen = true;
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult UpdateState()
+        {
+            ViewBag.HideScreen = false;
+
+            try
+            {
+                if (DisciplinaSemestre.AlterarStatus(DisciplinaSemestre.DISCIPLINA_LIBERADA))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewBag.Message = "Não foi possível realizar a liberação das disciplinas para matrícula. Erro de execução.";
+                    ViewBag.HideScreen = true;
+                }
+            }
+            catch
+            {
+                ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+                ViewBag.HideScreen = true;
+            }
+
+            return View("Start");
         }
 
         public ActionResult List(GradeIndexView view)

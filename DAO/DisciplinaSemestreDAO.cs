@@ -20,7 +20,7 @@ namespace SistemaMatricula.DAO
                     IdProfessor = item.Professor.IdProfessor,
                     DiaSemana = item.DiaSemana,
                     Horario = item.Horario,
-                    Status = "ATIVO",
+                    Status = DisciplinaSemestre.DISCIPLINA_CADASTRADA,
                     CadastroData = DateTime.Now,
                     CadastroPor = Guid.Empty //TODO: Alterar para ID do usuário logado
                 };
@@ -94,13 +94,31 @@ namespace SistemaMatricula.DAO
             }
         }
 
-        public static List<Grade_ListarCursos_Result> ListarGrade(Guid? IdSemestre = null, Guid? IdCurso = null, string StatusGrade = null, string PalavraChave = null)
+        public static List<Grade_ListarCursos_Result> ListarCursos(Guid? IdSemestre = null, Guid? IdCurso = null, string StatusGrade = null, string PalavraChave = null)
         {
             try
             {
                 Entities db = new Entities();
 
                 List<Grade_ListarCursos_Result> resultado = db.Grade_ListarCursos(IdSemestre, IdCurso, StatusGrade, PalavraChave).ToList();
+
+                db.Dispose();
+
+                return resultado;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public static List<Grade_ListarDisciplinasParaMatricula_Result> ListarGrade()
+        {
+            try
+            {
+                Entities db = new Entities();
+
+                List<Grade_ListarDisciplinasParaMatricula_Result> resultado = db.Grade_ListarDisciplinasParaMatricula().ToList();
 
                 db.Dispose();
 
@@ -128,6 +146,38 @@ namespace SistemaMatricula.DAO
                     disciplina.Horario = item.Horario;
 
                     db.SaveChanges();
+                    db.Dispose();
+
+                    return true;
+                }
+
+                db.Dispose();
+            }
+            catch (Exception e) { }
+
+            return false;
+        }
+
+        public static bool AlterarStatus(string status)
+        {
+            try
+            {
+                Entities db = new Entities();
+                List<Grade_ListarDisciplinasParaMatricula_Result> resultado = db.Grade_ListarDisciplinasParaMatricula().ToList();
+
+                if (resultado.Count > 0)
+                {
+                    foreach (Grade_ListarDisciplinasParaMatricula_Result item in resultado)
+                    {
+                        DisciplinaSemestreData disciplina = db.DisciplinaSemestreData.FirstOrDefault(x => x.IdDisciplinaSemestre == item.IdDisciplinaSemestre);
+
+                        if (disciplina != null)
+                        {
+                            disciplina.Status = status;
+                            db.SaveChanges();
+                        }
+                    }
+
                     db.Dispose();
 
                     return true;

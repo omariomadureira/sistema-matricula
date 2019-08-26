@@ -167,5 +167,18 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Grade_ListarDisciplinasParaMatricula" FunctionName="Model.Store.Grade_ListarDisciplinasParaMatricula">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="Model.Grade_ListarDisciplinasParaMatricula_Result">
+          <ScalarProperty Name="IdDisciplinaSemestre" ColumnName="IdDisciplinaSemestre" />
+          <ScalarProperty Name="NomeSemestre" ColumnName="NomeSemestre" />
+          <ScalarProperty Name="DiaSemana" ColumnName="DiaSemana" />
+          <ScalarProperty Name="Horario" ColumnName="Horario" />
+          <ScalarProperty Name="NomeCurso" ColumnName="NomeCurso" />
+          <ScalarProperty Name="NomeDisciplina" ColumnName="NomeDisciplina" />
+          <ScalarProperty Name="NomeProfessor" ColumnName="NomeProfessor" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

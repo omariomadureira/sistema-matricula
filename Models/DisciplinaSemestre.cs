@@ -1,7 +1,6 @@
 ﻿using SistemaMatricula.DAO;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace SistemaMatricula.Models
 {
@@ -18,6 +17,11 @@ namespace SistemaMatricula.Models
         public Guid CadastroPor { get; set; }
         public DateTime? ExclusaoData { get; set; }
         public Guid? ExclusaoPor { get; set; }
+
+        public const string DISCIPLINA_CADASTRADA = "CADASTRADA";
+        public const string DISCIPLINA_LIBERADA = "LIBERADA";
+        public const string DISCIPLINA_CANCELADA = "CANCELADA";
+        public const string DISCIPLINA_ENCERRADA = "ENCERRADA";
 
         public static bool Incluir(DisciplinaSemestre item)
         {
@@ -67,6 +71,12 @@ namespace SistemaMatricula.Models
 
                         lista.AddRange(definidas);
                     }
+
+                    lista.Sort((a, b) => -1 * a.Semestre.InicioData.CompareTo(b.Semestre.InicioData));
+                }
+                else
+                {
+                    return DisciplinaSemestreDAO.Listar(filtros).ToArray();
                 }
             }
             catch { }
@@ -74,15 +84,25 @@ namespace SistemaMatricula.Models
             return lista.ToArray();
         }
 
-        public static object ListarGrade(Guid? IdSemestre = null, Guid? IdCurso = null, string StatusGrade = null, string PalavraChave = null)
+        public static object ListarCursos(Guid? IdSemestre = null, Guid? IdCurso = null, string StatusGrade = null, string PalavraChave = null)
         {
             //TODO: Adicionar regra na procedure de disciplinas que não devem ser inseridas na grade, pois não atingiram a quantidade de alunos
-            return DisciplinaSemestreDAO.ListarGrade(IdSemestre, IdCurso, StatusGrade, PalavraChave);
+            return DisciplinaSemestreDAO.ListarCursos(IdSemestre, IdCurso, StatusGrade, PalavraChave);
+        }
+
+        public static object ListarGrade()
+        {
+            return DisciplinaSemestreDAO.ListarGrade();
         }
 
         public static bool Alterar(DisciplinaSemestre item)
         {
             return DisciplinaSemestreDAO.Alterar(item);
+        }
+
+        public static bool AlterarStatus(string status)
+        {
+            return DisciplinaSemestreDAO.AlterarStatus(status);
         }
 
         public static bool Desativar(Guid IdDisciplinaSemestre)
@@ -164,6 +184,7 @@ namespace SistemaMatricula.Models
                 "PENDENTE",
                 "COMPLETO",
                 "INCOMPLETO",
+                "ENCERRADO",
                 "ERRO"
             };
         }
