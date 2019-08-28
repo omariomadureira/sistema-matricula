@@ -109,6 +109,19 @@
           <Property Name="ExclusaoData" Type="datetime" />
           <Property Name="ExclusaoPor" Type="uniqueidentifier" />
         </EntityType>
+        <EntityType Name="DisciplinaSemestreAlunoData">
+          <Key>
+            <PropertyRef Name="IdDisciplinaSemestre" />
+            <PropertyRef Name="IdAluno" />
+          </Key>
+          <Property Name="IdDisciplinaSemestre" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdAluno" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Alternativa" Type="bit" />
+          <Property Name="CadastroData" Type="datetime" Nullable="false" />
+          <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ExclusaoData" Type="datetime" />
+          <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+        </EntityType>
         <EntityType Name="DisciplinaSemestreData">
           <Key>
             <PropertyRef Name="IdDisciplinaSemestre" />
@@ -214,7 +227,10 @@
           <Parameter Name="StatusGrade" Type="varchar" Mode="In" />
           <Parameter Name="PalavraChave" Type="varchar" Mode="In" />
         </Function>
-        <Function Name="Grade_ListarDisciplinasParaMatricula" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Grade_ListarDisciplinas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StatusDisciplina" Type="varchar" Mode="In" />
+          <Parameter Name="IdCurso" Type="uniqueidentifier" Mode="In" />
+        </Function>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AlunoData" EntityType="Self.AlunoData" Schema="dbo" store:Type="Tables" />
@@ -225,6 +241,7 @@
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CursoData" EntityType="Self.CursoData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DisciplinaData" EntityType="Self.DisciplinaData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DisciplinaSemestreAlunoData" EntityType="Self.DisciplinaSemestreAlunoData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DisciplinaSemestreData" EntityType="Self.DisciplinaSemestreData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProfessorData" EntityType="Self.ProfessorData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SemestreData" EntityType="Self.SemestreData" Schema="dbo" store:Type="Tables" />
@@ -400,6 +417,11 @@
             <Parameter Name="PalavraChave" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="Grade_ListarDisciplinasParaMatricula" ReturnType="Collection(Model.Grade_ListarDisciplinasParaMatricula_Result)" />
+          <FunctionImport Name="Grade_ListarDisciplinas" ReturnType="Collection(Model.Grade_ListarDisciplinas_Result)">
+            <Parameter Name="StatusDisciplina" Mode="In" Type="String" />
+            <Parameter Name="IdCurso" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <EntitySet Name="DisciplinaSemestreAlunoData" EntityType="Model.DisciplinaSemestreAlunoData" />
         </EntityContainer>
         <EntityType Name="AlunoData">
           <Key>
@@ -474,6 +496,28 @@
           <Property Type="String" Name="NomeDisciplina" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="NomeProfessor" Nullable="false" MaxLength="100" />
         </ComplexType>
+        <ComplexType Name="Grade_ListarDisciplinas_Result">
+          <Property Type="Guid" Name="IdDisciplinaSemestre" Nullable="false" />
+          <Property Type="String" Name="NomeSemestre" Nullable="true" MaxLength="76" />
+          <Property Type="String" Name="DiaSemana" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Horario" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="NomeCurso" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NomeDisciplina" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="NomeProfessor" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <EntityType Name="DisciplinaSemestreAlunoData">
+          <Key>
+            <PropertyRef Name="IdDisciplinaSemestre" />
+            <PropertyRef Name="IdAluno" />
+          </Key>
+          <Property Name="IdDisciplinaSemestre" Type="Guid" Nullable="false" />
+          <Property Name="IdAluno" Type="Guid" Nullable="false" />
+          <Property Name="Alternativa" Type="Boolean" />
+          <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CadastroPor" Type="Guid" Nullable="false" />
+          <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
+          <Property Name="ExclusaoPor" Type="Guid" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -646,9 +690,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="Grade_ListarDisciplinasParaMatricula" FunctionName="Model.Store.Grade_ListarDisciplinasParaMatricula">
+          <FunctionImportMapping FunctionImportName="Grade_ListarDisciplinas" FunctionName="Model.Store.Grade_ListarDisciplinas">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="Model.Grade_ListarDisciplinasParaMatricula_Result">
+              <ComplexTypeMapping TypeName="Model.Grade_ListarDisciplinas_Result">
                 <ScalarProperty Name="IdDisciplinaSemestre" ColumnName="IdDisciplinaSemestre" />
                 <ScalarProperty Name="NomeSemestre" ColumnName="NomeSemestre" />
                 <ScalarProperty Name="DiaSemana" ColumnName="DiaSemana" />
@@ -659,6 +703,19 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="DisciplinaSemestreAlunoData">
+            <EntityTypeMapping TypeName="Model.DisciplinaSemestreAlunoData">
+              <MappingFragment StoreEntitySet="DisciplinaSemestreAlunoData">
+                <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
+                <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
+                <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
+                <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
+                <ScalarProperty Name="Alternativa" ColumnName="Alternativa" />
+                <ScalarProperty Name="IdAluno" ColumnName="IdAluno" />
+                <ScalarProperty Name="IdDisciplinaSemestre" ColumnName="IdDisciplinaSemestre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

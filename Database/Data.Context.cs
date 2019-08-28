@@ -38,6 +38,7 @@ namespace SistemaMatricula.Database
         public virtual DbSet<ProfessorData> ProfessorData { get; set; }
         public virtual DbSet<SemestreData> SemestreData { get; set; }
         public virtual DbSet<DisciplinaSemestreData> DisciplinaSemestreData { get; set; }
+        public virtual DbSet<DisciplinaSemestreAlunoData> DisciplinaSemestreAlunoData { get; set; }
     
         public virtual ObjectResult<Grade_ListarCursos_Result> Grade_ListarCursos(Nullable<System.Guid> idSemestre, Nullable<System.Guid> idCurso, string statusGrade, string palavraChave)
         {
@@ -63,6 +64,19 @@ namespace SistemaMatricula.Database
         public virtual ObjectResult<Grade_ListarDisciplinasParaMatricula_Result> Grade_ListarDisciplinasParaMatricula()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Grade_ListarDisciplinasParaMatricula_Result>("Grade_ListarDisciplinasParaMatricula");
+        }
+    
+        public virtual ObjectResult<Grade_ListarDisciplinas_Result> Grade_ListarDisciplinas(string statusDisciplina, Nullable<System.Guid> idCurso)
+        {
+            var statusDisciplinaParameter = statusDisciplina != null ?
+                new ObjectParameter("StatusDisciplina", statusDisciplina) :
+                new ObjectParameter("StatusDisciplina", typeof(string));
+    
+            var idCursoParameter = idCurso.HasValue ?
+                new ObjectParameter("IdCurso", idCurso) :
+                new ObjectParameter("IdCurso", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Grade_ListarDisciplinas_Result>("Grade_ListarDisciplinas", statusDisciplinaParameter, idCursoParameter);
         }
     }
 }

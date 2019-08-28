@@ -151,6 +151,11 @@
       <Parameter Name="PalavraChave" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="Grade_ListarDisciplinasParaMatricula" ReturnType="Collection(Model.Grade_ListarDisciplinasParaMatricula_Result)" />
+    <FunctionImport Name="Grade_ListarDisciplinas" ReturnType="Collection(Model.Grade_ListarDisciplinas_Result)">
+      <Parameter Name="StatusDisciplina" Mode="In" Type="String" />
+      <Parameter Name="IdCurso" Mode="In" Type="Guid" />
+    </FunctionImport>
+    <EntitySet Name="DisciplinaSemestreAlunoData" EntityType="Model.DisciplinaSemestreAlunoData" />
   </EntityContainer>
   <EntityType Name="AlunoData">
     <Key>
@@ -225,4 +230,26 @@
     <Property Type="String" Name="NomeDisciplina" Nullable="false" MaxLength="100" />
     <Property Type="String" Name="NomeProfessor" Nullable="false" MaxLength="100" />
   </ComplexType>
+  <ComplexType Name="Grade_ListarDisciplinas_Result">
+    <Property Type="Guid" Name="IdDisciplinaSemestre" Nullable="false" />
+    <Property Type="String" Name="NomeSemestre" Nullable="true" MaxLength="76" />
+    <Property Type="String" Name="DiaSemana" Nullable="false" MaxLength="15" />
+    <Property Type="String" Name="Horario" Nullable="false" MaxLength="5" />
+    <Property Type="String" Name="NomeCurso" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="NomeDisciplina" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="NomeProfessor" Nullable="false" MaxLength="100" />
+  </ComplexType>
+  <EntityType Name="DisciplinaSemestreAlunoData">
+    <Key>
+      <PropertyRef Name="IdDisciplinaSemestre" />
+      <PropertyRef Name="IdAluno" />
+    </Key>
+    <Property Name="IdDisciplinaSemestre" Type="Guid" Nullable="false" />
+    <Property Name="IdAluno" Type="Guid" Nullable="false" />
+    <Property Name="Alternativa" Type="Boolean" />
+    <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CadastroPor" Type="Guid" Nullable="false" />
+    <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
+    <Property Name="ExclusaoPor" Type="Guid" />
+  </EntityType>
 </Schema>

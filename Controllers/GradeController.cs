@@ -63,7 +63,7 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                ViewBag.Grades = DisciplinaSemestre.ListarGrade();
+                ViewBag.Grades = DisciplinaSemestre.ListarGrade(DisciplinaSemestre.DISCIPLINA_CADASTRADA);
 
                 if (ViewBag.Grades == null)
                 {

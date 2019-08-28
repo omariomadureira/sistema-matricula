@@ -172,6 +172,7 @@
     <Compile Include="Controllers\AlunoController.cs" />
     <Compile Include="Controllers\CursoController.cs" />
     <Compile Include="Controllers\DisciplinaController.cs" />
+    <Compile Include="Controllers\MatriculaController.cs" />
     <Compile Include="Controllers\GradeController.cs" />
     <Compile Include="Controllers\SemestreController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="DAO\AlunoDAO.cs" />
     <Compile Include="DAO\DisciplinaSemestreDAO.cs" />
+    <Compile Include="DAO\DisciplinaSemestreAlunoDAO.cs" />
     <Compile Include="DAO\SemestreDAO.cs" />
     <Compile Include="DAO\CursoDAO.cs" />
     <Compile Include="DAO\DisciplinaDAO.cs" />
@@ -224,6 +226,9 @@
     <Compile Include="Database\DisciplinaData.cs">
       <DependentUpon>Data.tt</DependentUpon>
     </Compile>
+    <Compile Include="Database\DisciplinaSemestreAlunoData.cs">
+      <DependentUpon>Data.tt</DependentUpon>
+    </Compile>
     <Compile Include="Database\DisciplinaSemestreData.cs">
       <DependentUpon>Data.tt</DependentUpon>
     </Compile>
@@ -231,6 +236,9 @@
       <DependentUpon>Data.tt</DependentUpon>
     </Compile>
     <Compile Include="Database\Grade_ListarDisciplinasParaMatricula_Result.cs">
+      <DependentUpon>Data.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Grade_ListarDisciplinas_Result.cs">
       <DependentUpon>Data.tt</DependentUpon>
     </Compile>
     <Compile Include="Database\ProfessorData.cs">
@@ -245,6 +253,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Aluno.cs" />
     <Compile Include="Models\DisciplinaSemestre.cs" />
+    <Compile Include="Models\DisciplinaSemestreAluno.cs" />
     <Compile Include="Models\Semestre.cs" />
     <Compile Include="Models\Curso.cs" />
     <Compile Include="Models\Disciplina.cs" />
@@ -339,6 +348,7 @@
     <Content Include="Views\Grade\List.cshtml" />
     <Content Include="Views\Grade\EditAll.cshtml" />
     <Content Include="Views\Grade\Start.cshtml" />
+    <Content Include="Views\Matricula\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

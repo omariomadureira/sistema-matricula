@@ -90,9 +90,9 @@ namespace SistemaMatricula.Models
             return DisciplinaSemestreDAO.ListarCursos(IdSemestre, IdCurso, StatusGrade, PalavraChave);
         }
 
-        public static object ListarGrade()
+        public static object ListarGrade(string StatusDisciplina = null, Guid? IdCurso = null)
         {
-            return DisciplinaSemestreDAO.ListarGrade();
+            return DisciplinaSemestreDAO.ListarGrade(StatusDisciplina, IdCurso);
         }
 
         public static bool Alterar(DisciplinaSemestre item)

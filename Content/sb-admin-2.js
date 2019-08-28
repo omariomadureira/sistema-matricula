@@ -68,10 +68,38 @@
         $(this).fadeTo("fast", 0.50);
     });
 
+    $(document).on('click', 'input.primeira-opcao', function (e) {
+        if ($("input.primeira-opcao:checked").length >= 4) {
+            $('input.primeira-opcao').not('input.primeira-opcao:checked').each(function () {
+                $(this).fadeTo("fast", 0.60);
+                $(this).attr("disabled", true);
+            });
+        } else {
+            $('input.primeira-opcao').not('input.primeira-opcao:checked').each(function () {
+                $(this).fadeTo("fast", 1);
+                $(this).attr("disabled", false);
+            });
+        }
+    });
+
+    $(document).on('click', 'input.segunda-opcao', function (e) {
+        if ($("input.segunda-opcao:checked").length >= 2) {
+            $('input.segunda-opcao').not('input.segunda-opcao:checked').each(function () {
+                $(this).fadeTo("fast", 0.60);
+                $(this).attr("disabled", true);
+            });
+        } else {
+            $('input.segunda-opcao').not('input.segunda-opcao:checked').each(function () {
+                $(this).fadeTo("fast", 1);
+                $(this).attr("disabled", false);
+            });
+        }
+    });
+
     $(".cpf").inputmask("mask", {
         "mask": "999.999.999-99"
     }, {
-         reverse: true
+            reverse: true
         });
 
     $(".nascimento").inputmask("mask", {

@@ -51,13 +51,13 @@ namespace SistemaMatricula.DAO
             return null;
         }
 
-        public static Semestre ConsultarUltimo()
+        public static Semestre Ultimo()
         {
             try
             {
                 Entities db = new Entities();
 
-                SemestreData Semestre = db.SemestreData.OrderByDescending(x => x.InicioData).FirstOrDefault();
+                SemestreData Semestre = db.SemestreData.Where(x => x.ExclusaoData == null).OrderByDescending(x => x.InicioData).FirstOrDefault();
 
                 db.Dispose();
 

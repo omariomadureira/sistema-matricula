@@ -167,9 +167,9 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="Grade_ListarDisciplinasParaMatricula" FunctionName="Model.Store.Grade_ListarDisciplinasParaMatricula">
+    <FunctionImportMapping FunctionImportName="Grade_ListarDisciplinas" FunctionName="Model.Store.Grade_ListarDisciplinas">
       <ResultMapping>
-        <ComplexTypeMapping TypeName="Model.Grade_ListarDisciplinasParaMatricula_Result">
+        <ComplexTypeMapping TypeName="Model.Grade_ListarDisciplinas_Result">
           <ScalarProperty Name="IdDisciplinaSemestre" ColumnName="IdDisciplinaSemestre" />
           <ScalarProperty Name="NomeSemestre" ColumnName="NomeSemestre" />
           <ScalarProperty Name="DiaSemana" ColumnName="DiaSemana" />
@@ -180,5 +180,18 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <EntitySetMapping Name="DisciplinaSemestreAlunoData">
+      <EntityTypeMapping TypeName="Model.DisciplinaSemestreAlunoData">
+        <MappingFragment StoreEntitySet="DisciplinaSemestreAlunoData">
+          <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
+          <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
+          <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
+          <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
+          <ScalarProperty Name="Alternativa" ColumnName="Alternativa" />
+          <ScalarProperty Name="IdAluno" ColumnName="IdAluno" />
+          <ScalarProperty Name="IdDisciplinaSemestre" ColumnName="IdDisciplinaSemestre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

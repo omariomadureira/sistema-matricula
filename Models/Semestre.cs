@@ -37,9 +37,9 @@ namespace SistemaMatricula.Models
             return SemestreDAO.Consultar(IdSemestre);
         }
 
-        public static Semestre ConsultarUltimo()
+        public static Semestre Ultimo()
         {
-            return SemestreDAO.ConsultarUltimo();
+            return SemestreDAO.Ultimo();
         }
 
         public static List<Semestre> Listar(string palavra = null)

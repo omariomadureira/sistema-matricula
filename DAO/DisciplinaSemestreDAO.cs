@@ -112,13 +112,13 @@ namespace SistemaMatricula.DAO
             }
         }
 
-        public static List<Grade_ListarDisciplinasParaMatricula_Result> ListarGrade()
+        public static List<Grade_ListarDisciplinas_Result> ListarGrade(string StatusDisciplina = null, Guid? IdCurso = null)
         {
             try
             {
                 Entities db = new Entities();
 
-                List<Grade_ListarDisciplinasParaMatricula_Result> resultado = db.Grade_ListarDisciplinasParaMatricula().ToList();
+                List<Grade_ListarDisciplinas_Result> resultado = db.Grade_ListarDisciplinas(StatusDisciplina, IdCurso).ToList();
 
                 db.Dispose();
 
