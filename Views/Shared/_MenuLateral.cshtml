@@ -10,12 +10,15 @@
     </div>
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item">
-        <a class="nav-link" href="@Url.Action("Index", "Home")">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Painel</span>
-        </a>
-    </li>
+    @if (User.IsInRole(SistemaMatricula.Models.Usuario.ROLE_ALUNO))
+    {
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "Matricula")">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Painel de Matrículas</span>
+            </a>
+        </li>
+    }
 
     @if (User.IsInRole(SistemaMatricula.Models.Usuario.ROLE_ADMINISTRADOR))
     {

@@ -113,8 +113,6 @@ C:\Users\User\source\repos\SistemaMatricula\bin\pt-br\Microsoft.AspNet.Identity.
 C:\Users\User\source\repos\SistemaMatricula\obj\Debug\SistemaMatricula.csproj.CopyComplete
 C:\Users\User\source\repos\SistemaMatricula\obj\Debug\SistemaMatricula.dll
 C:\Users\User\source\repos\SistemaMatricula\obj\Debug\SistemaMatricula.pdb
-C:\Users\User\source\repos\sistema-matricula\obj\Debug\SistemaMatricula.csprojAssemblyReference.cache
-C:\Users\User\source\repos\sistema-matricula\obj\Debug\SistemaMatricula.csproj.CoreCompileInputs.cache
 C:\Users\User\source\repos\sistema-matricula\bin\SistemaMatricula.dll.config
 C:\Users\User\source\repos\sistema-matricula\bin\SistemaMatricula.dll
 C:\Users\User\source\repos\sistema-matricula\bin\SistemaMatricula.pdb
@@ -225,6 +223,8 @@ C:\Users\User\source\repos\sistema-matricula\bin\pt-br\System.Web.WebPages.Razor
 C:\Users\User\source\repos\sistema-matricula\bin\pt-br\Microsoft.AspNet.Identity.Core.resources.dll
 C:\Users\User\source\repos\sistema-matricula\bin\pt-br\Microsoft.AspNet.Identity.Owin.resources.dll
 C:\Users\User\source\repos\sistema-matricula\bin\pt-br\Microsoft.AspNet.Identity.EntityFramework.resources.dll
+C:\Users\User\source\repos\sistema-matricula\obj\Debug\SistemaMatricula.csprojAssemblyReference.cache
+C:\Users\User\source\repos\sistema-matricula\obj\Debug\SistemaMatricula.csproj.CoreCompileInputs.cache
 C:\Users\User\source\repos\sistema-matricula\obj\Debug\SistemaMatricula.csproj.CopyComplete
 C:\Users\User\source\repos\sistema-matricula\obj\Debug\SistemaMatricula.dll
 C:\Users\User\source\repos\sistema-matricula\obj\Debug\SistemaMatricula.pdb

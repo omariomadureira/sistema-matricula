@@ -1,0 +1,101 @@
+﻿@model SistemaMatricula.Controllers.MatriculaEditView
+@{
+    ViewBag.Title = "Painel de Matrículas";
+    string curso = string.Empty;
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+    </div>
+    <div class="card-body">
+        @{
+            if (!string.IsNullOrEmpty(ViewBag.Message))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.Message
+                    @Html.ValidationSummary(false, "")
+                </div>
+
+                if (ViewBag.HideScreen)
+                {
+                    <div class="text-center">
+                        <a id="voltar" class="btn btn-primary btn-sm" href="@Url.Action("Index", "Matricula")">VOLTAR</a>
+                    </div>
+                }
+            }
+
+            if (!ViewBag.HideScreen)
+            {
+                using (Html.BeginForm("Index", "Matricula"))
+                {
+                    <div class="row">
+                        <div class="col-md-4">
+                            @Html.DropDownListFor(model => model.CursoSelecionado, Model.slCursos, new { @class = "form-control form-control-user" })
+                        </div>
+                        <div class="col-md-3">
+                            <button id="pesquisar" type="submit" class="btn btn-primary btn-user btn-sm"><i class="fas fa-search"></i> PESQUISAR</button>
+                        </div>
+                        <div class="col-md-5"></div>
+                    </div>
+                }
+                <div class="table-responsive">
+                    @if (Model.Lista != null && Model.Lista.Length > 0)
+                    {
+                        using (Html.BeginForm("Update", "Matricula", FormMethod.Post))
+                        {
+                            <table class="table table-bordered" width="100%" cellspacing="0">
+
+                                @for (int i = 0; i < Model.Lista.Length; i++)
+                                {
+                                    if (!string.Equals(curso, string.Format("{0} - {1}", Model.Lista[i].DisciplinaSemestre.Semestre.Nome, Model.Lista[i].DisciplinaSemestre.Disciplina.Curso.Nome.ToUpper())))
+                                    {
+                                        curso = string.Format("{0} - {1}", Model.Lista[i].DisciplinaSemestre.Semestre.Nome, Model.Lista[i].DisciplinaSemestre.Disciplina.Curso.Nome.ToUpper());
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" colspan="6">@Model.Lista[i].DisciplinaSemestre.Semestre.Nome - @Model.Lista[i].DisciplinaSemestre.Disciplina.Curso.Nome.ToUpper()</th>
+                                            </tr>
+                                            <tr>
+                                                <th>Dia</th>
+                                                <th>Horário</th>
+                                                <th>Disciplina</th>
+                                                <th>Professor</th>
+                                                <th>1º opção</th>
+                                                <th>2º opção</th>
+                                            </tr>
+                                        </thead>
+                                    }
+                                    <tbody>
+                                        <tr>
+                                            <td>@Model.Lista[i].DisciplinaSemestre.DiaSemana</td>
+                                            <td>@Model.Lista[i].DisciplinaSemestre.Horario</td>
+                                            <td>@Model.Lista[i].DisciplinaSemestre.Disciplina.Nome</td>
+                                            <td>@Model.Lista[i].DisciplinaSemestre.Professor.Nome</td>
+                                            <td>@Html.CheckBoxFor(model => model.Lista[i].PrimeiraOpcao, new { @class = "form-control form-control-user primeira-opcao" })</td>
+                                            <td>@Html.CheckBoxFor(model => model.Lista[i].SegundaOpcao, new { @class = "form-control form-control-user segunda-opcao" })</td>
+                                        </tr>
+                                    </tbody>
+                                    @Html.HiddenFor(model => model.Lista[i].DisciplinaSemestre.IdDisciplinaSemestre)
+                                }
+                            </table>
+                            <div class="text-center">
+                                <button id="salvar" type="submit" class="btn btn-success btn-user btn-sm">ENVIAR</button>
+                                <a id="cancelar" class="btn btn-danger btn-sm" href="@Url.Action("Index", "Matricula")">CANCELAR</a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td colspan="6">Não há disciplinas disponíveis para matrícula.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>

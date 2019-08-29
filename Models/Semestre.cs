@@ -18,6 +18,25 @@ namespace SistemaMatricula.Models
         public string Periodo { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public DateTime InicioData { get; set; }
+        public bool Ativo
+        {
+            get
+            {
+                Semestre item = SemestreDAO.Ultimo();
+
+                if (item == null)
+                {
+                    return false;
+                }
+
+                if (!DateTime.Equals(item.InicioData, InicioData))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
         public DateTime CadastroData { get; set; }
         public Guid CadastroPor { get; set; }
         public DateTime? ExclusaoData { get; set; }
@@ -35,11 +54,6 @@ namespace SistemaMatricula.Models
         public static Semestre Consultar(Guid IdSemestre)
         {
             return SemestreDAO.Consultar(IdSemestre);
-        }
-
-        public static Semestre Ultimo()
-        {
-            return SemestreDAO.Ultimo();
         }
 
         public static List<Semestre> Listar(string palavra = null)

@@ -1,8 +1,5 @@
 ﻿@model SistemaMatricula.Controllers.MatriculaIndexView
-@{
-    ViewBag.Title = "Painel de Matrículas";
-    string curso = string.Empty;
-}
+@{ViewBag.Title = "Painel de Matrículas";}
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -15,84 +12,91 @@
                 <div class="alert alert-danger" role="alert">
                     @ViewBag.Message
                 </div>
-
-                if (ViewBag.HideScreen)
-                {
-                    <div class="text-center">
-                        <a id="voltar" class="btn btn-primary btn-sm" href="@Url.Action("Index", "Matricula")">VOLTAR</a>
-                    </div>
-                }
             }
             else
             {
-                using (Html.BeginForm("Index", "Matricula"))
-                {
-                    <div class="row">
-                        <div class="col-md-4">
-                            @Html.DropDownListFor(model => model.CursoSelecionado, Model.slCursos, new { @class = "form-control form-control-user" })
-                        </div>
-                        <div class="col-md-3">
-                            <button id="pesquisar" type="submit" class="btn btn-primary btn-user btn-sm"><i class="fas fa-search"></i> PESQUISAR</button>
-                        </div>
-                        <div class="col-md-5"></div>
-                    </div>
-                }
                 <div class="table-responsive">
-                    @if (Model.Lista != null && Model.Lista.Length > 0)
-                    {
-                        using (Html.BeginForm("Index", "Matricula", FormMethod.Post))
-                        {
-                            <table class="table table-bordered" width="100%" cellspacing="0">
-
-                                @for (int i = 0; i < Model.Lista.Length; i++)
-                                {
-                                    if (!string.Equals(curso, string.Format("{0} - {1}", Model.Lista[i].DisciplinaSemestre.Semestre.Nome, Model.Lista[i].DisciplinaSemestre.Disciplina.Curso.Nome.ToUpper())))
-                                    {
-                                        curso = string.Format("{0} - {1}", Model.Lista[i].DisciplinaSemestre.Semestre.Nome, Model.Lista[i].DisciplinaSemestre.Disciplina.Curso.Nome.ToUpper());
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center" colspan="6">@Model.Lista[i].DisciplinaSemestre.Semestre.Nome - @Model.Lista[i].DisciplinaSemestre.Disciplina.Curso.Nome.ToUpper()</th>
-                                            </tr>
-                                            <tr>
-                                                <th>Dia</th>
-                                                <th>Horário</th>
-                                                <th>Disciplina</th>
-                                                <th>Professor</th>
-                                                <th>1º opção</th>
-                                                <th>2º opção</th>
-                                            </tr>
-                                        </thead>
-                                    }
-                                    <tbody>
-                                        <tr>
-                                            <td>@Model.Lista[i].DisciplinaSemestre.DiaSemana</td>
-                                            <td>@Model.Lista[i].DisciplinaSemestre.Horario</td>
-                                            <td>@Model.Lista[i].DisciplinaSemestre.Disciplina.Nome</td>
-                                            <td>@Model.Lista[i].DisciplinaSemestre.Professor.Nome</td>
-                                            <td>@Html.CheckBoxFor(model => model.Lista[i].PrimeiraOpcao, new { @class = "form-control form-control-user primeira-opcao" })</td>
-                                            <td>@Html.CheckBoxFor(model => model.Lista[i].SegundaOpcao, new { @class = "form-control form-control-user segunda-opcao" })</td>
-                                        </tr>
-                                    </tbody>
-                                    @Html.HiddenFor(model => model.Lista[i].DisciplinaSemestre.IdDisciplinaSemestre)
-                                }
-                            </table>
-                            <div class="text-center">
-                                <button id="salvar" type="submit" class="btn btn-success btn-user btn-sm">ENVIAR</button>
-                            </div>
-                        }
-                    }
-                    else
-                    {
-                        <table class="table table-bordered" width="100%" cellspacing="0">
-                            <tbody>
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Curso</th>
+                                <th>Disciplina</th>
+                                <th>Professor</th>
+                                <th>Dia</th>
+                                <th>Horário</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.Matriculas)
+                            {
                                 <tr>
-                                    <td colspan="6">Não há disciplinas disponíveis para matrícula.</td>
+                                    <td>@item.DisciplinaSemestre.Disciplina.Curso.Nome</td>
+                                    <td>@item.DisciplinaSemestre.Disciplina.Nome</td>
+                                    <td>@item.DisciplinaSemestre.Professor.Nome</td>
+                                    <td>@item.DisciplinaSemestre.DiaSemana</td>
+                                    <td>@item.DisciplinaSemestre.Horario</td>
+                                    <td class="text-center">
+                                        <a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Matricula", new SistemaMatricula.Models.DisciplinaSemestre { IdDisciplinaSemestre = item.DisciplinaSemestre.IdDisciplinaSemestre })"><i class="fas fa-trash"></i> CANCELAR</a>
+                                    </td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    }
+                            }
+                            @if (ViewBag.Matriculas.Count <= 0)
+                            {
+                                <tr>
+                                    <td colspan="6">Não há matrículas para listar.</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="6">
+                                    <a id="adicionar" class="btn btn-primary btn-user btn-sm" href="@Url.Action("Edit", "Matricula")"><i class="fas fa-plus"></i> REALIZAR MATRÍCULA</a>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             }
         }
     </div>
+    <!--<div class="card-footer">
+        <div class="row">
+            <div class="col-sm-12 col-md-5">
+                <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
+                    Página 1 de 10 de 50 registros
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-7">
+                <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                    <ul class="pagination">
+                        <li class="paginate_button page-item active">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0" class="page-link">2</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="3" tabindex="0" class="page-link">3</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">4</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">5</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">6</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">7</a>
+                        </li>
+                        <li class="paginate_button page-item ">
+                            <a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">8</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>-->
 </div>

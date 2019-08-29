@@ -49,10 +49,5 @@ namespace SistemaMatricula.Models
         {
 
         }
-
-        public static void PermitirMatricula()
-        {
-
-        }
     }
 }
