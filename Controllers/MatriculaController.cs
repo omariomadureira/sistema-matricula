@@ -89,15 +89,33 @@ namespace SistemaMatricula.Controllers
                             item.Alternativa = item.SegundaOpcao;
                             item.Aluno = new Aluno() { IdAluno = System.Guid.Empty }; //TODO: Pegar ID do usuário logado
 
-                            if (DisciplinaSemestreAluno.Incluir(item))
+                            DisciplinaSemestreAluno existe = DisciplinaSemestreAluno.Consultar(item);
+
+                            if (existe == null)
                             {
-                                continue;
+                                if (DisciplinaSemestreAluno.Incluir(item))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    ViewBag.Message = "Não foi possível realizar a matrícula. Erro de execução.";
+                                    ViewBag.HideScreen = true;
+                                    return View("Edit");
+                                }
                             }
                             else
                             {
-                                ViewBag.Message = "Não foi possível realizar a matrícula. Erro de execução.";
-                                ViewBag.HideScreen = true;
-                                return View("Edit");
+                                if (DisciplinaSemestreAluno.Alterar(item))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    ViewBag.Message = "Não foi possível realizar a matrícula. Erro de execução.";
+                                    ViewBag.HideScreen = true;
+                                    return View("Edit");
+                                }
                             }
                         }
                     }
@@ -224,7 +242,7 @@ namespace SistemaMatricula.Controllers
         {
             if (lista == null)
             {
-                return new ValidationResult("Escolha pelo menos 1 disciplina para realizar a matrícula.");
+                return new ValidationResult("Tente novamente mais tarde.");
             }
 
             int primeira = 0, segunda = 0;
@@ -241,19 +259,46 @@ namespace SistemaMatricula.Controllers
                 }
             }
 
-            if (primeira == 0)
+            DisciplinaSemestreAluno filtros = new DisciplinaSemestreAluno()
             {
-                return new ValidationResult("Escolha pelo menos 1 disciplina para realizar a matrícula.");
+                Aluno = new Aluno() { IdAluno = System.Guid.Empty } //TODO: Inserir ID do usuário aluno logado
+            };
+
+            var matriculas =
+                DisciplinaSemestreAluno.Listar(filtros)
+                .FindAll(x => x.DisciplinaSemestre.Semestre.Ativo);
+
+            int restantePrimeira = 4 - matriculas.FindAll(x => !x.Alternativa.HasValue || !x.Alternativa.Value).Count;
+            int restanteSegunda = 2 - matriculas.FindAll(x => x.Alternativa.HasValue && x.Alternativa.Value).Count;
+
+            if (restantePrimeira < 1 && restanteSegunda < 1)
+            {
+                return new ValidationResult("A quantidade máxima de matrículas foi atingida.");
             }
 
-            if (primeira > 4)
+            if (restantePrimeira > 0 && primeira == 0)
             {
-                return new ValidationResult("Escolha no máximo 4 disciplinas para primeira opção.");
+                return new ValidationResult("Escolha pelo menos 1 disciplina para primeira opção.");
             }
 
-            if (segunda > 0 && segunda < 3)
+            if (restantePrimeira > 0 && primeira > restantePrimeira)
             {
-                return new ValidationResult("Escolha no máximo 2 disciplinas para segunda opção.");
+                return new ValidationResult(string.Format("Escolha no máximo {0} disciplina(s) para primeira opção.", restantePrimeira));
+            }
+
+            if (restantePrimeira == 0 && primeira > restantePrimeira)
+            {
+                return new ValidationResult("A quantidade máxima de matrículas para primeira opção foi atingida.");
+            }
+
+            if (restanteSegunda > 0 && segunda == 0)
+            {
+                return new ValidationResult("Escolha pelo menos 1 disciplina para segunda opção.");
+            }
+
+            if (restanteSegunda > 0 && segunda > restanteSegunda)
+            {
+                return new ValidationResult(string.Format("Escolha no máximo {0} disciplina(s) para segunda opção.", restanteSegunda));
             }
 
             return ValidationResult.Success;

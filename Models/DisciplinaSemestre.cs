@@ -11,6 +11,34 @@ namespace SistemaMatricula.Models
         public Semestre Semestre { get; set; }
         public Professor Professor { get; set; }
         public string DiaSemana { get; set; }
+        public int DiaOrdem
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(DiaSemana))
+                {
+                    return 0;
+                }
+
+                switch (DiaSemana.Trim())
+                {
+                    case DIA_SEGUNDA:
+                        return 1;
+                    case DIA_TERCA:
+                        return 2;
+                    case DIA_QUARTA:
+                        return 3;
+                    case DIA_QUINTA:
+                        return 4;
+                    case DIA_SEXTA:
+                        return 5;
+                    case DIA_SABADO:
+                        return 6;
+                    default:
+                        return 7;
+                }
+            }
+        }
         public string Horario { get; set; }
         public string Status { get; set; }
         public DateTime CadastroData { get; set; }
@@ -22,6 +50,14 @@ namespace SistemaMatricula.Models
         public const string DISCIPLINA_LIBERADA = "LIBERADA";
         public const string DISCIPLINA_CANCELADA = "CANCELADA";
         public const string DISCIPLINA_ENCERRADA = "ENCERRADA";
+
+        public const string DIA_SEGUNDA = "SEGUNDA-FEIRA";
+        public const string DIA_TERCA = "TERÇA-FEIRA";
+        public const string DIA_QUARTA = "QUARTA-FEIRA";
+        public const string DIA_QUINTA = "QUINTA-FEIRA";
+        public const string DIA_SEXTA = "SEXTA-FEIRA";
+        public const string DIA_SABADO = "SÁBADO";
+        public const string DIA_DOMINGO = "DOMINGO";
 
         public static bool Incluir(DisciplinaSemestre item)
         {
@@ -114,13 +150,13 @@ namespace SistemaMatricula.Models
         {
             return new List<string>()
             {
-                "SEGUNDA-FEIRA",
-                "TERÇA-FEIRA",
-                "QUARTA-FEIRA",
-                "QUINTA-FEIRA",
-                "SEXTA-FEIRA",
-                "SÁBADO",
-                "DOMINGO"
+                DIA_SEGUNDA,
+                DIA_TERCA,
+                DIA_QUARTA,
+                DIA_QUINTA,
+                DIA_SEXTA,
+                DIA_SABADO,
+                DIA_DOMINGO
             };
         }
 

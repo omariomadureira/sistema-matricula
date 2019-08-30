@@ -65,7 +65,13 @@ namespace SistemaMatricula.DAO
                         query = query.Where(x => x.Alternativa == filtro.Alternativa);
                 }
 
-                List<DisciplinaSemestreAluno> DisciplinaSemestreAlunos = query.Select(x => Converter(x)).ToList();
+                List<DisciplinaSemestreAluno> DisciplinaSemestreAlunos = 
+                    query
+                        .Select(x => Converter(x))
+                        .OrderBy(x => x.Alternativa)
+                        .ThenBy(x => x.DisciplinaSemestre.DiaOrdem)
+                        .ThenBy(x => x.DisciplinaSemestre.Horario)
+                        .ToList();
 
                 db.Dispose();
 
@@ -81,25 +87,42 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                List<Grade_ListarDisciplinas_Result> disciplinas = DisciplinaSemestreDAO.ListarGrade(DisciplinaSemestre.DISCIPLINA_LIBERADA, IdCurso);
+                Semestre ativo = SemestreDAO.Ultimo();
 
-                if (disciplinas.Count > 0)
+                if (ativo != null)
                 {
-                    List<DisciplinaSemestreAluno> lista = new List<DisciplinaSemestreAluno>();
+                    Entities db = new Entities();
 
-                    foreach (Grade_ListarDisciplinas_Result item in disciplinas)
-                    {
-                        DisciplinaSemestreAluno d = new DisciplinaSemestreAluno()
-                        {
-                            DisciplinaSemestre = DisciplinaSemestreDAO.Consultar(item.IdDisciplinaSemestre)
-                        };
-                        lista.Add(d);
-                    }
+                    List<DisciplinaSemestreData> grade =
+                        db.DisciplinaSemestreData
+                            .Where(x => x.ExclusaoData == null
+                                && db.SemestreData
+                                    .Where(y => y.InicioData == ativo.InicioData)
+                                    .Select(y => y.IdSemestre)
+                                    .Contains(x.IdSemestre)
+                                && !db.DisciplinaSemestreAlunoData
+                                    .Where(y => y.ExclusaoData == null && y.IdAluno == Guid.Empty)
+                                    .Select(y => y.IdDisciplinaSemestre)
+                                    .Contains(x.IdDisciplinaSemestre)
+                                && db.DisciplinaData
+                                    .Where(y => y.IdCurso == IdCurso)
+                                    .Select(y => y.IdDisciplina)
+                                    .Contains(x.IdDisciplina)
+                                && x.Status == DisciplinaSemestre.DISCIPLINA_LIBERADA)
+                            .ToList();
+
+                    List<DisciplinaSemestreAluno> lista =
+                        grade
+                            .Select(x => new DisciplinaSemestreAluno() { DisciplinaSemestre = DisciplinaSemestreDAO.Converter(x) })
+                            .OrderBy(x => x.DisciplinaSemestre.Semestre.Nome)
+                            .ThenBy(x => x.DisciplinaSemestre.DiaOrdem)
+                            .ThenBy(x => x.DisciplinaSemestre.Horario)
+                            .ToList();
 
                     return lista;
                 }
             }
-            catch { }
+            catch (Exception e) { }
 
             return null;
         }
@@ -114,6 +137,8 @@ namespace SistemaMatricula.DAO
                 if (DisciplinaSemestreAluno != null)
                 {
                     DisciplinaSemestreAluno.Alternativa = item.Alternativa;
+                    DisciplinaSemestreAluno.ExclusaoData = null;
+                    DisciplinaSemestreAluno.ExclusaoPor = null;
 
                     db.SaveChanges();
                     db.Dispose();

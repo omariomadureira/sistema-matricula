@@ -118,6 +118,7 @@ namespace SistemaMatricula.DAO
             {
                 Entities db = new Entities();
 
+                //TODO: Verificar se essa procedure é necessária
                 List<Grade_ListarDisciplinas_Result> resultado = db.Grade_ListarDisciplinas(StatusDisciplina, IdCurso).ToList();
 
                 db.Dispose();

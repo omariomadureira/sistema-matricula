@@ -1,5 +1,8 @@
 ﻿@model SistemaMatricula.Controllers.MatriculaIndexView
-@{ViewBag.Title = "Painel de Matrículas";}
+@{
+    ViewBag.Title = "Painel de Matrículas";
+    string alternativa = string.Empty;
+}
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -17,37 +20,53 @@
             {
                 <div class="table-responsive">
                     <table class="table table-bordered" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>Curso</th>
-                                <th>Disciplina</th>
-                                <th>Professor</th>
-                                <th>Dia</th>
-                                <th>Horário</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in ViewBag.Matriculas)
+                        @foreach (var item in ViewBag.Matriculas)
+                        {
+                            if (!string.Equals(alternativa, item.Alternativa.ToString()))
                             {
+                                alternativa = item.Alternativa.ToString();
+                                <thead>
+                                    <tr>
+                                        @if (!item.Alternativa)
+                                        {
+                                            <th class="text-center" colspan="6">PRIMEIRA OPÇÃO</th>
+                                        }
+                                        else
+                                        {
+                                            <th class="text-center" colspan="6">SEGUNDA OPÇÃO</th>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <th>Dia</th>
+                                        <th>Horário</th>
+                                        <th>Curso</th>
+                                        <th>Disciplina</th>
+                                        <th>Professor</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                            }
+                            <tbody>
                                 <tr>
+                                    <td>@item.DisciplinaSemestre.DiaSemana</td>
+                                    <td>@item.DisciplinaSemestre.Horario</td>
                                     <td>@item.DisciplinaSemestre.Disciplina.Curso.Nome</td>
                                     <td>@item.DisciplinaSemestre.Disciplina.Nome</td>
                                     <td>@item.DisciplinaSemestre.Professor.Nome</td>
-                                    <td>@item.DisciplinaSemestre.DiaSemana</td>
-                                    <td>@item.DisciplinaSemestre.Horario</td>
                                     <td class="text-center">
                                         <a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Matricula", new SistemaMatricula.Models.DisciplinaSemestre { IdDisciplinaSemestre = item.DisciplinaSemestre.IdDisciplinaSemestre })"><i class="fas fa-trash"></i> CANCELAR</a>
                                     </td>
                                 </tr>
-                            }
-                            @if (ViewBag.Matriculas.Count <= 0)
-                            {
+                            </tbody>
+                        }
+                        @if (ViewBag.Matriculas.Count <= 0)
+                        {
+                            <tbody>
                                 <tr>
                                     <td colspan="6">Não há matrículas para listar.</td>
                                 </tr>
-                            }
-                        </tbody>
+                            </tbody>
+                        }
                         <tfoot>
                             <tr>
                                 <th colspan="6">
@@ -56,6 +75,7 @@
                             </tr>
                         </tfoot>
                     </table>
+
                 </div>
             }
         }

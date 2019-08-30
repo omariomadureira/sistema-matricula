@@ -27,7 +27,7 @@
 
             if (!ViewBag.HideScreen)
             {
-                using (Html.BeginForm("Index", "Matricula"))
+                using (Html.BeginForm("Edit", "Matricula"))
                 {
                     <div class="row">
                         <div class="col-md-4">
@@ -45,7 +45,6 @@
                         using (Html.BeginForm("Update", "Matricula", FormMethod.Post))
                         {
                             <table class="table table-bordered" width="100%" cellspacing="0">
-
                                 @for (int i = 0; i < Model.Lista.Length; i++)
                                 {
                                     if (!string.Equals(curso, string.Format("{0} - {1}", Model.Lista[i].DisciplinaSemestre.Semestre.Nome, Model.Lista[i].DisciplinaSemestre.Disciplina.Curso.Nome.ToUpper())))
