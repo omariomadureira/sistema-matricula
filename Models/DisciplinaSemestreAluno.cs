@@ -30,9 +30,9 @@ namespace SistemaMatricula.Models
             return DisciplinaSemestreAlunoDAO.Listar(filtro);
         }
 
-        public static List<DisciplinaSemestreAluno> ListarGrade(Guid IdCurso)
+        public static List<DisciplinaSemestreAluno> ListarGrade(Guid IdCurso, Aluno usuario)
         {
-            return DisciplinaSemestreAlunoDAO.ListarGrade(IdCurso);
+            return DisciplinaSemestreAlunoDAO.ListarGrade(IdCurso, usuario);
         }
 
         public static bool Alterar(DisciplinaSemestreAluno item)

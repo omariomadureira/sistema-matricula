@@ -44,6 +44,14 @@
                                     <td>@item.Nome</td>
                                     <td>@item.CadastroData</td>
                                     <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Professor", new SistemaMatricula.Models.Professor { IdProfessor = item.IdProfessor })"><i class="fas fa-pen"></i> EDITAR</a></td>
+                                    @if (item.TemUsuario)
+                                    {
+                                        <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Usuario", new SistemaMatricula.Models.RegisterViewModel { Login = item.Email.Trim() })"><i class="fas fa-pen"></i> ALTERAR SENHA</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Usuario", new SistemaMatricula.Models.RegisterViewModel { Login = item.Email.Trim(), Email = item.Email.Trim(), RoleSelecionado = SistemaMatricula.Models.Usuario.ROLE_PROFESSOR })"><i class="fas fa-pen"></i> CRIAR USUÁRIO</a></td>
+                                    }
                                     <td class="text-center"><a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Professor", new SistemaMatricula.Models.Professor { IdProfessor = item.IdProfessor })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
                                 </tr>
                             }

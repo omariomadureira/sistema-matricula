@@ -34,7 +34,7 @@
                             <tr>
                                 <th>Nome</th>
                                 <th>Data de Cadastro</th>
-                                <th colspan="2">Ações</th>
+                                <th colspan="3">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,6 +44,14 @@
                                     <td>@item.Nome</td>
                                     <td>@item.CadastroData</td>
                                     <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Aluno", new SistemaMatricula.Models.Aluno { IdAluno = item.IdAluno })"><i class="fas fa-pen"></i> EDITAR</a></td>
+                                    @if (item.TemUsuario)
+                                    {
+                                        <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Usuario", new SistemaMatricula.Models.RegisterViewModel { Login = item.Email.Trim() })"><i class="fas fa-pen"></i> ALTERAR SENHA</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-center"><a class="btn btn-warning btn-sm editar" href="@Url.Action("Edit", "Usuario", new SistemaMatricula.Models.RegisterViewModel { Login = item.Email.Trim(), Email = item.Email.Trim(), RoleSelecionado = SistemaMatricula.Models.Usuario.ROLE_ALUNO })"><i class="fas fa-pen"></i> CRIAR USUÁRIO</a></td>
+                                    }
                                     <td class="text-center"><a class="btn btn-danger btn-sm excluir" href="@Url.Action("Delete", "Aluno", new SistemaMatricula.Models.Aluno { IdAluno = item.IdAluno })"><i class="fas fa-trash"></i> EXCLUIR</a></td>
                                 </tr>
                             }

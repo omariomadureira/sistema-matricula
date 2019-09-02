@@ -18,7 +18,7 @@ namespace SistemaMatricula.DAO
                     Periodo = item.Periodo,
                     InicioData = item.InicioData,
                     CadastroData = DateTime.Now,
-                    CadastroPor = Guid.Empty //TODO: Alterar para ID do usuário logado
+                    CadastroPor = Usuario.Logado.IdUsuario
                 };
 
                 Entities db = new Entities();
@@ -126,7 +126,7 @@ namespace SistemaMatricula.DAO
                 if (Semestre != null)
                 {
                     Semestre.ExclusaoData = DateTime.Now;
-                    Semestre.ExclusaoPor = Guid.Empty; //TODO: Alterar para ID do usuário logado
+                    Semestre.ExclusaoPor = Usuario.Logado.IdUsuario;
 
                     db.SaveChanges();
                     db.Dispose();

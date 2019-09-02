@@ -18,7 +18,7 @@ namespace SistemaMatricula.DAO
                     IdAluno = item.Aluno.IdAluno,
                     Alternativa = item.Alternativa,
                     CadastroData = DateTime.Now,
-                    CadastroPor = Guid.Empty //TODO: Alterar para ID do usuário logado
+                    CadastroPor = Usuario.Logado.IdUsuario
                 };
 
                 Entities db = new Entities();
@@ -63,6 +63,9 @@ namespace SistemaMatricula.DAO
                 {
                     if (filtro.Alternativa != null)
                         query = query.Where(x => x.Alternativa == filtro.Alternativa);
+
+                    if (filtro.Aluno != null && !Guid.Equals(filtro.Aluno.IdAluno, Guid.Empty))
+                        query = query.Where(x => x.IdAluno == filtro.Aluno.IdAluno);
                 }
 
                 List<DisciplinaSemestreAluno> DisciplinaSemestreAlunos = 
@@ -83,7 +86,7 @@ namespace SistemaMatricula.DAO
             }
         }
 
-        public static List<DisciplinaSemestreAluno> ListarGrade(Guid IdCurso)
+        public static List<DisciplinaSemestreAluno> ListarGrade(Guid IdCurso, Aluno usuario)
         {
             try
             {
@@ -101,7 +104,7 @@ namespace SistemaMatricula.DAO
                                     .Select(y => y.IdSemestre)
                                     .Contains(x.IdSemestre)
                                 && !db.DisciplinaSemestreAlunoData
-                                    .Where(y => y.ExclusaoData == null && y.IdAluno == Guid.Empty)
+                                    .Where(y => y.ExclusaoData == null && y.IdAluno == usuario.IdAluno)
                                     .Select(y => y.IdDisciplinaSemestre)
                                     .Contains(x.IdDisciplinaSemestre)
                                 && db.DisciplinaData
@@ -163,7 +166,7 @@ namespace SistemaMatricula.DAO
                 if (DisciplinaSemestreAluno != null)
                 {
                     DisciplinaSemestreAluno.ExclusaoData = DateTime.Now;
-                    DisciplinaSemestreAluno.ExclusaoPor = Guid.Empty; //TODO: Alterar para ID do usuário logado
+                    DisciplinaSemestreAluno.ExclusaoPor = Usuario.Logado.IdUsuario;
 
                     db.SaveChanges();
                     db.Dispose();

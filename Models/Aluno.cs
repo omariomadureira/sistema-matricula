@@ -19,6 +19,25 @@ namespace SistemaMatricula.Models
         public string Email { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public string CPF { get; set; }
+        public long CPFSemFormatacao
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(CPF))
+                {
+                    string c = CPF.Replace(".", string.Empty).Replace("-", string.Empty).Trim();
+                    return long.Parse(c);
+                }
+                return 0;
+            }
+        }
+        public bool TemUsuario
+        {
+            get
+            {
+                return Usuario.Existe(Email);
+            }
+        }
         public DateTime CadastroData { get; set; }
         public Guid CadastroPor { get; set; }
         public DateTime? ExclusaoData { get; set; }
@@ -29,9 +48,15 @@ namespace SistemaMatricula.Models
             return AlunoDAO.Incluir(item);
         }
 
-        public static Aluno Consultar(Guid IdAluno)
+        public static Aluno Consultar(Guid? IdAluno = null, string email = null)
         {
-            return AlunoDAO.Consultar(IdAluno);
+            return AlunoDAO.Consultar(IdAluno, email);
+        }
+
+        public static Aluno ConsultarLogado()
+        {
+            string email = Usuario.Logado.Email;
+            return Aluno.Consultar(email: email);
         }
 
         public static List<Aluno> Listar(string palavra = null)

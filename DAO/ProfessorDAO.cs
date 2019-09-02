@@ -21,7 +21,7 @@ namespace SistemaMatricula.DAO
                     CPF = item.CPF,
                     Curriculo = item.Curriculo,
                     CadastroData = DateTime.Now,
-                    CadastroPor = Guid.Empty //TODO: Alterar para ID do usuário logado
+                    CadastroPor = Usuario.Logado.IdUsuario
                 };
 
                 Entities db = new Entities();
@@ -37,17 +37,25 @@ namespace SistemaMatricula.DAO
             }
         }
 
-        public static Professor Consultar(Guid IdProfessor)
+        public static Professor Consultar(Guid? IdProfessor = null, string email = null)
         {
             try
             {
                 Entities db = new Entities();
 
-                ProfessorData Professor = db.ProfessorData.FirstOrDefault(x => x.IdProfessor == IdProfessor);
+                IEnumerable<ProfessorData> query = db.ProfessorData;
+
+                if (IdProfessor != null)
+                    query = query.Where(x => x.IdProfessor == IdProfessor);
+
+                if (!string.IsNullOrEmpty(email))
+                    query = query.Where(x => x.Email.Trim() == email.Trim());
+
+                ProfessorData professor = query.FirstOrDefault();
 
                 db.Dispose();
 
-                return Converter(Professor);
+                return Converter(professor);
             }
             catch { }
 
@@ -115,7 +123,7 @@ namespace SistemaMatricula.DAO
                 if (Professor != null)
                 {
                     Professor.ExclusaoData = DateTime.Now;
-                    Professor.ExclusaoPor = Guid.Empty; //TODO: Alterar para ID do usuário logado
+                    Professor.ExclusaoPor = Usuario.Logado.IdUsuario;
 
                     db.SaveChanges();
                     db.Dispose();

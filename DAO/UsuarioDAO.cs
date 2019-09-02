@@ -31,17 +31,36 @@ namespace SistemaMatricula.DAO
             }
         }
 
+        public static Usuario Consultar(string login)
+        {
+            try
+            {
+                Entities db = new Entities();
+                AspNetUsers usuario = db.AspNetUsers.FirstOrDefault(x => x.UserName.Trim() == login.Trim());
+
+                db.Dispose();
+
+                if (usuario != null)
+                {
+                    return Converter(usuario);
+                }
+            }
+            catch { }
+
+            return null;
+        }
+
         public static bool Desativar(Guid IdUsuario)
         {
             try
             {
                 Entities db = new Entities();
-                AspNetUsers Usuario = db.AspNetUsers.FirstOrDefault(x => x.Id == IdUsuario.ToString());
+                AspNetUsers registro = db.AspNetUsers.FirstOrDefault(x => x.Id == IdUsuario.ToString());
 
-                if (Usuario != null)
+                if (registro != null)
                 {
-                    Usuario.ExclusaoData = DateTime.Now;
-                    Usuario.ExclusaoPor = Guid.Empty; //TODO: Alterar para ID do usuário logado
+                    registro.ExclusaoData = DateTime.Now;
+                    registro.ExclusaoPor = Usuario.Logado.IdUsuario;
 
                     db.SaveChanges();
                     db.Dispose();
@@ -65,6 +84,24 @@ namespace SistemaMatricula.DAO
                 db.Dispose();
 
                 if (Usuario != null && Usuario.ExclusaoData == null)
+                {
+                    return true;
+                }
+            }
+            catch { }
+
+            return false;
+        }
+
+        public static bool Existe(string Login)
+        {
+            try
+            {
+                Entities db = new Entities();
+                AspNetUsers Usuario = db.AspNetUsers.FirstOrDefault(x => x.UserName == Login);
+                db.Dispose();
+
+                if (Usuario != null)
                 {
                     return true;
                 }

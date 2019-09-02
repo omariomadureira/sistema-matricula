@@ -96,8 +96,7 @@ namespace SistemaMatricula.Controllers
 
                     if (usuario == null)
                     {
-                        ViewBag.Message = "Não foi possível localizar o registro. Identificação inválida.";
-                        ViewBag.HideScreen = true;
+                        return View(view);
                     }
 
                     view = RegisterViewModel.Converter(usuario);

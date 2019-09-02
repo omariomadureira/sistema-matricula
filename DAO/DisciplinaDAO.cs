@@ -19,7 +19,7 @@ namespace SistemaMatricula.DAO
                     Descricao = item.Descricao,
                     IdCurso = item.Curso.IdCurso,
                     CadastroData = DateTime.Now,
-                    CadastroPor = Guid.Empty //TODO: Alterar para ID do usuário logado
+                    CadastroPor = Usuario.Logado.IdUsuario
                 };
 
                 Entities db = new Entities();
@@ -117,7 +117,7 @@ namespace SistemaMatricula.DAO
                 if (disciplina != null)
                 {
                     disciplina.ExclusaoData = DateTime.Now;
-                    disciplina.ExclusaoPor = Guid.Empty;  //TODO: Alterar para ID do usuário logado
+                    disciplina.ExclusaoPor = Usuario.Logado.IdUsuario;
 
                     db.SaveChanges();
                     db.Dispose();

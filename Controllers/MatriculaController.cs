@@ -11,9 +11,17 @@ namespace SistemaMatricula.Controllers
         {
             try
             {
+                Aluno logado = Aluno.ConsultarLogado();
+
+                if (logado == null)
+                {
+                    ViewBag.Message = "Não foi possível listar as matrículas. Erro de execução.";
+                    return View();
+                }
+
                 DisciplinaSemestreAluno filtros = new DisciplinaSemestreAluno()
                 {
-                    Aluno = new Aluno() { IdAluno = System.Guid.Empty } //TODO: Inserir ID do aluno logado
+                    Aluno = logado
                 };
 
                 var lista = DisciplinaSemestreAluno.Listar(filtros);
@@ -57,7 +65,9 @@ namespace SistemaMatricula.Controllers
 
                 view.slCursos = new SelectList(cursos, "IdCurso", "Nome", view.CursoSelecionado);
 
-                var lista = DisciplinaSemestreAluno.ListarGrade(view.CursoSelecionado.Value);
+                Aluno logado = Aluno.ConsultarLogado();
+
+                var lista = DisciplinaSemestreAluno.ListarGrade(view.CursoSelecionado.Value, logado);
 
                 if (lista != null && lista.Count > 0)
                 {
@@ -87,7 +97,7 @@ namespace SistemaMatricula.Controllers
                         if (item.PrimeiraOpcao || item.SegundaOpcao)
                         {
                             item.Alternativa = item.SegundaOpcao;
-                            item.Aluno = new Aluno() { IdAluno = System.Guid.Empty }; //TODO: Pegar ID do usuário logado
+                            item.Aluno = Aluno.ConsultarLogado();
 
                             DisciplinaSemestreAluno existe = DisciplinaSemestreAluno.Consultar(item);
 
@@ -143,7 +153,9 @@ namespace SistemaMatricula.Controllers
 
                 view.slCursos = new SelectList(cursos, "IdCurso", "Nome", view.CursoSelecionado);
 
-                var lista = DisciplinaSemestreAluno.ListarGrade(view.CursoSelecionado.Value);
+                Aluno logado = Aluno.ConsultarLogado();
+
+                var lista = DisciplinaSemestreAluno.ListarGrade(view.CursoSelecionado.Value, logado);
 
                 if (lista != null && lista.Count > 0)
                 {
@@ -167,7 +179,7 @@ namespace SistemaMatricula.Controllers
                 {
                     DisciplinaSemestreAluno filtros = new DisciplinaSemestreAluno()
                     {
-                        Aluno = new Aluno() { IdAluno = System.Guid.Empty }, //TODO: Inserir ID do aluno logado
+                        Aluno = Aluno.ConsultarLogado(),
                         DisciplinaSemestre = view
                     };
 
@@ -202,6 +214,58 @@ namespace SistemaMatricula.Controllers
             }
 
             return View(view);
+        }
+
+        [Authorize(Roles = Usuario.ROLE_ADMINISTRADOR)]
+        public ActionResult Finish()
+        {
+            ViewBag.HideScreen = false;
+            ModelState.Clear();
+
+            try
+            {
+                ViewBag.Grades = DisciplinaSemestre.ListarGrade(DisciplinaSemestre.DISCIPLINA_LIBERADA);
+
+                if (ViewBag.Grades == null)
+                {
+                    ViewBag.Message = "Não foi possível listar os registros. Erro de execução.";
+                    ViewBag.HideScreen = true;
+                }
+            }
+            catch
+            {
+                ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+                ViewBag.HideScreen = true;
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = Usuario.ROLE_ADMINISTRADOR)]
+        public ActionResult UpdateState()
+        {
+            ViewBag.HideScreen = false;
+
+            try
+            {
+                if (DisciplinaSemestre.AlterarStatus(DisciplinaSemestre.DISCIPLINA_LIBERADA))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewBag.Message = "Não foi possível realizar a liberação das disciplinas para matrícula. Erro de execução.";
+                    ViewBag.HideScreen = true;
+                }
+            }
+            catch
+            {
+                ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+                ViewBag.HideScreen = true;
+            }
+
+            return View("Start");
         }
     }
 
@@ -261,7 +325,7 @@ namespace SistemaMatricula.Controllers
 
             DisciplinaSemestreAluno filtros = new DisciplinaSemestreAluno()
             {
-                Aluno = new Aluno() { IdAluno = System.Guid.Empty } //TODO: Inserir ID do usuário aluno logado
+                Aluno = Aluno.ConsultarLogado()
             };
 
             var matriculas =

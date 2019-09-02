@@ -63,7 +63,12 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                ViewBag.Grades = DisciplinaSemestre.ListarGrade(DisciplinaSemestre.DISCIPLINA_CADASTRADA);
+                DisciplinaSemestre filtros = new DisciplinaSemestre()
+                {
+                    Status = DisciplinaSemestre.DISCIPLINA_CADASTRADA
+                };
+
+                ViewBag.Grades = DisciplinaSemestre.Listar(filtros);
 
                 if (ViewBag.Grades == null)
                 {
@@ -87,15 +92,37 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                if (DisciplinaSemestre.AlterarStatus(DisciplinaSemestre.DISCIPLINA_LIBERADA))
+                DisciplinaSemestre filtros = new DisciplinaSemestre()
                 {
-                    return RedirectToAction("Index", "Home");
-                }
-                else
+                    Status = DisciplinaSemestre.DISCIPLINA_CADASTRADA
+                };
+
+                DisciplinaSemestre[] lista = DisciplinaSemestre.Listar(filtros);
+
+                if (lista == null)
                 {
-                    ViewBag.Message = "Não foi possível realizar a liberação das disciplinas para matrícula. Erro de execução.";
+                    ViewBag.Message = "Não foi possível listar os registros. Erro de execução.";
                     ViewBag.HideScreen = true;
+                    return View("Start");
                 }
+
+                foreach (DisciplinaSemestre item in lista)
+                {
+                    item.Status = DisciplinaSemestre.DISCIPLINA_LIBERADA;
+
+                    if (DisciplinaSemestre.Alterar(item))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Não foi possível realizar a liberação das disciplinas para matrícula. Erro de execução.";
+                        ViewBag.HideScreen = true;
+                        return View("Start");
+                    }
+                }
+
+                return RedirectToAction("Index", "Home");
             }
             catch
             {

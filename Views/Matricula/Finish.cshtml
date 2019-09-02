@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Liberação de Grade";
+    ViewBag.Title = "Encerramento de Matrícula";
     string curso = string.Empty;
 }
 
@@ -18,7 +18,7 @@
                 if (ViewBag.HideScreen)
                 {
                     <div class="text-center">
-                        <a id="voltar" class="btn btn-primary btn-sm" href="@Url.Action("Start", "Grade")">VOLTAR</a>
+                        <a id="voltar" class="btn btn-primary btn-sm" href="@Url.Action("Finish", "Matricula")">VOLTAR</a>
                     </div>
                 }
             }
@@ -28,12 +28,12 @@
                     <table class="table table-bordered" width="100%" cellspacing="0">
                         @foreach (var item in ViewBag.Grades)
                         {
-                            if (!string.Equals(curso, string.Format("{0} - {1}", item.Semestre.Nome, item.Disciplina.Curso.Nome.ToUpper())))
+                            if (!string.Equals(curso, string.Format("{0} - {1}", item.NomeSemestre, item.NomeCurso.ToUpper())))
                             {
-                                curso = string.Format("{0} - {1}", item.Semestre.Nome, item.Disciplina.Curso.Nome.ToUpper());
+                                curso =  string.Format("{0} - {1}", item.NomeSemestre, item.NomeCurso.ToUpper());
                                 <thead>
                                     <tr>
-                                        <th class="text-center" colspan="4">@item.Semestre.Nome - @item.Disciplina.Curso.Nome.ToUpper()</th>
+                                        <th class="text-center" colspan="4">@item.NomeSemestre - @item.NomeCurso.ToUpper()</th>
                                     </tr>
                                     <tr>
                                         <th>Dia</th>
@@ -46,11 +46,11 @@
                                 <tr>
                                     <td>@item.DiaSemana</td>
                                     <td>@item.Horario</td>
-                                    <td>@item.Disciplina.Nome</td>
+                                    <td>@item.NomeDisciplina</td>
                                 </tr>
                             </tbody>
                         }
-                        @if (ViewBag.Grades.Length <= 0)
+                        @if (ViewBag.Grades.Count <= 0)
                         {
                             <tbody>
                                 <tr>
@@ -59,14 +59,11 @@
                             </tbody>
                         }
                     </table>
-                    @if (ViewBag.Grades.Length > 0)
+                    @using (Html.BeginForm("UpdateState", "Matricula", FormMethod.Post))
                     {
-                        using (Html.BeginForm("UpdateState", "Grade", FormMethod.Post))
-                        {
-                            <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-success btn-user btn-sm">LIBERAR PARA MATRÍCULA</button>
-                            </div>
-                        }
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-success btn-user btn-sm">ENCERRAR MATRÍCULAS</button>
+                        </div>
                     }
                 </div>
             }

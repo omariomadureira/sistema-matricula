@@ -20,7 +20,7 @@ namespace SistemaMatricula.DAO
                     Email = item.Email,
                     CPF = item.CPF,
                     CadastroData = DateTime.Now,
-                    CadastroPor = Guid.Empty //TODO: Alterar para ID do usuário logado
+                    CadastroPor = Usuario.Logado.IdUsuario
                 };
 
                 Entities db = new Entities();
@@ -36,17 +36,25 @@ namespace SistemaMatricula.DAO
             }
         }
 
-        public static Aluno Consultar(Guid IdAluno)
+        public static Aluno Consultar(Guid? IdAluno = null, string email = null)
         {
             try
             {
                 Entities db = new Entities();
 
-                AlunoData Aluno = db.AlunoData.FirstOrDefault(x => x.IdAluno == IdAluno);
+                IEnumerable<AlunoData> query = db.AlunoData;
+
+                if (IdAluno != null)
+                    query = query.Where(x => x.IdAluno == IdAluno);
+
+                if (!string.IsNullOrEmpty(email))
+                    query = query.Where(x => x.Email.Trim() == email.Trim());
+
+                AlunoData aluno = query.FirstOrDefault();
 
                 db.Dispose();
 
-                return Converter(Aluno);
+                return Converter(aluno);
             }
             catch { }
 
@@ -113,8 +121,7 @@ namespace SistemaMatricula.DAO
                 if (Aluno != null)
                 {
                     Aluno.ExclusaoData = DateTime.Now;
-                    Aluno.ExclusaoPor = Guid.Empty; //TODO: Alterar para ID do usuário logado
-
+                    Aluno.ExclusaoPor = Usuario.Logado.IdUsuario;
                     db.SaveChanges();
                     db.Dispose();
 

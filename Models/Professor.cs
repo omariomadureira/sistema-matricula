@@ -21,6 +21,13 @@ namespace SistemaMatricula.Models
         public string CPF { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public string Curriculo { get; set; }
+        public bool TemUsuario
+        {
+            get
+            {
+                return Usuario.Existe(Email);
+            }
+        }
         public DateTime CadastroData { get; set; }
         public Guid CadastroPor { get; set; }
         public DateTime? ExclusaoData { get; set; }
@@ -31,9 +38,15 @@ namespace SistemaMatricula.Models
             return ProfessorDAO.Incluir(item);
         }
 
-        public static Professor Consultar(Guid IdProfessor)
+        public static Professor Consultar(Guid? IdProfessor = null, string email = null)
         {
-            return ProfessorDAO.Consultar(IdProfessor);
+            return ProfessorDAO.Consultar(IdProfessor, email);
+        }
+
+        public static Professor ConsultarLogado()
+        {
+            string email = Usuario.Logado.Email;
+            return Professor.Consultar(email: email);
         }
 
         public static List<Professor> Listar(string palavra = null)

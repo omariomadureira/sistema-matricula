@@ -22,7 +22,7 @@ namespace SistemaMatricula.DAO
                     Horario = item.Horario,
                     Status = DisciplinaSemestre.DISCIPLINA_CADASTRADA,
                     CadastroData = DateTime.Now,
-                    CadastroPor = Guid.Empty //TODO: Alterar para ID do usuário logado
+                    CadastroPor = Usuario.Logado.IdUsuario
                 };
 
                 Entities db = new Entities();
@@ -78,11 +78,30 @@ namespace SistemaMatricula.DAO
                     if (filtros.Semestre != null && !Equals(Guid.Empty, filtros.Semestre.IdSemestre))
                         query = query.Where(x => x.IdSemestre == filtros.Semestre.IdSemestre);
 
+                    if (filtros.Semestre != null && !Equals(Guid.Empty, filtros.Semestre.InicioData))
+                    {
+                        query = query.Where(x =>
+                            db.SemestreData
+                                .Where(y => y.InicioData == filtros.Semestre.InicioData && y.ExclusaoData == null)
+                                .Select(y => y.IdSemestre)
+                                .Contains(x.IdSemestre));
+                    }
+
+                    if(!string.IsNullOrEmpty(filtros.Status))
+                        query = query.Where(x => x.Status == filtros.Status);
+
                     if (filtros.Professor != null && !Equals(Guid.Empty, filtros.Professor.IdProfessor))
                         query = query.Where(x => x.IdProfessor == filtros.Professor.IdProfessor);
                 }
 
-                List<DisciplinaSemestre> disciplinas = query.Select(x => Converter(x)).ToList();
+                List<DisciplinaSemestre> disciplinas =
+                    query
+                        .Select(x => Converter(x))
+                        .OrderBy(x => x.Semestre.Nome)
+                        .ThenBy(x => x.Disciplina.Curso.Nome)
+                        .ThenBy(x => x.DiaOrdem)
+                        .ThenBy(x => x.Horario)
+                        .ToList();
 
                 db.Dispose();
 
@@ -140,11 +159,23 @@ namespace SistemaMatricula.DAO
 
                 if (disciplina != null)
                 {
-                    disciplina.IdDisciplina = item.Disciplina.IdDisciplina;
-                    disciplina.IdSemestre = item.Semestre.IdSemestre;
-                    disciplina.IdProfessor = item.Professor.IdProfessor;
-                    disciplina.DiaSemana = item.DiaSemana;
-                    disciplina.Horario = item.Horario;
+                    if (item.Disciplina != null)
+                        disciplina.IdDisciplina = item.Disciplina.IdDisciplina;
+
+                    if (item.Semestre != null)
+                        disciplina.IdSemestre = item.Semestre.IdSemestre;
+
+                    if (item.Professor != null)
+                        disciplina.IdProfessor = item.Professor.IdProfessor;
+
+                    if (!string.IsNullOrEmpty(disciplina.DiaSemana))
+                        disciplina.DiaSemana = item.DiaSemana;
+
+                    if (!string.IsNullOrEmpty(disciplina.Horario))
+                        disciplina.Horario = item.Horario;
+
+                    if (!string.IsNullOrEmpty(disciplina.Status))
+                        disciplina.Status = item.Status;
 
                     db.SaveChanges();
                     db.Dispose();
@@ -201,7 +232,7 @@ namespace SistemaMatricula.DAO
                 if (disciplina != null)
                 {
                     disciplina.ExclusaoData = DateTime.Now;
-                    disciplina.ExclusaoPor = Guid.Empty;  //TODO: Alterar para ID do usuário logado
+                    disciplina.ExclusaoPor = Usuario.Logado.IdUsuario;
 
                     db.SaveChanges();
                     db.Dispose();
