@@ -1,0 +1,124 @@
+﻿@model SistemaMatricula.Models.User
+@{ ViewBag.Title = "Manutenção de Usuários"; }
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="row">
+            <div class="col-md-9">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+            <div class="col-md-3 text-right">
+                <a class="btn btn-primary btn-sm" href="@Url.Action("Edit", "User")">
+                    <i class="fas fa-plus"></i> ADICIONAR USUÁRIO
+                </a>
+            </div>
+        </div>
+    </div>
+    @if (string.IsNullOrEmpty(ViewBag.Message) == false)
+    {
+        <div class="card-body">
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        </div>
+    }
+    else
+    {
+        using (Html.BeginForm("Index", "User"))
+        {
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        @Html.TextBoxFor(model => model.Email,
+                            new
+                            {
+                                 @class = "form-control form-control-user",
+                                 @placeholder = "O que você está procurando?"
+                            })
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary btn-user btn-sm">
+                            <i class="fas fa-search"></i> PESQUISAR
+                        </button>
+                        <a class="btn btn-primary btn-user btn-sm"
+                           href="@Url.Action("Index", "User")">LIMPAR FILTRO</a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        @if (ViewBag.List.Count < 1)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td>Não há registros para listar.</td>
+                                </tr>
+                            </tbody>
+                        }
+                        else
+                        {
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th>Login</th>
+                                    <th>E-mail</th>
+                                    <th>Data de Cadastro</th>
+                                    <th class="text-center" colspan="2">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.List)
+                                {
+                                    <tr>
+                                        <td>@item.Login</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.RegisterDate.ToString("dd/MM/yyyy")</td>
+                                        <td class="text-center">
+                                            <a class="btn btn-warning btn-sm"
+                                               href="@Url.Action("Edit", "User", new { Login = item.Login })">
+                                                <i class="fas fa-pen"></i> EDITAR
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-danger btn-sm list-delete" href="#"
+                                               data-toggle="modal" data-target="#delete-modal"
+                                               data-item-name="@item.Login" data-item-url="/User/Delete/@item.IdUser">
+                                                <i class="fas fa-trash"></i> EXCLUIR
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
+                            Página @Model.Pagination.Actual de @Model.Pagination.Pages<br />
+                            Total de @Model.Pagination.Rows registro(s)
+                        </div>
+                    </div>
+                    @if (Model.Pagination.Pages > 1)
+                    {
+                        <div class="col-sm-12 col-md-7">
+                            <div class="dataTables_paginate paging_simple_numbers">
+                                <ul class="pagination">
+                                    @for (int page = 1; page <= Model.Pagination.Pages; page++)
+                                    {
+                                        string active = page == Model.Pagination.Actual ? "active" : "";
+                                        <li class="paginate_button page-item @active">
+                                            <button type="submit" class="btn page-link" name="Pagination.Actual" value="@page">@page</button>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@Html.Partial("_DeleteModal", "Usuário")

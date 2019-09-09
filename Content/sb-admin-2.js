@@ -46,26 +46,42 @@
         e.preventDefault();
     });
 
-    $(document).on('submit', 'form', function (e) {
-        $('.btn').not('button.btn').each(function () {
-            $(this).fadeTo("fast", 0.60);
-            $(this).removeAttr("href");
-        });
-        $('button.btn').text('AGUARDE...');
-        $('button.btn').fadeTo("fast", 0.50);
+    $(document).on('click', 'a.btn', function (e) {
+        if ($(this).hasClass("list-delete") == false) {
+            $('.btn').not(this).each(function () {
+                $(this).fadeTo("fast", 0.60);
+                if ($(this).is('button')) {
+                    $(this).attr("disabled", true);
+                } else {
+                    $(this).removeAttr("href");
+                }
+            });
+            $(this).text('AGUARDE...');
+            $(this).fadeTo("fast", 0.50);
+        }
     });
 
-    $(document).on('click', 'a.btn', function (e) {
-        $('.btn').not(this).each(function () {
-            $(this).fadeTo("fast", 0.60);
-            if ($(this).is('button')) {
-                $(this).attr("disabled", true);
-            } else {
-                $(this).removeAttr("href");
-            }
-        });
-        $(this).text('AGUARDE...');
-        $(this).fadeTo("fast", 0.50);
+    $(document).on('click', 'button.btn', function (e) {
+        var inputs = $("input:invalid");
+        if (inputs.length == 0) {
+            $('.btn').not(this).each(function () {
+                $(this).fadeTo("fast", 0.60);
+                if ($(this).is('button')) {
+                    $(this).attr("disabled", true);
+                } else {
+                    $(this).removeAttr("href");
+                }
+            });
+            $(this).text('AGUARDE...');
+            $(this).fadeTo("fast", 0.50);
+        }
+    });
+
+    $(document).on('click', '.list-delete', function (e) {
+        var name = $(this).attr('data-item-name');
+        $("#modal-item").text(name);
+        var url = $(this).attr('data-item-url');
+        $("#modal-url").attr('href', url);
     });
 
     $(".cpf").inputmask("mask", {
@@ -74,14 +90,14 @@
             reverse: true
         });
 
-    $(".nascimento").inputmask("mask", {
+    $(".birthday").inputmask("mask", {
         "mask": "99/99/9999"
     }, {
             reverse: true
         });
 
-    if ($(".nascimento").val() == "01/01/0001") {
-        $(".nascimento").val("");
+    if ($(".birthday").val() == "01/01/0001") {
+        $(".birthday").val("");
     }
 
 })(jQuery); // End of use strict

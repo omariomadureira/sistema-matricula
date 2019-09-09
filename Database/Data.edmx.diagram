@@ -9,17 +9,18 @@
         <EntityTypeShape EntityType="Model.AspNetRoles" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.AspNetUsers" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.CursoData" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.DisciplinaData" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="true" />
-        <AssociationConnector Association="Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.AspNetUserRoles" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="Model.AlunoData" Width="1.5" PointX="7.375" PointY="0.75" />
-        <EntityTypeShape EntityType="Model.ProfessorData" Width="1.5" PointX="9.375" PointY="0.75" />
-        <EntityTypeShape EntityType="Model.SemestreData" Width="1.5" PointX="0.75" PointY="9.75" />
-        <EntityTypeShape EntityType="Model.DisciplinaSemestreData" Width="1.5" PointX="9.375" PointY="4.75" />
-        <EntityTypeShape EntityType="Model.DisciplinaSemestreAlunoData" Width="1.5" PointX="9.375" PointY="8.75" />
+        <EntityTypeShape EntityType="Model.CourseData" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.LogData" Width="1.5" PointX="9.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Model.SemesterData" Width="1.5" PointX="2.75" PointY="9.75" />
+        <EntityTypeShape EntityType="Model.TeacherData" Width="1.5" PointX="9.75" PointY="3.75" />
+        <EntityTypeShape EntityType="Model.AspNetUsers" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="Model.StudentData" Width="1.5" PointX="10.375" PointY="7.75" />
+        <AssociationConnector Association="Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="Model.AspNetUserRoles" />
+        <EntityTypeShape EntityType="Model.ClassData" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.RegistryData" Width="1.5" PointX="5.375" PointY="11.75" />
+        <EntityTypeShape EntityType="Model.GridData" Width="1.5" PointX="7.375" PointY="7.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

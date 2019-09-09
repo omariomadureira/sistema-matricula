@@ -15,20 +15,6 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
-        <EntityType Name="AlunoData">
-          <Key>
-            <PropertyRef Name="IdAluno" />
-          </Key>
-          <Property Name="IdAluno" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Nome" Type="nchar" MaxLength="100" Nullable="false" />
-          <Property Name="DataNascimento" Type="datetime" Nullable="false" />
-          <Property Name="Email" Type="nchar" MaxLength="100" Nullable="false" />
-          <Property Name="CPF" Type="nchar" MaxLength="15" Nullable="false" />
-          <Property Name="CadastroData" Type="datetime" Nullable="false" />
-          <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ExclusaoData" Type="datetime" />
-          <Property Name="ExclusaoPor" Type="uniqueidentifier" />
-        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -79,91 +65,116 @@
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
-          <Property Name="CadastroData" Type="datetime" Nullable="false" />
-          <Property Name="ExclusaoData" Type="datetime" />
-          <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+          <Property Name="RegisterDate" Type="datetime" Nullable="false" />
+          <Property Name="DeleteDate" Type="datetime" />
+          <Property Name="DeleteBy" Type="uniqueidentifier" />
         </EntityType>
-        <EntityType Name="CursoData">
+        <EntityType Name="ClassData">
           <Key>
-            <PropertyRef Name="IdCurso" />
+            <PropertyRef Name="IdClass" />
           </Key>
-          <Property Name="IdCurso" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Nome" Type="nchar" MaxLength="100" Nullable="false" />
-          <Property Name="Descricao" Type="varchar(max)" Nullable="false" />
-          <Property Name="Creditos" Type="int" Nullable="false" />
-          <Property Name="CadastroData" Type="datetime" Nullable="false" />
-          <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ExclusaoData" Type="datetime" />
-          <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+          <Property Name="IdClass" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" Nullable="false" />
+          <Property Name="IdCourse" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RegisterDate" Type="datetime" Nullable="false" />
+          <Property Name="RegisterBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DeleteDate" Type="datetime" />
+          <Property Name="DeleteBy" Type="uniqueidentifier" />
         </EntityType>
-        <EntityType Name="DisciplinaData">
+        <EntityType Name="CourseData">
           <Key>
-            <PropertyRef Name="IdDisciplina" />
+            <PropertyRef Name="IdCourse" />
           </Key>
-          <Property Name="IdDisciplina" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Nome" Type="nchar" MaxLength="100" Nullable="false" />
-          <Property Name="Descricao" Type="varchar(max)" Nullable="false" />
-          <Property Name="IdCurso" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="CadastroData" Type="datetime" Nullable="false" />
-          <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ExclusaoData" Type="datetime" />
-          <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+          <Property Name="IdCourse" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" Nullable="false" />
+          <Property Name="Credits" Type="int" Nullable="false" />
+          <Property Name="RegisterDate" Type="datetime" Nullable="false" />
+          <Property Name="RegisterBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DeleteDate" Type="datetime" />
+          <Property Name="DeleteBy" Type="uniqueidentifier" />
         </EntityType>
-        <EntityType Name="DisciplinaSemestreAlunoData">
+        <EntityType Name="GridData">
           <Key>
-            <PropertyRef Name="IdDisciplinaSemestre" />
-            <PropertyRef Name="IdAluno" />
+            <PropertyRef Name="IdGrid" />
           </Key>
-          <Property Name="IdDisciplinaSemestre" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="IdAluno" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Alternativa" Type="bit" />
-          <Property Name="CadastroData" Type="datetime" Nullable="false" />
-          <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ExclusaoData" Type="datetime" />
-          <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+          <Property Name="IdGrid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdClass" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdSemester" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdTeacher" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Weekday" Type="int" Nullable="false" />
+          <Property Name="Time" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="RegisterDate" Type="datetime" Nullable="false" />
+          <Property Name="RegisterBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DeleteDate" Type="datetime" />
+          <Property Name="DeleteBy" Type="uniqueidentifier" />
         </EntityType>
-        <EntityType Name="DisciplinaSemestreData">
+        <EntityType Name="LogData">
           <Key>
-            <PropertyRef Name="IdDisciplinaSemestre" />
+            <PropertyRef Name="IdLog" />
           </Key>
-          <Property Name="IdDisciplinaSemestre" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="IdDisciplina" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="IdSemestre" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="IdProfessor" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="DiaSemana" Type="nchar" MaxLength="15" Nullable="false" />
-          <Property Name="Horario" Type="nchar" MaxLength="5" Nullable="false" />
-          <Property Name="Status" Type="nchar" MaxLength="10" Nullable="false" />
-          <Property Name="CadastroData" Type="datetime" Nullable="false" />
-          <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ExclusaoData" Type="datetime" />
-          <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+          <Property Name="IdLog" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Notes" Type="text" Nullable="false" />
+          <Property Name="IdUser" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RegisterDate" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="ProfessorData">
+        <EntityType Name="RegistryData">
           <Key>
-            <PropertyRef Name="IdProfessor" />
+            <PropertyRef Name="IdRegistry" />
           </Key>
-          <Property Name="IdProfessor" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Nome" Type="nchar" MaxLength="100" Nullable="false" />
-          <Property Name="DataNascimento" Type="datetime" Nullable="false" />
-          <Property Name="Email" Type="nchar" MaxLength="100" Nullable="false" />
-          <Property Name="CPF" Type="nchar" MaxLength="15" Nullable="false" />
-          <Property Name="Curriculo" Type="text" Nullable="false" />
-          <Property Name="CadastroData" Type="datetime" Nullable="false" />
-          <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ExclusaoData" Type="datetime" />
-          <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+          <Property Name="IdRegistry" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdGrid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdStudent" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Alternative" Type="bit" />
+          <Property Name="RegisterBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RegisterDate" Type="datetime" Nullable="false" />
+          <Property Name="DeleteDate" Type="datetime" />
+          <Property Name="DeleteBy" Type="uniqueidentifier" />
         </EntityType>
-        <EntityType Name="SemestreData">
+        <EntityType Name="SemesterData">
           <Key>
-            <PropertyRef Name="IdSemestre" />
+            <PropertyRef Name="IdSemester" />
           </Key>
-          <Property Name="IdSemestre" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="InicioData" Type="datetime" Nullable="false" />
-          <Property Name="Periodo" Type="nchar" MaxLength="12" Nullable="false" />
-          <Property Name="CadastroData" Type="datetime" Nullable="false" />
-          <Property Name="CadastroPor" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ExclusaoData" Type="datetime" />
-          <Property Name="ExclusaoPor" Type="uniqueidentifier" />
+          <Property Name="IdSemester" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="InitialDate" Type="datetime" Nullable="false" />
+          <Property Name="Period" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="RegisterDate" Type="datetime" Nullable="false" />
+          <Property Name="RegisterBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DeleteDate" Type="datetime" />
+          <Property Name="DeleteBy" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="StudentData">
+          <Key>
+            <PropertyRef Name="IdStudent" />
+          </Key>
+          <Property Name="IdStudent" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Birthday" Type="datetime" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CPF" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="RegisterDate" Type="datetime" Nullable="false" />
+          <Property Name="RegisterBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DeleteDate" Type="datetime" />
+          <Property Name="DeleteBy" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="TeacherData">
+          <Key>
+            <PropertyRef Name="IdTeacher" />
+          </Key>
+          <Property Name="IdTeacher" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Birthday" Type="datetime" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CPF" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Resume" Type="text" Nullable="false" />
+          <Property Name="RegisterDate" Type="datetime" Nullable="false" />
+          <Property Name="RegisterBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DeleteDate" Type="datetime" />
+          <Property Name="DeleteBy" Type="uniqueidentifier" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
@@ -233,18 +244,19 @@
         </Function>
         <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AlunoData" EntityType="Self.AlunoData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CursoData" EntityType="Self.CursoData" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DisciplinaData" EntityType="Self.DisciplinaData" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DisciplinaSemestreAlunoData" EntityType="Self.DisciplinaSemestreAlunoData" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DisciplinaSemestreData" EntityType="Self.DisciplinaSemestreData" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProfessorData" EntityType="Self.ProfessorData" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SemestreData" EntityType="Self.SemestreData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClassData" EntityType="Self.ClassData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseData" EntityType="Self.CourseData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GridData" EntityType="Self.GridData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogData" EntityType="Self.LogData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RegistryData" EntityType="Self.RegistryData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SemesterData" EntityType="Self.SemesterData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentData" EntityType="Self.StudentData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TeacherData" EntityType="Self.TeacherData" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -282,7 +294,7 @@
           </Key>
           <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Model.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
           <Key>
@@ -292,7 +304,7 @@
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUserLogins">
           <Key>
@@ -303,113 +315,13 @@
           <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
         </EntityType>
-        <EntityType Name="AspNetUsers">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
-          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
-          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
-          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
-          <Property Name="ExclusaoPor" Type="Guid" />
-          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
-          <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
-        </EntityType>
-        <EntityType Name="CursoData">
-          <Key>
-            <PropertyRef Name="IdCurso" />
-          </Key>
-          <Property Name="IdCurso" Type="Guid" Nullable="false" />
-          <Property Name="Nome" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Descricao" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Creditos" Type="Int32" Nullable="false" />
-          <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CadastroPor" Type="Guid" Nullable="false" />
-          <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
-          <Property Name="ExclusaoPor" Type="Guid" />
-        </EntityType>
-        <EntityType Name="DisciplinaData">
-          <Key>
-            <PropertyRef Name="IdDisciplina" />
-          </Key>
-          <Property Name="IdDisciplina" Type="Guid" Nullable="false" />
-          <Property Name="Nome" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Descricao" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdCurso" Type="Guid" Nullable="false" />
-          <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CadastroPor" Type="Guid" Nullable="false" />
-          <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
-          <Property Name="ExclusaoPor" Type="Guid" />
-        </EntityType>
-        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserClaims">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserLogins">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="AspNetUserRoles">
-          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="*" />
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" />
-          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" />
-          <EntitySet Name="CursoData" EntityType="Self.CursoData" />
-          <EntitySet Name="DisciplinaData" EntityType="Self.DisciplinaData" />
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
-          <EntitySet Name="AlunoData" EntityType="Model.AlunoData" />
-          <EntitySet Name="ProfessorData" EntityType="Model.ProfessorData" />
-          <EntitySet Name="SemestreData" EntityType="Model.SemestreData" />
-          <EntitySet Name="DisciplinaSemestreData" EntityType="Model.DisciplinaSemestreData" />
           <FunctionImport Name="Grade_ListarCursos" ReturnType="Collection(Model.Grade_ListarCursos_Result)">
             <Parameter Name="IdSemestre" Mode="In" Type="Guid" />
             <Parameter Name="IdCurso" Mode="In" Type="Guid" />
@@ -421,65 +333,28 @@
             <Parameter Name="StatusDisciplina" Mode="In" Type="String" />
             <Parameter Name="IdCurso" Mode="In" Type="Guid" />
           </FunctionImport>
-          <EntitySet Name="DisciplinaSemestreAlunoData" EntityType="Model.DisciplinaSemestreAlunoData" />
+          <EntitySet Name="CourseData" EntityType="Model.CourseData" />
+          <EntitySet Name="LogData" EntityType="Model.LogData" />
+          <EntitySet Name="SemesterData" EntityType="Model.SemesterData" />
+          <EntitySet Name="TeacherData" EntityType="Model.TeacherData" />
+          <EntitySet Name="AspNetUsers" EntityType="Model.AspNetUsers" />
+          <EntitySet Name="StudentData" EntityType="Model.StudentData" />
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="Model.AspNetUserRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <EntitySet Name="ClassData" EntityType="Model.ClassData" />
+          <EntitySet Name="RegistryData" EntityType="Model.RegistryData" />
+          <EntitySet Name="GridData" EntityType="Model.GridData" />
         </EntityContainer>
-        <EntityType Name="AlunoData">
-          <Key>
-            <PropertyRef Name="IdAluno" />
-          </Key>
-          <Property Name="IdAluno" Type="Guid" Nullable="false" />
-          <Property Name="Nome" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
-          <Property Name="DataNascimento" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
-          <Property Name="CPF" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
-          <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CadastroPor" Type="Guid" Nullable="false" />
-          <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
-          <Property Name="ExclusaoPor" Type="Guid" />
-        </EntityType>
-        <EntityType Name="ProfessorData">
-          <Key>
-            <PropertyRef Name="IdProfessor" />
-          </Key>
-          <Property Name="IdProfessor" Type="Guid" Nullable="false" />
-          <Property Name="Nome" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
-          <Property Name="DataNascimento" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
-          <Property Name="CPF" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
-          <Property Name="Curriculo" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CadastroPor" Type="Guid" Nullable="false" />
-          <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
-          <Property Name="ExclusaoPor" Type="Guid" />
-        </EntityType>
-        <EntityType Name="SemestreData">
-          <Key>
-            <PropertyRef Name="IdSemestre" />
-          </Key>
-          <Property Name="IdSemestre" Type="Guid" Nullable="false" />
-          <Property Name="InicioData" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Periodo" Type="String" Nullable="false" MaxLength="12" FixedLength="true" Unicode="true" />
-          <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CadastroPor" Type="Guid" Nullable="false" />
-          <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
-          <Property Name="ExclusaoPor" Type="Guid" />
-        </EntityType>
-        <EntityType Name="DisciplinaSemestreData">
-          <Key>
-            <PropertyRef Name="IdDisciplinaSemestre" />
-          </Key>
-          <Property Name="IdDisciplinaSemestre" Type="Guid" Nullable="false" />
-          <Property Name="IdDisciplina" Type="Guid" Nullable="false" />
-          <Property Name="IdSemestre" Type="Guid" Nullable="false" />
-          <Property Name="IdProfessor" Type="Guid" Nullable="false" />
-          <Property Name="DiaSemana" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
-          <Property Name="Horario" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="true" />
-          <Property Name="Status" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CadastroPor" Type="Guid" Nullable="false" />
-          <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
-          <Property Name="ExclusaoPor" Type="Guid" />
-        </EntityType>
         <ComplexType Name="Grade_ListarCursos_Result">
           <Property Type="Guid" Name="IdSemestre" Nullable="false" />
           <Property Type="String" Name="NomeSemestre" Nullable="true" MaxLength="76" />
@@ -505,18 +380,167 @@
           <Property Type="String" Name="NomeDisciplina" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="NomeProfessor" Nullable="false" MaxLength="100" />
         </ComplexType>
-        <EntityType Name="DisciplinaSemestreAlunoData">
+        <EntityType Name="CourseData">
           <Key>
-            <PropertyRef Name="IdDisciplinaSemestre" />
-            <PropertyRef Name="IdAluno" />
+            <PropertyRef Name="IdCourse" />
           </Key>
-          <Property Name="IdDisciplinaSemestre" Type="Guid" Nullable="false" />
-          <Property Name="IdAluno" Type="Guid" Nullable="false" />
-          <Property Name="Alternativa" Type="Boolean" />
-          <Property Name="CadastroData" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CadastroPor" Type="Guid" Nullable="false" />
-          <Property Name="ExclusaoData" Type="DateTime" Precision="3" />
-          <Property Name="ExclusaoPor" Type="Guid" />
+          <Property Name="IdCourse" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Credits" Type="Int32" Nullable="false" />
+          <Property Name="RegisterDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RegisterBy" Type="Guid" Nullable="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+          <Property Name="DeleteBy" Type="Guid" />
+        </EntityType>
+        <EntityType Name="LogData">
+          <Key>
+            <PropertyRef Name="IdLog" />
+          </Key>
+          <Property Name="IdLog" Type="Guid" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Notes" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IdUser" Type="Guid" Nullable="false" />
+          <Property Name="RegisterDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="SemesterData">
+          <Key>
+            <PropertyRef Name="IdSemester" />
+          </Key>
+          <Property Name="IdSemester" Type="Guid" Nullable="false" />
+          <Property Name="InitialDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Period" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="RegisterDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RegisterBy" Type="Guid" Nullable="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+          <Property Name="DeleteBy" Type="Guid" />
+        </EntityType>
+        <EntityType Name="TeacherData">
+          <Key>
+            <PropertyRef Name="IdTeacher" />
+          </Key>
+          <Property Name="IdTeacher" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CPF" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Resume" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="RegisterDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RegisterBy" Type="Guid" Nullable="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+          <Property Name="DeleteBy" Type="Guid" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="RegisterDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+          <Property Name="DeleteBy" Type="Guid" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+          <NavigationProperty Name="AspNetRoles" Relationship="Model.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+        </EntityType>
+        <EntityType Name="StudentData">
+          <Key>
+            <PropertyRef Name="IdStudent" />
+          </Key>
+          <Property Name="IdStudent" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CPF" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="RegisterDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RegisterBy" Type="Guid" Nullable="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+          <Property Name="DeleteBy" Type="Guid" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Type="Model.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.AspNetUserClaims" Role="AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Type="Model.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.AspNetUserLogins" Role="AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Type="Model.AspNetRoles" Role="AspNetRoles" Multiplicity="*" />
+          <End Type="Model.AspNetUsers" Role="AspNetUsers" Multiplicity="*" />
+        </Association>
+        <EntityType Name="ClassData">
+          <Key>
+            <PropertyRef Name="IdClass" />
+          </Key>
+          <Property Name="IdClass" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IdCourse" Type="Guid" Nullable="false" />
+          <Property Name="RegisterDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RegisterBy" Type="Guid" Nullable="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+          <Property Name="DeleteBy" Type="Guid" />
+        </EntityType>
+        <EntityType Name="RegistryData">
+          <Key>
+            <PropertyRef Name="IdRegistry" />
+          </Key>
+          <Property Name="IdRegistry" Type="Guid" Nullable="false" />
+          <Property Name="IdGrid" Type="Guid" Nullable="false" />
+          <Property Name="IdStudent" Type="Guid" Nullable="false" />
+          <Property Name="Alternative" Type="Boolean" />
+          <Property Name="RegisterBy" Type="Guid" Nullable="false" />
+          <Property Name="RegisterDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+          <Property Name="DeleteBy" Type="Guid" />
+        </EntityType>
+        <EntityType Name="GridData">
+          <Key>
+            <PropertyRef Name="IdGrid" />
+          </Key>
+          <Property Name="IdGrid" Type="Guid" Nullable="false" />
+          <Property Name="IdClass" Type="Guid" Nullable="false" />
+          <Property Name="IdSemester" Type="Guid" Nullable="false" />
+          <Property Name="IdTeacher" Type="Guid" Nullable="false" />
+          <Property Name="Weekday" Type="Int32" Nullable="false" />
+          <Property Name="Time" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="RegisterDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RegisterBy" Type="Guid" Nullable="false" />
+          <Property Name="DeleteDate" Type="DateTime" Precision="3" />
+          <Property Name="DeleteBy" Type="Guid" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -561,124 +585,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AspNetUsers">
-            <EntityTypeMapping TypeName="Model.AspNetUsers">
-              <MappingFragment StoreEntitySet="AspNetUsers">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
-                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
-                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
-                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
-                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-                <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-                <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CursoData">
-            <EntityTypeMapping TypeName="Model.CursoData">
-              <MappingFragment StoreEntitySet="CursoData">
-                <ScalarProperty Name="IdCurso" ColumnName="IdCurso" />
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
-                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
-                <ScalarProperty Name="Creditos" ColumnName="Creditos" />
-                <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-                <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-                <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-                <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DisciplinaData">
-            <EntityTypeMapping TypeName="Model.DisciplinaData">
-              <MappingFragment StoreEntitySet="DisciplinaData">
-                <ScalarProperty Name="IdDisciplina" ColumnName="IdDisciplina" />
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
-                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
-                <ScalarProperty Name="IdCurso" ColumnName="IdCurso" />
-                <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-                <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-                <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-                <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-            <EndProperty Name="AspNetRoles">
-              <ScalarProperty Name="Id" ColumnName="RoleId" />
-            </EndProperty>
-            <EndProperty Name="AspNetUsers">
-              <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <EntitySetMapping Name="AlunoData">
-            <EntityTypeMapping TypeName="Model.AlunoData">
-              <MappingFragment StoreEntitySet="AlunoData">
-                <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-                <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-                <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-                <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-                <ScalarProperty Name="CPF" ColumnName="CPF" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
-                <ScalarProperty Name="IdAluno" ColumnName="IdAluno" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ProfessorData">
-            <EntityTypeMapping TypeName="Model.ProfessorData">
-              <MappingFragment StoreEntitySet="ProfessorData">
-                <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-                <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-                <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-                <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-                <ScalarProperty Name="Curriculo" ColumnName="Curriculo" />
-                <ScalarProperty Name="CPF" ColumnName="CPF" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
-                <ScalarProperty Name="IdProfessor" ColumnName="IdProfessor" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SemestreData">
-            <EntityTypeMapping TypeName="Model.SemestreData">
-              <MappingFragment StoreEntitySet="SemestreData">
-                <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-                <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-                <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-                <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-                <ScalarProperty Name="Periodo" ColumnName="Periodo" />
-                <ScalarProperty Name="InicioData" ColumnName="InicioData" />
-                <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DisciplinaSemestreData">
-            <EntityTypeMapping TypeName="Model.DisciplinaSemestreData">
-              <MappingFragment StoreEntitySet="DisciplinaSemestreData">
-                <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-                <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-                <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-                <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Horario" ColumnName="Horario" />
-                <ScalarProperty Name="DiaSemana" ColumnName="DiaSemana" />
-                <ScalarProperty Name="IdProfessor" ColumnName="IdProfessor" />
-                <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
-                <ScalarProperty Name="IdDisciplina" ColumnName="IdDisciplina" />
-                <ScalarProperty Name="IdDisciplinaSemestre" ColumnName="IdDisciplinaSemestre" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="Grade_ListarCursos" FunctionName="Model.Store.Grade_ListarCursos">
             <ResultMapping>
               <ComplexTypeMapping TypeName="Model.Grade_ListarCursos_Result">
@@ -703,16 +609,147 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="DisciplinaSemestreAlunoData">
-            <EntityTypeMapping TypeName="Model.DisciplinaSemestreAlunoData">
-              <MappingFragment StoreEntitySet="DisciplinaSemestreAlunoData">
-                <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-                <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-                <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-                <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-                <ScalarProperty Name="Alternativa" ColumnName="Alternativa" />
-                <ScalarProperty Name="IdAluno" ColumnName="IdAluno" />
-                <ScalarProperty Name="IdDisciplinaSemestre" ColumnName="IdDisciplinaSemestre" />
+          <EntitySetMapping Name="CourseData">
+            <EntityTypeMapping TypeName="Model.CourseData">
+              <MappingFragment StoreEntitySet="CourseData">
+                <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+                <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="Credits" ColumnName="Credits" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IdCourse" ColumnName="IdCourse" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogData">
+            <EntityTypeMapping TypeName="Model.LogData">
+              <MappingFragment StoreEntitySet="LogData">
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="IdLog" ColumnName="IdLog" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SemesterData">
+            <EntityTypeMapping TypeName="Model.SemesterData">
+              <MappingFragment StoreEntitySet="SemesterData">
+                <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+                <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="InitialDate" ColumnName="InitialDate" />
+                <ScalarProperty Name="IdSemester" ColumnName="IdSemester" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TeacherData">
+            <EntityTypeMapping TypeName="Model.TeacherData">
+              <MappingFragment StoreEntitySet="TeacherData">
+                <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+                <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="Resume" ColumnName="Resume" />
+                <ScalarProperty Name="CPF" ColumnName="CPF" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IdTeacher" ColumnName="IdTeacher" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="Model.AspNetUsers">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentData">
+            <EntityTypeMapping TypeName="Model.StudentData">
+              <MappingFragment StoreEntitySet="StudentData">
+                <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+                <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="CPF" ColumnName="CPF" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IdStudent" ColumnName="IdStudent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="ClassData">
+            <EntityTypeMapping TypeName="Model.ClassData">
+              <MappingFragment StoreEntitySet="ClassData">
+                <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+                <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="IdCourse" ColumnName="IdCourse" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IdClass" ColumnName="IdClass" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RegistryData">
+            <EntityTypeMapping TypeName="Model.RegistryData">
+              <MappingFragment StoreEntitySet="RegistryData">
+                <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+                <ScalarProperty Name="Alternative" ColumnName="Alternative" />
+                <ScalarProperty Name="IdStudent" ColumnName="IdStudent" />
+                <ScalarProperty Name="IdGrid" ColumnName="IdGrid" />
+                <ScalarProperty Name="IdRegistry" ColumnName="IdRegistry" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GridData">
+            <EntityTypeMapping TypeName="Model.GridData">
+              <MappingFragment StoreEntitySet="GridData">
+                <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+                <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+                <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Weekday" ColumnName="Weekday" />
+                <ScalarProperty Name="IdTeacher" ColumnName="IdTeacher" />
+                <ScalarProperty Name="IdSemester" ColumnName="IdSemester" />
+                <ScalarProperty Name="IdClass" ColumnName="IdClass" />
+                <ScalarProperty Name="IdGrid" ColumnName="IdGrid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

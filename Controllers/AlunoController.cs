@@ -6,13 +6,13 @@ namespace SistemaMatricula.Controllers
     [Authorize(Roles = Usuario.ROLE_ADMINISTRADOR)]
     public class AlunoController : Controller
     {
-        public ActionResult Index(Aluno item)
+        public ActionResult Index(Student item)
         {
             ModelState.Clear();
 
             try
             {
-                ViewBag.Alunos = Aluno.Listar(item.Nome);
+                ViewBag.Alunos = Student.Listar(item.Nome);
 
                 if (ViewBag.Alunos == null)
                 {
@@ -28,7 +28,7 @@ namespace SistemaMatricula.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(Aluno item)
+        public ActionResult Edit(Student item)
         {
             ViewBag.HideScreen = false;
             ModelState.Clear();
@@ -37,7 +37,7 @@ namespace SistemaMatricula.Controllers
             {
                 if (!Equals(item.IdAluno, System.Guid.Empty))
                 {
-                    item = Aluno.Consultar(item.IdAluno);
+                    item = Student.Consultar(item.IdAluno);
 
                     if (item == null)
                     {
@@ -58,7 +58,7 @@ namespace SistemaMatricula.Controllers
         }
 
         [HttpPost]
-        public ActionResult Update(Aluno item)
+        public ActionResult Update(Student item)
         {
             ViewBag.HideScreen = false;
 
@@ -72,7 +72,7 @@ namespace SistemaMatricula.Controllers
 
                     if (!Equals(item.IdAluno, System.Guid.Empty))
                     {
-                        if (Aluno.Alterar(item))
+                        if (Student.Alterar(item))
                         {
                             return RedirectToAction("Index", "Aluno");
                         }
@@ -84,7 +84,7 @@ namespace SistemaMatricula.Controllers
                     }
                     else
                     {
-                        if (Aluno.Incluir(item))
+                        if (Student.Incluir(item))
                         {
                             return RedirectToAction("Index", "Aluno");
                         }
@@ -109,7 +109,7 @@ namespace SistemaMatricula.Controllers
             return View("Edit", item);
         }
 
-        public ActionResult Delete(Aluno item, bool? Delete)
+        public ActionResult Delete(Student item, bool? Delete)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace SistemaMatricula.Controllers
                 {
                     if (Delete.HasValue && Delete.Value)
                     {
-                        if (Aluno.Desativar(item.IdAluno))
+                        if (Student.Desativar(item.IdAluno))
                         {
                             return RedirectToAction("Index", "Aluno");
                         }
@@ -128,7 +128,7 @@ namespace SistemaMatricula.Controllers
                         }
                     }
 
-                    item = Aluno.Consultar(item.IdAluno);
+                    item = Student.Consultar(item.IdAluno);
 
                     if (item == null)
                     {

@@ -1,7 +1,14 @@
-﻿@{
-    ViewBag.Title = "About";
-}
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+﻿@{ViewBag.Title = "Sobre";}
 
-<p>Use this area to provide additional information.</p>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+        </div>
+        <div class="card-body">
+            <p>
+                Este projeto foi desenvolvido por <b><a href="mailto:mdsmadureira@gmail.com">Mario Madureira</a></b> e
+                feito exclusivamente para fins de prática de estudo.
+            </p>
+            <p>Fica proibido a utilização do código para outra finalidade a não ser o citado anteriormente.</p>
+        </div>
+    </div>

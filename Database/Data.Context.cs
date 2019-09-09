@@ -31,14 +31,15 @@ namespace SistemaMatricula.Database
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual DbSet<CourseData> CourseData { get; set; }
+        public virtual DbSet<LogData> LogData { get; set; }
+        public virtual DbSet<SemesterData> SemesterData { get; set; }
+        public virtual DbSet<TeacherData> TeacherData { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<CursoData> CursoData { get; set; }
-        public virtual DbSet<DisciplinaData> DisciplinaData { get; set; }
-        public virtual DbSet<AlunoData> AlunoData { get; set; }
-        public virtual DbSet<ProfessorData> ProfessorData { get; set; }
-        public virtual DbSet<SemestreData> SemestreData { get; set; }
-        public virtual DbSet<DisciplinaSemestreData> DisciplinaSemestreData { get; set; }
-        public virtual DbSet<DisciplinaSemestreAlunoData> DisciplinaSemestreAlunoData { get; set; }
+        public virtual DbSet<StudentData> StudentData { get; set; }
+        public virtual DbSet<ClassData> ClassData { get; set; }
+        public virtual DbSet<RegistryData> RegistryData { get; set; }
+        public virtual DbSet<GridData> GridData { get; set; }
     
         public virtual ObjectResult<Grade_ListarCursos_Result> Grade_ListarCursos(Nullable<System.Guid> idSemestre, Nullable<System.Guid> idCurso, string statusGrade, string palavraChave)
         {

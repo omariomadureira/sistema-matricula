@@ -13,7 +13,7 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                var Semestres = Semestre.Listar();
+                var Semestres = Semester.Listar();
 
                 if (Semestres == null)
                 {
@@ -21,7 +21,7 @@ namespace SistemaMatricula.Controllers
                     return View();
                 }
 
-                var Cursos = Curso.Listar();
+                var Cursos = Course.Listar();
 
                 if (Cursos == null)
                 {
@@ -29,7 +29,7 @@ namespace SistemaMatricula.Controllers
                     return View();
                 }
 
-                var StatusGrade = DisciplinaSemestre.StatusGrade();
+                var StatusGrade = Grid.StatusGrade();
 
                 if (StatusGrade == null)
                 {
@@ -41,7 +41,7 @@ namespace SistemaMatricula.Controllers
                 view.slCursos = new SelectList(Cursos, "IdCurso", "Nome");
                 view.slStatusGrade = new SelectList(StatusGrade);
 
-                ViewBag.Grades = DisciplinaSemestre.ListarCursos(view.SemestreSelecionado, view.CursoSelecionado, view.StatusGradeSelecionado, view.PalavraChave);
+                ViewBag.Grades = Grid.ListarCursos(view.SemestreSelecionado, view.CursoSelecionado, view.StatusGradeSelecionado, view.PalavraChave);
 
                 if (ViewBag.Grades == null)
                 {
@@ -63,12 +63,12 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                DisciplinaSemestre filtros = new DisciplinaSemestre()
+                Grid filtros = new Grid()
                 {
-                    Status = DisciplinaSemestre.DISCIPLINA_CADASTRADA
+                    Status = Grid.DISCIPLINA_CADASTRADA
                 };
 
-                ViewBag.Grades = DisciplinaSemestre.Listar(filtros);
+                ViewBag.Grades = Grid.Listar(filtros);
 
                 if (ViewBag.Grades == null)
                 {
@@ -92,12 +92,12 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                DisciplinaSemestre filtros = new DisciplinaSemestre()
+                Grid filtros = new Grid()
                 {
-                    Status = DisciplinaSemestre.DISCIPLINA_CADASTRADA
+                    Status = Grid.DISCIPLINA_CADASTRADA
                 };
 
-                DisciplinaSemestre[] lista = DisciplinaSemestre.Listar(filtros);
+                Grid[] lista = Grid.Listar(filtros);
 
                 if (lista == null)
                 {
@@ -106,11 +106,11 @@ namespace SistemaMatricula.Controllers
                     return View("Start");
                 }
 
-                foreach (DisciplinaSemestre item in lista)
+                foreach (Grid item in lista)
                 {
-                    item.Status = DisciplinaSemestre.DISCIPLINA_LIBERADA;
+                    item.Status = Grid.DISCIPLINA_LIBERADA;
 
-                    if (DisciplinaSemestre.Alterar(item))
+                    if (Grid.Alterar(item))
                     {
                         continue;
                     }
@@ -143,7 +143,7 @@ namespace SistemaMatricula.Controllers
                 if (view.SemestreSelecionado != null && view.CursoSelecionado != null
                     && !Equals(view.SemestreSelecionado, System.Guid.Empty) && !Equals(view.CursoSelecionado, System.Guid.Empty))
                 {
-                    var semestres = Semestre.Listar();
+                    var semestres = Semester.Listar();
 
                     if (semestres == null)
                     {
@@ -152,7 +152,7 @@ namespace SistemaMatricula.Controllers
                         return View();
                     }
 
-                    var cursos = Curso.Listar();
+                    var cursos = Course.Listar();
 
                     if (cursos == null)
                     {
@@ -164,13 +164,13 @@ namespace SistemaMatricula.Controllers
                     view.slSemestres = new SelectList(semestres, "IdSemestre", "Nome", view.SemestreSelecionado);
                     view.slCursos = new SelectList(cursos, "IdCurso", "Nome", view.CursoSelecionado);
 
-                    DisciplinaSemestre filtros = new DisciplinaSemestre()
+                    Grid filtros = new Grid()
                     {
-                        Semestre = new Semestre() { IdSemestre = view.SemestreSelecionado.Value },
-                        Disciplina = new Disciplina() { Curso = new Curso { IdCurso = view.CursoSelecionado.Value } }
+                        Semestre = new Semester() { IdSemestre = view.SemestreSelecionado.Value },
+                        Disciplina = new Class() { Curso = new Course { IdCurso = view.CursoSelecionado.Value } }
                     };
 
-                    ViewBag.Grades = DisciplinaSemestre.Listar(filtros);
+                    ViewBag.Grades = Grid.Listar(filtros);
 
                     if (ViewBag.Grades == null)
                     {
@@ -203,12 +203,12 @@ namespace SistemaMatricula.Controllers
             {
                 if (!Equals(view.IdSemestre, System.Guid.Empty) && !Equals(view.IdCurso, System.Guid.Empty))
                 {
-                    var semestre = Semestre.Consultar(view.IdSemestre);
-                    var curso = Curso.Consultar(view.IdCurso);
+                    var semestre = Semester.Consultar(view.IdSemestre);
+                    var curso = Course.Consultar(view.IdCurso);
 
                     if (semestre != null && curso != null)
                     {
-                        var professores = Professor.Listar();
+                        var professores = Teacher.Listar();
 
                         if (professores == null)
                         {
@@ -217,7 +217,7 @@ namespace SistemaMatricula.Controllers
                             return View();
                         }
 
-                        var horarios = DisciplinaSemestre.Horarios(semestre.Periodo.Trim());
+                        var horarios = Grid.Horarios(semestre.Periodo.Trim());
 
                         if (horarios == null)
                         {
@@ -226,7 +226,7 @@ namespace SistemaMatricula.Controllers
                             return View();
                         }
 
-                        var dias = DisciplinaSemestre.Dias();
+                        var dias = Grid.Dias();
 
                         if (dias == null)
                         {
@@ -235,13 +235,13 @@ namespace SistemaMatricula.Controllers
                             return View();
                         }
 
-                        DisciplinaSemestre filtro = new DisciplinaSemestre()
+                        Grid filtro = new Grid()
                         {
                             Semestre = semestre,
-                            Disciplina = new Disciplina { Curso = curso }
+                            Disciplina = new Class { Curso = curso }
                         };
 
-                        DisciplinaSemestre[] lista = DisciplinaSemestre.Listar(filtro, true);
+                        Grid[] lista = Grid.Listar(filtro, true);
 
                         if (lista.Length == 0)
                         {
@@ -298,11 +298,11 @@ namespace SistemaMatricula.Controllers
                         {
                             item.DiaSemana = item.DiaSelecionado.Trim();
                             item.Horario = item.HorarioSelecionado.Trim();
-                            item.Professor = new Professor() { IdProfessor = item.ProfessorSelecionado };
+                            item.Professor = new Teacher() { IdProfessor = item.ProfessorSelecionado };
 
                             if (!Equals(item.IdDisciplinaSemestre, System.Guid.Empty))
                             {
-                                if (DisciplinaSemestre.Alterar(item))
+                                if (Grid.Alterar(item))
                                 {
                                     continue;
                                 }
@@ -315,7 +315,7 @@ namespace SistemaMatricula.Controllers
                             }
                             else
                             {
-                                if (DisciplinaSemestre.Incluir(item))
+                                if (Grid.Incluir(item))
                                 {
                                     continue;
                                 }
@@ -342,12 +342,12 @@ namespace SistemaMatricula.Controllers
                     ViewBag.Message = "Não foi possível atualizar os registros. Revise o preenchimento dos campos.";
                 }
 
-                var semestre = Semestre.Consultar(view.IdSemestre);
-                var curso = Curso.Consultar(view.IdCurso);
+                var semestre = Semester.Consultar(view.IdSemestre);
+                var curso = Course.Consultar(view.IdCurso);
 
                 if (semestre != null && curso != null)
                 {
-                    var professores = Professor.Listar();
+                    var professores = Teacher.Listar();
 
                     if (professores == null)
                     {
@@ -356,7 +356,7 @@ namespace SistemaMatricula.Controllers
                         return View("EditAll");
                     }
 
-                    var horarios = DisciplinaSemestre.Horarios(semestre.Periodo.Trim());
+                    var horarios = Grid.Horarios(semestre.Periodo.Trim());
 
                     if (horarios == null)
                     {
@@ -365,7 +365,7 @@ namespace SistemaMatricula.Controllers
                         return View("EditAll");
                     }
 
-                    var dias = DisciplinaSemestre.Dias();
+                    var dias = Grid.Dias();
 
                     if (dias == null)
                     {
@@ -402,11 +402,11 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                view.Semestre = Semestre.Consultar(view.IdSemestre);
+                view.Semestre = Semester.Consultar(view.IdSemestre);
 
                 if (view.Semestre != null)
                 {
-                    var professores = Professor.Listar();
+                    var professores = Teacher.Listar();
 
                     if (professores == null)
                     {
@@ -415,7 +415,7 @@ namespace SistemaMatricula.Controllers
                         return View(view);
                     }
 
-                    var horarios = DisciplinaSemestre.Horarios(view.Semestre.Periodo.Trim());
+                    var horarios = Grid.Horarios(view.Semestre.Periodo.Trim());
 
                     if (horarios == null)
                     {
@@ -424,7 +424,7 @@ namespace SistemaMatricula.Controllers
                         return View(view);
                     }
 
-                    var dias = DisciplinaSemestre.Dias();
+                    var dias = Grid.Dias();
 
                     if (dias == null)
                     {
@@ -433,12 +433,12 @@ namespace SistemaMatricula.Controllers
                         return View(view);
                     }
 
-                    view.Disciplina = new Disciplina()
+                    view.Disciplina = new Class()
                     {
-                        Curso = new Curso() { IdCurso = view.IdCurso }
+                        Curso = new Course() { IdCurso = view.IdCurso }
                     };
 
-                    var disciplinas = Disciplina.Listar(view.Disciplina);
+                    var disciplinas = Class.Listar(view.Disciplina);
 
                     if (disciplinas == null)
                     {
@@ -454,7 +454,7 @@ namespace SistemaMatricula.Controllers
 
                     if (!Equals(view.IdDisciplinaSemestre, System.Guid.Empty))
                     {
-                        var disciplina = DisciplinaSemestre.Consultar(view.IdDisciplinaSemestre);
+                        var disciplina = Grid.Consultar(view.IdDisciplinaSemestre);
 
                         if (disciplina == null)
                         {
@@ -496,18 +496,18 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                view.Semestre = Semestre.Consultar(view.IdSemestre);
+                view.Semestre = Semester.Consultar(view.IdSemestre);
 
                 if (ModelState.IsValid)
                 {
-                    view.Disciplina = new Disciplina() { IdDisciplina = view.DisciplinaSelecionada };
+                    view.Disciplina = new Class() { IdDisciplina = view.DisciplinaSelecionada };
                     view.DiaSemana = view.DiaSelecionado.Trim();
                     view.Horario = view.HorarioSelecionado.Trim();
-                    view.Professor = new Professor() { IdProfessor = view.ProfessorSelecionado };
+                    view.Professor = new Teacher() { IdProfessor = view.ProfessorSelecionado };
 
                     if (!Equals(view.IdDisciplinaSemestre, System.Guid.Empty))
                     {
-                        if (DisciplinaSemestre.Alterar(view))
+                        if (Grid.Alterar(view))
                         {
                             return RedirectToAction("List", "Grade", new GradeIndexView { CursoSelecionado = view.IdCurso, SemestreSelecionado = view.IdSemestre });
                         }
@@ -520,7 +520,7 @@ namespace SistemaMatricula.Controllers
                     }
                     else
                     {
-                        if (DisciplinaSemestre.Incluir(view))
+                        if (Grid.Incluir(view))
                         {
                             return RedirectToAction("List", "Grade", new GradeIndexView { CursoSelecionado = view.IdCurso, SemestreSelecionado = view.IdSemestre });
                         }
@@ -539,7 +539,7 @@ namespace SistemaMatricula.Controllers
 
                 if (view.Semestre != null)
                 {
-                    var professores = Professor.Listar();
+                    var professores = Teacher.Listar();
 
                     if (professores == null)
                     {
@@ -548,7 +548,7 @@ namespace SistemaMatricula.Controllers
                         return View("Edit", view);
                     }
 
-                    var horarios = DisciplinaSemestre.Horarios(view.Semestre.Periodo.Trim());
+                    var horarios = Grid.Horarios(view.Semestre.Periodo.Trim());
 
                     if (horarios == null)
                     {
@@ -557,7 +557,7 @@ namespace SistemaMatricula.Controllers
                         return View("Edit", view);
                     }
 
-                    var dias = DisciplinaSemestre.Dias();
+                    var dias = Grid.Dias();
 
                     if (dias == null)
                     {
@@ -566,12 +566,12 @@ namespace SistemaMatricula.Controllers
                         return View("Edit", view);
                     }
 
-                    view.Disciplina = new Disciplina()
+                    view.Disciplina = new Class()
                     {
-                        Curso = new Curso() { IdCurso = view.IdCurso }
+                        Curso = new Course() { IdCurso = view.IdCurso }
                     };
 
-                    var disciplinas = Disciplina.Listar(view.Disciplina);
+                    var disciplinas = Class.Listar(view.Disciplina);
 
                     if (disciplinas == null)
                     {
@@ -600,13 +600,13 @@ namespace SistemaMatricula.Controllers
             return View("Edit", view);
         }
 
-        public ActionResult Delete(DisciplinaSemestre view, bool? Delete)
+        public ActionResult Delete(Grid view, bool? Delete)
         {
             try
             {
                 if (!Equals(view.IdDisciplinaSemestre, System.Guid.Empty))
                 {
-                    view = DisciplinaSemestre.Consultar(view.IdDisciplinaSemestre);
+                    view = Grid.Consultar(view.IdDisciplinaSemestre);
 
                     if (view == null)
                     {
@@ -616,7 +616,7 @@ namespace SistemaMatricula.Controllers
 
                     if (Delete.HasValue && Delete.Value)
                     {
-                        if (DisciplinaSemestre.Desativar(view.IdDisciplinaSemestre))
+                        if (Grid.Desativar(view.IdDisciplinaSemestre))
                         {
                             return RedirectToAction("List", "Grade", new GradeIndexView { CursoSelecionado = view.Disciplina.Curso.IdCurso, SemestreSelecionado = view.Semestre.IdSemestre });
                         }
@@ -654,7 +654,7 @@ namespace SistemaMatricula.Controllers
         public string PalavraChave { get; set; }
     }
 
-    public class GradeEditView : DisciplinaSemestre
+    public class GradeEditView : Grid
     {
         public System.Guid IdSemestre { get; set; }
         public System.Guid IdCurso { get; set; }
@@ -671,7 +671,7 @@ namespace SistemaMatricula.Controllers
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public System.Guid DisciplinaSelecionada { get; set; }
 
-        public static GradeEditView Converter(DisciplinaSemestre a)
+        public static GradeEditView Converter(Grid a)
         {
             try
             {
@@ -714,7 +714,7 @@ namespace SistemaMatricula.Controllers
         public string NomeCurso { get; set; }
         public GradeEditView[] itens { get; set; }
 
-        public static GradeEditView[] Converter(DisciplinaSemestre[] lista, System.Collections.IEnumerable Professores, System.Collections.IEnumerable Horarios, System.Collections.IEnumerable Dias)
+        public static GradeEditView[] Converter(Grid[] lista, System.Collections.IEnumerable Professores, System.Collections.IEnumerable Horarios, System.Collections.IEnumerable Dias)
         {
             try
             {

@@ -34,9 +34,9 @@ namespace SistemaMatricula.Database
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
         public string UserName { get; set; }
-        public System.DateTime CadastroData { get; set; }
-        public Nullable<System.DateTime> ExclusaoData { get; set; }
-        public Nullable<System.Guid> ExclusaoPor { get; set; }
+        public System.DateTime RegisterDate { get; set; }
+        public Nullable<System.DateTime> DeleteDate { get; set; }
+        public Nullable<System.Guid> DeleteBy { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }

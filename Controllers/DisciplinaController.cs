@@ -13,7 +13,7 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                var Cursos = Curso.Listar();
+                var Cursos = Course.Listar();
 
                 if (Cursos == null)
                 {
@@ -24,9 +24,9 @@ namespace SistemaMatricula.Controllers
                 view.Cursos = new SelectList(Cursos, "IdCurso", "Nome");
 
                 if (view.CursoSelecionado != null)
-                    view.Curso = new Curso { IdCurso = view.CursoSelecionado };
+                    view.Curso = new Course { IdCurso = view.CursoSelecionado };
 
-                ViewBag.Disciplinas = Disciplina.Listar(view);
+                ViewBag.Disciplinas = Class.Listar(view);
 
                 if (ViewBag.Disciplinas == null)
                 {
@@ -49,7 +49,7 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                var Cursos = Curso.Listar();
+                var Cursos = Course.Listar();
 
                 if (Cursos == null)
                 {
@@ -62,7 +62,7 @@ namespace SistemaMatricula.Controllers
 
                 if (!Equals(view.IdDisciplina, System.Guid.Empty))
                 {
-                    var disciplina = Disciplina.Consultar(view.IdDisciplina);
+                    var disciplina = Class.Consultar(view.IdDisciplina);
 
                     if (disciplina == null)
                     {
@@ -94,13 +94,13 @@ namespace SistemaMatricula.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    view.Curso = new Curso { IdCurso = view.CursoSelecionado };
+                    view.Curso = new Course { IdCurso = view.CursoSelecionado };
                     view.Nome = view.Nome.Trim();
                     view.Descricao = view.Descricao.Trim();
 
                     if (!Equals(view.IdDisciplina, System.Guid.Empty))
                     {
-                        if (Disciplina.Alterar(view))
+                        if (Class.Alterar(view))
                         {
                             return RedirectToAction("Index", "Disciplina");
                         }
@@ -113,7 +113,7 @@ namespace SistemaMatricula.Controllers
                     }
                     else
                     {
-                        if (Disciplina.Incluir(view))
+                        if (Class.Incluir(view))
                         {
                             return RedirectToAction("Index", "Disciplina");
                         }
@@ -130,7 +130,7 @@ namespace SistemaMatricula.Controllers
                     ViewBag.Message = "Não foi possível atualizar o registro. Revise o preenchimento dos campos.";
                 }
 
-                var Cursos = Curso.Listar();
+                var Cursos = Course.Listar();
 
                 if (Cursos == null)
                 {
@@ -158,7 +158,7 @@ namespace SistemaMatricula.Controllers
                 {
                     if (Delete.HasValue && Delete.Value)
                     {
-                        if (Disciplina.Desativar(view.IdDisciplina))
+                        if (Class.Desativar(view.IdDisciplina))
                         {
                             return RedirectToAction("Index", "Disciplina");
                         }
@@ -169,7 +169,7 @@ namespace SistemaMatricula.Controllers
                         }
                     }
 
-                    var disciplina = Disciplina.Consultar(view.IdDisciplina);
+                    var disciplina = Class.Consultar(view.IdDisciplina);
 
                     if (disciplina == null)
                     {
@@ -192,13 +192,13 @@ namespace SistemaMatricula.Controllers
         }
     }
 
-    public class DisciplinaView : Disciplina
+    public class DisciplinaView : Class
     {
         public SelectList Cursos { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public System.Guid CursoSelecionado { get; set; }
 
-        public static DisciplinaView Converter(Disciplina item)
+        public static DisciplinaView Converter(Class item)
         {
             try
             {

@@ -38,124 +38,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="AspNetUsers">
-      <EntityTypeMapping TypeName="Model.AspNetUsers">
-        <MappingFragment StoreEntitySet="AspNetUsers">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
-          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-          <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
-          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-          <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
-          <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
-          <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
-          <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
-          <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
-          <ScalarProperty Name="UserName" ColumnName="UserName" />
-          <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-          <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-          <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="CursoData">
-      <EntityTypeMapping TypeName="Model.CursoData">
-        <MappingFragment StoreEntitySet="CursoData">
-          <ScalarProperty Name="IdCurso" ColumnName="IdCurso" />
-          <ScalarProperty Name="Nome" ColumnName="Nome" />
-          <ScalarProperty Name="Descricao" ColumnName="Descricao" />
-          <ScalarProperty Name="Creditos" ColumnName="Creditos" />
-          <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-          <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-          <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-          <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="DisciplinaData">
-      <EntityTypeMapping TypeName="Model.DisciplinaData">
-        <MappingFragment StoreEntitySet="DisciplinaData">
-          <ScalarProperty Name="IdDisciplina" ColumnName="IdDisciplina" />
-          <ScalarProperty Name="Nome" ColumnName="Nome" />
-          <ScalarProperty Name="Descricao" ColumnName="Descricao" />
-          <ScalarProperty Name="IdCurso" ColumnName="IdCurso" />
-          <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-          <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-          <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-          <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <AssociationSetMapping Name="AspNetUserRoles" TypeName="Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-      <EndProperty Name="AspNetRoles">
-        <ScalarProperty Name="Id" ColumnName="RoleId" />
-      </EndProperty>
-      <EndProperty Name="AspNetUsers">
-        <ScalarProperty Name="Id" ColumnName="UserId" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <EntitySetMapping Name="AlunoData">
-      <EntityTypeMapping TypeName="Model.AlunoData">
-        <MappingFragment StoreEntitySet="AlunoData">
-          <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-          <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-          <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-          <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-          <ScalarProperty Name="CPF" ColumnName="CPF" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
-          <ScalarProperty Name="Nome" ColumnName="Nome" />
-          <ScalarProperty Name="IdAluno" ColumnName="IdAluno" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="ProfessorData">
-      <EntityTypeMapping TypeName="Model.ProfessorData">
-        <MappingFragment StoreEntitySet="ProfessorData">
-          <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-          <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-          <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-          <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-          <ScalarProperty Name="Curriculo" ColumnName="Curriculo" />
-          <ScalarProperty Name="CPF" ColumnName="CPF" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
-          <ScalarProperty Name="Nome" ColumnName="Nome" />
-          <ScalarProperty Name="IdProfessor" ColumnName="IdProfessor" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="SemestreData">
-      <EntityTypeMapping TypeName="Model.SemestreData">
-        <MappingFragment StoreEntitySet="SemestreData">
-          <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-          <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-          <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-          <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-          <ScalarProperty Name="Periodo" ColumnName="Periodo" />
-          <ScalarProperty Name="InicioData" ColumnName="InicioData" />
-          <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="DisciplinaSemestreData">
-      <EntityTypeMapping TypeName="Model.DisciplinaSemestreData">
-        <MappingFragment StoreEntitySet="DisciplinaSemestreData">
-          <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-          <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-          <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-          <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="Horario" ColumnName="Horario" />
-          <ScalarProperty Name="DiaSemana" ColumnName="DiaSemana" />
-          <ScalarProperty Name="IdProfessor" ColumnName="IdProfessor" />
-          <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
-          <ScalarProperty Name="IdDisciplina" ColumnName="IdDisciplina" />
-          <ScalarProperty Name="IdDisciplinaSemestre" ColumnName="IdDisciplinaSemestre" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="Grade_ListarCursos" FunctionName="Model.Store.Grade_ListarCursos">
       <ResultMapping>
         <ComplexTypeMapping TypeName="Model.Grade_ListarCursos_Result">
@@ -180,16 +62,147 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <EntitySetMapping Name="DisciplinaSemestreAlunoData">
-      <EntityTypeMapping TypeName="Model.DisciplinaSemestreAlunoData">
-        <MappingFragment StoreEntitySet="DisciplinaSemestreAlunoData">
-          <ScalarProperty Name="ExclusaoPor" ColumnName="ExclusaoPor" />
-          <ScalarProperty Name="ExclusaoData" ColumnName="ExclusaoData" />
-          <ScalarProperty Name="CadastroPor" ColumnName="CadastroPor" />
-          <ScalarProperty Name="CadastroData" ColumnName="CadastroData" />
-          <ScalarProperty Name="Alternativa" ColumnName="Alternativa" />
-          <ScalarProperty Name="IdAluno" ColumnName="IdAluno" />
-          <ScalarProperty Name="IdDisciplinaSemestre" ColumnName="IdDisciplinaSemestre" />
+    <EntitySetMapping Name="CourseData">
+      <EntityTypeMapping TypeName="Model.CourseData">
+        <MappingFragment StoreEntitySet="CourseData">
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="Credits" ColumnName="Credits" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="IdCourse" ColumnName="IdCourse" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LogData">
+      <EntityTypeMapping TypeName="Model.LogData">
+        <MappingFragment StoreEntitySet="LogData">
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="IdLog" ColumnName="IdLog" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SemesterData">
+      <EntityTypeMapping TypeName="Model.SemesterData">
+        <MappingFragment StoreEntitySet="SemesterData">
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="Period" ColumnName="Period" />
+          <ScalarProperty Name="InitialDate" ColumnName="InitialDate" />
+          <ScalarProperty Name="IdSemester" ColumnName="IdSemester" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TeacherData">
+      <EntityTypeMapping TypeName="Model.TeacherData">
+        <MappingFragment StoreEntitySet="TeacherData">
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="Resume" ColumnName="Resume" />
+          <ScalarProperty Name="CPF" ColumnName="CPF" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="IdTeacher" ColumnName="IdTeacher" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetUsers">
+      <EntityTypeMapping TypeName="Model.AspNetUsers">
+        <MappingFragment StoreEntitySet="AspNetUsers">
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+          <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+          <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+          <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+          <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+          <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StudentData">
+      <EntityTypeMapping TypeName="Model.StudentData">
+        <MappingFragment StoreEntitySet="StudentData">
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="CPF" ColumnName="CPF" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="IdStudent" ColumnName="IdStudent" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="AspNetUserRoles" TypeName="Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+      <EndProperty Name="AspNetUsers">
+        <ScalarProperty Name="Id" ColumnName="UserId" />
+      </EndProperty>
+      <EndProperty Name="AspNetRoles">
+        <ScalarProperty Name="Id" ColumnName="RoleId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="ClassData">
+      <EntityTypeMapping TypeName="Model.ClassData">
+        <MappingFragment StoreEntitySet="ClassData">
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="IdCourse" ColumnName="IdCourse" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="IdClass" ColumnName="IdClass" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RegistryData">
+      <EntityTypeMapping TypeName="Model.RegistryData">
+        <MappingFragment StoreEntitySet="RegistryData">
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+          <ScalarProperty Name="Alternative" ColumnName="Alternative" />
+          <ScalarProperty Name="IdStudent" ColumnName="IdStudent" />
+          <ScalarProperty Name="IdGrid" ColumnName="IdGrid" />
+          <ScalarProperty Name="IdRegistry" ColumnName="IdRegistry" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GridData">
+      <EntityTypeMapping TypeName="Model.GridData">
+        <MappingFragment StoreEntitySet="GridData">
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="Weekday" ColumnName="Weekday" />
+          <ScalarProperty Name="IdTeacher" ColumnName="IdTeacher" />
+          <ScalarProperty Name="IdSemester" ColumnName="IdSemester" />
+          <ScalarProperty Name="IdClass" ColumnName="IdClass" />
+          <ScalarProperty Name="IdGrid" ColumnName="IdGrid" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -13,12 +13,12 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                view.slPeriodos = new SelectList(Semestre.Periodos());
+                view.slPeriodos = new SelectList(Semester.Periodos());
 
                 if (view.PeriodoSelecionado != null)
                     view.Periodo = view.PeriodoSelecionado;
 
-                ViewBag.Semestres = Semestre.Listar(view.Periodo);
+                ViewBag.Semestres = Semester.Listar(view.Periodo);
 
                 if (ViewBag.Semestres == null)
                 {
@@ -41,11 +41,11 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                view.slPeriodos = new SelectList(Semestre.Periodos());
+                view.slPeriodos = new SelectList(Semester.Periodos());
 
                 if (!Equals(view.IdSemestre, System.Guid.Empty))
                 {
-                    var semestre = Semestre.Consultar(view.IdSemestre);
+                    var semestre = Semester.Consultar(view.IdSemestre);
 
                     if (semestre == null)
                     {
@@ -55,7 +55,7 @@ namespace SistemaMatricula.Controllers
                     }
 
                     view = SemestreView.Converter(semestre);
-                    view.slPeriodos = new SelectList(Semestre.Periodos(), semestre.Periodo.Trim());
+                    view.slPeriodos = new SelectList(Semester.Periodos(), semestre.Periodo.Trim());
                     view.PeriodoSelecionado = semestre.Periodo.Trim();
                 }
             }
@@ -81,7 +81,7 @@ namespace SistemaMatricula.Controllers
 
                     if (!Equals(view.IdSemestre, System.Guid.Empty))
                     {
-                        if (Semestre.Alterar(view))
+                        if (Semester.Alterar(view))
                         {
                             return RedirectToAction("Index", "Semestre");
                         }
@@ -94,7 +94,7 @@ namespace SistemaMatricula.Controllers
                     }
                     else
                     {
-                        if (Semestre.Incluir(view))
+                        if (Semester.Incluir(view))
                         {
                             return RedirectToAction("Index", "Semestre");
                         }
@@ -111,7 +111,7 @@ namespace SistemaMatricula.Controllers
                     ViewBag.Message = "Não foi possível atualizar o registro. Revise o preenchimento dos campos.";
                 }
 
-                view.slPeriodos = new SelectList(Semestre.Periodos());
+                view.slPeriodos = new SelectList(Semester.Periodos());
             }
             catch
             {
@@ -130,7 +130,7 @@ namespace SistemaMatricula.Controllers
                 {
                     if (Delete.HasValue && Delete.Value)
                     {
-                        if (Semestre.Desativar(view.IdSemestre))
+                        if (Semester.Desativar(view.IdSemestre))
                         {
                             return RedirectToAction("Index", "Semestre");
                         }
@@ -141,7 +141,7 @@ namespace SistemaMatricula.Controllers
                         }
                     }
 
-                    var semestre = Semestre.Consultar(view.IdSemestre);
+                    var semestre = Semester.Consultar(view.IdSemestre);
 
                     if (semestre == null)
                     {
@@ -164,13 +164,13 @@ namespace SistemaMatricula.Controllers
         }
     }
 
-    public class SemestreView : Semestre
+    public class SemestreView : Semester
     {
         public SelectList slPeriodos { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public string PeriodoSelecionado { get; set; }
 
-        public static SemestreView Converter(Semestre item)
+        public static SemestreView Converter(Semester item)
         {
             try
             {

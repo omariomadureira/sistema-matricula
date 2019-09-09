@@ -1,0 +1,108 @@
+﻿@model SistemaMatricula.Controllers.LogView
+@{ViewBag.Title = "Painel de Logs";}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+    </div>
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <div class="card-body">
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        </div>
+    }
+    else
+    {
+        using (Html.BeginForm("Index", "Log"))
+        {
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        @Html.TextBoxFor(
+                            model => model.Description,
+                            new { @class = "form-control form-control-user", @placeholder = "O que você está procurando?" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(
+                            model => model.TypeSelected,
+                            Model.TypeSelectList, "Selecione um tipo", new { @class = "form-control form-control-user" })
+                    </div>
+                    <div class="col-md-3">
+                        <button id="pesquisar" type="submit" class="btn btn-primary btn-user btn-sm">
+                            <i class="fas fa-search"></i> PESQUISAR
+                        </button>
+                        <a id="limpar" class="btn btn-primary btn-user btn-sm" href="@Url.Action("Index", "Log")">LIMPAR FILTRO</a>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+
+                @if (ViewBag.List.Count < 1)
+                {
+                    <div class="table-responsive">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td>Não há registros para listar.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th>Quando</th>
+                                    <th>Rota</th>
+                                    <th>Tipo</th>
+                                    <th>Descrição</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.List)
+                                {
+                                    <tr>
+                                        <td>@item.RegisterDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                        <td>@item.Description</td>
+                                        <td>@item.Type</td>
+                                        <td>@item.Notes</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
+                            Página @Model.Pagination.Actual de @Model.Pagination.Pages<br />
+                            Total de @Model.Pagination.Rows registro(s)
+                        </div>
+                    </div>
+                    @if (Model.Pagination.Pages > 1)
+                    {
+                        <div class="col-sm-12 col-md-7">
+                            <div class="dataTables_paginate paging_simple_numbers">
+                                <ul class="pagination">
+                                    @for (int page = 1; page <= Model.Pagination.Pages; page++)
+                                    {
+                                        string active = page == Model.Pagination.Actual ? "active" : "";
+                                        <li class="paginate_button page-item @active">
+                                            <button type="submit" class="btn page-link" name="Pagination.Actual" value="@page">@page</button>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>

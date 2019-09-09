@@ -6,13 +6,13 @@ namespace SistemaMatricula.Controllers
     [Authorize(Roles = Usuario.ROLE_ADMINISTRADOR)]
     public class CursoController : Controller
     {
-        public ActionResult Index(Curso item)
+        public ActionResult Index(Course item)
         {
             ModelState.Clear();
 
             try
             {
-                ViewBag.Cursos = Curso.Listar(item.Nome);
+                ViewBag.Cursos = Course.Listar(item.Nome);
 
                 if (ViewBag.Cursos == null)
                 {
@@ -28,7 +28,7 @@ namespace SistemaMatricula.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(Curso item)
+        public ActionResult Edit(Course item)
         {
             ViewBag.HideScreen = false;
             ModelState.Clear();
@@ -37,7 +37,7 @@ namespace SistemaMatricula.Controllers
             {
                 if (!Equals(item.IdCurso, System.Guid.Empty))
                 {
-                    item = Curso.Consultar(item.IdCurso);
+                    item = Course.Consultar(item.IdCurso);
 
                     if (item == null)
                     {
@@ -58,7 +58,7 @@ namespace SistemaMatricula.Controllers
         }
 
         [HttpPost]
-        public ActionResult Update(Curso item)
+        public ActionResult Update(Course item)
         {
             ViewBag.HideScreen = false;
 
@@ -71,7 +71,7 @@ namespace SistemaMatricula.Controllers
 
                     if (!Equals(item.IdCurso, System.Guid.Empty))
                     {
-                        if (Curso.Alterar(item))
+                        if (Course.Alterar(item))
                         {
                             return RedirectToAction("Index", "Curso");
                         }
@@ -83,7 +83,7 @@ namespace SistemaMatricula.Controllers
                     }
                     else
                     {
-                        if (Curso.Incluir(item))
+                        if (Course.Incluir(item))
                         {
                             return RedirectToAction("Index", "Curso");
                         }
@@ -108,7 +108,7 @@ namespace SistemaMatricula.Controllers
             return View("Edit", item);
         }
 
-        public ActionResult Delete(Curso item, bool? Delete)
+        public ActionResult Delete(Course item, bool? Delete)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace SistemaMatricula.Controllers
                 {
                     if (Delete.HasValue && Delete.Value)
                     {
-                        if (Curso.Desativar(item.IdCurso))
+                        if (Course.Desativar(item.IdCurso))
                         {
                             return RedirectToAction("Index", "Curso");
                         }
@@ -127,7 +127,7 @@ namespace SistemaMatricula.Controllers
                         }
                     }
 
-                    item = Curso.Consultar(item.IdCurso);
+                    item = Course.Consultar(item.IdCurso);
 
                     if (item == null)
                     {

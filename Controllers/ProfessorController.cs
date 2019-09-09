@@ -6,13 +6,13 @@ namespace SistemaMatricula.Controllers
     [Authorize(Roles = Usuario.ROLE_ADMINISTRADOR)]
     public class ProfessorController : Controller
     {
-        public ActionResult Index(Professor view)
+        public ActionResult Index(Teacher view)
         {
             ModelState.Clear();
 
             try
             {
-                ViewBag.Professores = Professor.Listar(view.Nome);
+                ViewBag.Professores = Teacher.Listar(view.Nome);
 
                 if (ViewBag.Professores == null)
                 {
@@ -28,7 +28,7 @@ namespace SistemaMatricula.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(Professor view)
+        public ActionResult Edit(Teacher view)
         {
             ViewBag.HideScreen = false;
             ModelState.Clear();
@@ -37,7 +37,7 @@ namespace SistemaMatricula.Controllers
             {
                 if (!Equals(view.IdProfessor, System.Guid.Empty))
                 {
-                    view = Professor.Consultar(view.IdProfessor);
+                    view = Teacher.Consultar(view.IdProfessor);
 
                     if (view == null)
                     {
@@ -58,7 +58,7 @@ namespace SistemaMatricula.Controllers
         }
 
         [HttpPost]
-        public ActionResult Update(Professor view)
+        public ActionResult Update(Teacher view)
         {
             ViewBag.HideScreen = false;
 
@@ -73,7 +73,7 @@ namespace SistemaMatricula.Controllers
 
                     if (!Equals(view.IdProfessor, System.Guid.Empty))
                     {
-                        if (Professor.Alterar(view))
+                        if (Teacher.Alterar(view))
                         {
                             return RedirectToAction("Index", "Professor");
                         }
@@ -85,7 +85,7 @@ namespace SistemaMatricula.Controllers
                     }
                     else
                     {
-                        if (Professor.Incluir(view))
+                        if (Teacher.Incluir(view))
                         {
                             return RedirectToAction("Index", "Professor");
                         }
@@ -110,7 +110,7 @@ namespace SistemaMatricula.Controllers
             return View("Edit", view);
         }
 
-        public ActionResult Delete(Professor view, bool? Delete)
+        public ActionResult Delete(Teacher view, bool? Delete)
         {
             try
             {
@@ -118,7 +118,7 @@ namespace SistemaMatricula.Controllers
                 {
                     if (Delete.HasValue && Delete.Value)
                     {
-                        if (Professor.Desativar(view.IdProfessor))
+                        if (Teacher.Desativar(view.IdProfessor))
                         {
                             return RedirectToAction("Index", "Professor");
                         }
@@ -129,7 +129,7 @@ namespace SistemaMatricula.Controllers
                         }
                     }
 
-                    view = Professor.Consultar(view.IdProfessor);
+                    view = Teacher.Consultar(view.IdProfessor);
 
                     if (view == null)
                     {

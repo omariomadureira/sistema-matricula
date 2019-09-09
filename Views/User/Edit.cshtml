@@ -1,0 +1,109 @@
+﻿@model SistemaMatricula.Models.RegisterViewModel
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+    </div>
+    <div class="card-body">
+        @if (string.IsNullOrEmpty(ViewBag.Message) == false)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        }
+        @if (ViewBag.HideScreen)
+        {
+            <div class="text-center">
+                <a id="voltar" class="btn btn-primary btn-sm" href="@Url.Action("Index", "User")">VOLTAR</a>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-lg-12">
+                    @using (Html.BeginForm("Update", "User", FormMethod.Post, new { @class = "user" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger", @role = "alert" })
+                        if (Model.Id == null)
+                        {
+                            <div class="form-group">
+                                @Html.TextBoxFor(
+                                    model => model.Login,
+                                    new
+                                    {
+                                        @class = "form-control form-control-user",
+                                        @required = "required",
+                                        @placeholder = "Digite o login"
+                                    })
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(
+                                    model => model.Email,
+                                    new
+                                    {
+                                        @class = "form-control form-control-user",
+                                        @required = "required",
+                                        @placeholder = "Digite o e-mail",
+                                        @type = "email"
+                                    })
+                            </div>
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(model => model.Id)
+                            @Html.HiddenFor(model => model.Login)
+                            @Html.HiddenFor(model => model.Email)
+                        }
+                        if (User.IsInRole(SistemaMatricula.Models.User.ROLE_ADMINISTRATOR))
+                        {
+                            <div class="form-group">
+                                @Html.DropDownListFor(
+                                    model => model.RoleSelected,
+                                    Model.RoleSelectList,
+                                    "Selecione um perfil",
+                                    new
+                                    {
+                                        @required = "required",
+                                        @class = "form-control"
+                                    })
+                            </div>
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(model => model.RoleSelected)
+                        }
+                        <div class="form-group row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                @Html.PasswordFor(
+                                    model => model.Password,
+                                    new
+                                    {
+                                        @class = "form-control form-control-user",
+                                        @required = "required",
+                                        @placeholder = "Digite a senha"
+                                    })
+                            </div>
+                            <div class="col-sm-6">
+                                @Html.PasswordFor(
+                                    model => model.ConfirmPassword,
+                                    new
+                                         {
+                                        @class = "form-control form-control-user",
+                                        @required = "required",
+                                        @placeholder = "Confirme a senha"
+                                    })
+                            </div>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" id="salvar" class="btn btn-primary btn-success btn-sm">
+                                <i class="fas fa-save"></i> SALVAR
+                            </button>
+                            <a id="cancelar" class="btn btn-danger btn-sm" href="@Url.Action("Index", "User")">CANCELAR</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

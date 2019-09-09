@@ -11,7 +11,7 @@ namespace SistemaMatricula.Controllers
         {
             try
             {
-                Aluno logado = Aluno.ConsultarLogado();
+                Student logado = Student.ConsultarLogado();
 
                 if (logado == null)
                 {
@@ -19,12 +19,12 @@ namespace SistemaMatricula.Controllers
                     return View();
                 }
 
-                DisciplinaSemestreAluno filtros = new DisciplinaSemestreAluno()
+                Registry filtros = new Registry()
                 {
                     Aluno = logado
                 };
 
-                var lista = DisciplinaSemestreAluno.Listar(filtros);
+                var lista = Registry.Listar(filtros);
 
                 if (lista == null)
                 {
@@ -49,7 +49,7 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                var cursos = Curso.Listar();
+                var cursos = Course.Listar();
 
                 if (cursos == null)
                 {
@@ -65,9 +65,9 @@ namespace SistemaMatricula.Controllers
 
                 view.slCursos = new SelectList(cursos, "IdCurso", "Nome", view.CursoSelecionado);
 
-                Aluno logado = Aluno.ConsultarLogado();
+                Student logado = Student.ConsultarLogado();
 
-                var lista = DisciplinaSemestreAluno.ListarGrade(view.CursoSelecionado.Value, logado);
+                var lista = Registry.ListarGrade(view.CursoSelecionado.Value, logado);
 
                 if (lista != null && lista.Count > 0)
                 {
@@ -97,13 +97,13 @@ namespace SistemaMatricula.Controllers
                         if (item.PrimeiraOpcao || item.SegundaOpcao)
                         {
                             item.Alternativa = item.SegundaOpcao;
-                            item.Aluno = Aluno.ConsultarLogado();
+                            item.Aluno = Student.ConsultarLogado();
 
-                            DisciplinaSemestreAluno existe = DisciplinaSemestreAluno.Consultar(item);
+                            Registry existe = Registry.Consultar(item);
 
                             if (existe == null)
                             {
-                                if (DisciplinaSemestreAluno.Incluir(item))
+                                if (Registry.Incluir(item))
                                 {
                                     continue;
                                 }
@@ -116,7 +116,7 @@ namespace SistemaMatricula.Controllers
                             }
                             else
                             {
-                                if (DisciplinaSemestreAluno.Alterar(item))
+                                if (Registry.Alterar(item))
                                 {
                                     continue;
                                 }
@@ -137,7 +137,7 @@ namespace SistemaMatricula.Controllers
                     ViewBag.Message = "Não foi possível realizar as matrículas.";
                 }
 
-                var cursos = Curso.Listar();
+                var cursos = Course.Listar();
 
                 if (cursos == null)
                 {
@@ -153,9 +153,9 @@ namespace SistemaMatricula.Controllers
 
                 view.slCursos = new SelectList(cursos, "IdCurso", "Nome", view.CursoSelecionado);
 
-                Aluno logado = Aluno.ConsultarLogado();
+                Student logado = Student.ConsultarLogado();
 
-                var lista = DisciplinaSemestreAluno.ListarGrade(view.CursoSelecionado.Value, logado);
+                var lista = Registry.ListarGrade(view.CursoSelecionado.Value, logado);
 
                 if (lista != null && lista.Count > 0)
                 {
@@ -171,19 +171,19 @@ namespace SistemaMatricula.Controllers
             return View("Edit", view);
         }
 
-        public ActionResult Delete(DisciplinaSemestre view, bool? Delete)
+        public ActionResult Delete(Grid view, bool? Delete)
         {
             try
             {
                 if (!Equals(view.IdDisciplinaSemestre, System.Guid.Empty))
                 {
-                    DisciplinaSemestreAluno filtros = new DisciplinaSemestreAluno()
+                    Registry filtros = new Registry()
                     {
-                        Aluno = Aluno.ConsultarLogado(),
+                        Aluno = Student.ConsultarLogado(),
                         DisciplinaSemestre = view
                     };
 
-                    view = DisciplinaSemestreAluno.Consultar(filtros).DisciplinaSemestre;
+                    view = Registry.Consultar(filtros).DisciplinaSemestre;
 
                     if (view == null)
                     {
@@ -193,7 +193,7 @@ namespace SistemaMatricula.Controllers
 
                     if (Delete.HasValue && Delete.Value)
                     {
-                        if (DisciplinaSemestreAluno.Desativar(filtros))
+                        if (Registry.Desativar(filtros))
                         {
                             return RedirectToAction("Index", "Matricula");
                         }
@@ -224,7 +224,7 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                ViewBag.Grades = DisciplinaSemestre.ListarGrade(DisciplinaSemestre.DISCIPLINA_LIBERADA);
+                ViewBag.Grades = Grid.ListarGrade(Grid.DISCIPLINA_LIBERADA);
 
                 if (ViewBag.Grades == null)
                 {
@@ -249,7 +249,7 @@ namespace SistemaMatricula.Controllers
 
             try
             {
-                if (DisciplinaSemestre.AlterarStatus(DisciplinaSemestre.DISCIPLINA_LIBERADA))
+                if (Grid.AlterarStatus(Grid.DISCIPLINA_LIBERADA))
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -282,7 +282,7 @@ namespace SistemaMatricula.Controllers
         [CustomValidation(typeof(MatriculaEditView), "PermitirMatricula")]
         public MatriculaView[] Lista { get; set; }
 
-        public static MatriculaView[] Converter(DisciplinaSemestreAluno[] lista)
+        public static MatriculaView[] Converter(Registry[] lista)
         {
             try
             {
@@ -323,13 +323,13 @@ namespace SistemaMatricula.Controllers
                 }
             }
 
-            DisciplinaSemestreAluno filtros = new DisciplinaSemestreAluno()
+            Registry filtros = new Registry()
             {
-                Aluno = Aluno.ConsultarLogado()
+                Aluno = Student.ConsultarLogado()
             };
 
             var matriculas =
-                DisciplinaSemestreAluno.Listar(filtros)
+                Registry.Listar(filtros)
                 .FindAll(x => x.DisciplinaSemestre.Semestre.Ativo);
 
             int restantePrimeira = 4 - matriculas.FindAll(x => !x.Alternativa.HasValue || !x.Alternativa.Value).Count;
@@ -369,12 +369,12 @@ namespace SistemaMatricula.Controllers
         }
     }
 
-    public class MatriculaView : DisciplinaSemestreAluno
+    public class MatriculaView : Registry
     {
         public bool PrimeiraOpcao { get; set; }
         public bool SegundaOpcao { get; set; }
 
-        public static MatriculaView Converter(DisciplinaSemestreAluno a)
+        public static MatriculaView Converter(Registry a)
         {
             try
             {

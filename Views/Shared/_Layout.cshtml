@@ -8,7 +8,8 @@
     <meta name="author" content="Mario Madureira">
     <title>@ViewBag.Title - Sistema de Matrículas</title>
     @Styles.Render("~/bundles/css")
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" 
+          rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -16,7 +17,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        @Html.Partial("_MenuLateral")
+        @Html.Partial("_Sidebar")
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -35,14 +36,18 @@
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle"
+                               href="#" id="searchDropdown" role="button" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
                             </a>
                             <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                 aria-labelledby="searchDropdown">
                                 <form class="form-inline mr-auto w-100 navbar-search">
                                     <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                               placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="button">
                                                 <i class="fas fa-search fa-sm"></i>
@@ -55,14 +60,15 @@
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Edit", "Usuario", new SistemaMatricula.Models.RegisterViewModel { Login = User.Identity.Name })">
+                            <a class="nav-link"
+                               href="@Url.Action("Edit", "User", new { Login = User.Identity.Name })">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Alterar senha</span>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            @using (Html.BeginForm("LogOff", "Usuario", FormMethod.Post, new { id = "logoutForm" }))
+                            @using (Html.BeginForm("LogOff", "User", FormMethod.Post, new { id = "logoutForm" }))
                             {
                                 @Html.AntiForgeryToken()
                                 <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">

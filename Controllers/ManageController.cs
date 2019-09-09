@@ -306,7 +306,7 @@ namespace SistemaMatricula.Controllers
         public ActionResult LinkLogin(string provider)
         {
             // Solicitar um redirecionamento para o provedor de login externo para vincular um login para o usuário atual
-            return new UsuarioController.ChallengeResult(provider, Url.Action("LinkLoginCallback", "Manage"), User.Identity.GetUserId());
+            return new UserController.ChallengeResult(provider, Url.Action("LinkLoginCallback", "Manage"), User.Identity.GetUserId());
         }
 
         //
