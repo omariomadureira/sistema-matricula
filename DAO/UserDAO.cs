@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SistemaMatricula.Database;
 using SistemaMatricula.Models;
+using SistemaMatricula.Helpers;
 
 namespace SistemaMatricula.DAO
 {
@@ -28,7 +29,9 @@ namespace SistemaMatricula.DAO
                                 || x.UserName.ToLower().Contains(filters.Email));
                     }
 
-                    if (filters.Pagination != null)
+                    query = query.OrderByDescending(x => x.RegisterDate);
+
+                    if (filters != null && filters.Pagination != null)
                     {
                         filters.Pagination.Rows = query.Count();
 
@@ -42,7 +45,6 @@ namespace SistemaMatricula.DAO
 
                     list = query
                         .Select(x => Convert(x))
-                        .OrderByDescending(x => x.RegisterDate)
                         .ToList();
                 }
 
@@ -50,7 +52,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Filtro: {0}. Erro: {1}", filters, e.Message);
+                string notes = LogHelper.Notes(filters, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.UserDAO.List", notes);
             }
 
@@ -71,7 +73,7 @@ namespace SistemaMatricula.DAO
                     AspNetUsers row = db.AspNetUsers.FirstOrDefault(x => x.UserName.Trim() == login.Trim());
 
                     if (row == null)
-                        throw new KeyNotFoundException();
+                        throw new Exception("Usuário não encontrado");
 
                     item = Convert(row);
                 }
@@ -80,7 +82,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Login: {0}. Erro: {1}", login, e.Message);
+                string notes = LogHelper.Notes(login, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.UserDAO.Find", notes);
             }
 
@@ -92,14 +94,14 @@ namespace SistemaMatricula.DAO
             try
             {
                 if (id == null || Guid.Equals(id, Guid.Empty))
-                    throw new Exception("Parâmetro vazio");
+                    throw new Exception("Parâmetro inválido");
 
                 using (Entities db = new Entities())
                 {
                     AspNetUsers row = db.AspNetUsers.FirstOrDefault(x => x.Id == id.ToString());
 
                     if (row == null)
-                        throw new Exception("Registro não encontrado");
+                        throw new Exception("Usuário não encontrado");
 
                     row.DeleteDate = DateTime.Now;
                     row.DeleteBy = User.Logged.IdUser;
@@ -111,7 +113,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Id: {0}. Erro: {1}", id, e.Message);
+                string notes = LogHelper.Notes(id, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.UserDAO.Delete", notes);
             }
 
@@ -137,7 +139,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Item: {0}. Erro: {1}", item.ToString(), e.Message);
+                string notes = LogHelper.Notes(item, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.UserDAO.Convert", notes);
             }
 

@@ -26,13 +26,11 @@ namespace SistemaMatricula.Controllers
                 ViewBag.List = Log.List(view);
 
                 if (ViewBag.List == null)
-                {
-                    ViewBag.Message = "Não foi possível listar os registros. Erro de execução.";
-                }
+                    throw new Exception("Os logs não foram listados");
             }
             catch (Exception e)
             {
-                string notes = string.Format("Filtro: {0}. Erro: {1}", view, e.Message);
+                string notes = LogHelper.Notes(view, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Controllers.LogController.Index", notes);
                 ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
             }
@@ -46,21 +44,5 @@ namespace SistemaMatricula.Controllers
         public SelectList TypeSelectList { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public string TypeSelected { get; set; }
-
-        public static LogView Convert(Log item)
-        {
-            if (item == null)
-                return null;
-
-            return new LogView()
-            {
-                IdLog = item.IdLog,
-                Type = item.Type,
-                Description = item.Description,
-                Notes = item.Notes,
-                IdUser = item.IdUser,
-                RegisterDate = item.RegisterDate
-            };
-        }
     }
 }

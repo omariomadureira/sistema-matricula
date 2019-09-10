@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SistemaMatricula.Database;
 using SistemaMatricula.Models;
+using SistemaMatricula.Helpers;
 
 namespace SistemaMatricula.DAO
 {
@@ -16,13 +17,13 @@ namespace SistemaMatricula.DAO
                     throw new Exception("Parâmetro vazio");
 
                 if (item.Class == null)
-                    throw new Exception("Parâmetro vazio");
+                    throw new Exception("Parâmetro 'Class' vazio");
 
                 if (item.Semester == null)
-                    throw new Exception("Parâmetro vazio");
+                    throw new Exception("Parâmetro 'Semester' vazio");
 
                 if (item.Teacher == null)
-                    throw new Exception("Parâmetro vazio");
+                    throw new Exception("Parâmetro 'Teacher' vazio");
 
                 GridData row = new GridData
                 {
@@ -47,7 +48,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Item: {0}. Erro: {1}", item.ToString(), e.Message);
+                string notes = LogHelper.Notes(item, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.GridDAO.Add", notes);
             }
 
@@ -59,7 +60,7 @@ namespace SistemaMatricula.DAO
             try
             {
                 if (id == null || Guid.Equals(id, Guid.Empty))
-                    throw new Exception("Parâmetro vazio");
+                    throw new Exception("Parâmetro inválido");
 
                 Grid item = null;
 
@@ -68,7 +69,7 @@ namespace SistemaMatricula.DAO
                     GridData row = db.GridData.FirstOrDefault(x => x.IdGrid == id);
 
                     if (row == null)
-                        throw new Exception("Registro não encontrado");
+                        throw new Exception("Grade não encontrada");
 
                     item = Convert(row);
                 }
@@ -77,7 +78,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Id: {0}. Erro: {1}", id, e.Message);
+                string notes = LogHelper.Notes(id, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.GridDAO.Find", notes);
             }
 
@@ -123,6 +124,20 @@ namespace SistemaMatricula.DAO
                             query = query.Where(x => x.IdTeacher == filters.Teacher.IdTeacher);
                     }
 
+                    query = query.OrderByDescending(x => x.RegisterDate);
+
+                    if (filters != null && filters.Pagination != null)
+                    {
+                        filters.Pagination.Rows = query.Count();
+
+                        if (filters.Pagination.Rows < 1)
+                            return new List<Grid>();
+
+                        int skip = (filters.Pagination.Actual - 1) * filters.Pagination.ItensPerPage;
+
+                        query = query.Skip(skip).Take(filters.Pagination.ItensPerPage);
+                    }
+
                     IEnumerable<Grid> rows = query.Select(x => Convert(x));
 
                     if (active != null)
@@ -140,7 +155,8 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Filtro: {0}. Semestre ativo: {1}. Erro: {2}", filters, active, e.Message);
+                object[] parameters = { filters, active };
+                string notes = LogHelper.Notes(parameters, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.GridDAO.List", notes);
             }
 
@@ -159,7 +175,7 @@ namespace SistemaMatricula.DAO
                     GridData row = db.GridData.FirstOrDefault(x => x.IdGrid == item.IdGrid);
 
                     if (row == null)
-                        throw new Exception("Registro não encontrado");
+                        throw new Exception("Grade não encontrada");
 
                     if (item.Class != null && !Equals(Guid.Empty, item.Class.IdClass))
                         row.IdClass = item.Class.IdClass;
@@ -186,7 +202,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Objeto: {0}. Erro: {1}", item.ToString(), e.Message);
+                string notes = LogHelper.Notes(item, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.GridDAO.Update", notes);
             }
 
@@ -198,14 +214,14 @@ namespace SistemaMatricula.DAO
             try
             {
                 if (id == null || Guid.Equals(id, Guid.Empty))
-                    throw new Exception("Parâmetro vazio");
+                    throw new Exception("Parâmetro inválido");
 
                 using (Entities db = new Entities())
                 {
                     GridData row = db.GridData.FirstOrDefault(x => x.IdGrid == id);
 
                     if (row == null)
-                        throw new Exception("Registro não encontrado");
+                        throw new Exception("Grade não encontrada");
 
                     row.DeleteDate = DateTime.Now;
                     row.DeleteBy = User.Logged.IdUser;
@@ -217,7 +233,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Id: {0}. Erro: {1}", id, e.Message);
+                string notes = LogHelper.Notes(id, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.GridDAO.Delete", notes);
             }
 
@@ -306,17 +322,17 @@ namespace SistemaMatricula.DAO
                 var classObject = Class.Find(item.IdClass);
 
                 if (classObject == null)
-                    throw new Exception("Registro não encontrado");
+                    throw new Exception("Disciplina não encontrada");
 
                 var semester = Semester.Find(item.IdSemester);
 
                 if (semester == null)
-                    throw new Exception("Registro não encontrado");
+                    throw new Exception("Semestre não encontrado");
 
                 var teacher = Teacher.Find(item.IdTeacher);
 
                 if (teacher == null)
-                    throw new Exception("Registro não encontrado");
+                    throw new Exception("Professor não encontrado");
 
                 return new Grid
                 {
@@ -335,7 +351,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Objeto: {0}. Erro: {1}", item.ToString(), e.Message);
+                string notes = LogHelper.Notes(item, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.GridDAO.Convert", notes);
             }
 

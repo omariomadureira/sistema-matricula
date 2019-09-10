@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SistemaMatricula.Database;
 using SistemaMatricula.Models;
+using SistemaMatricula.Helpers;
 
 namespace SistemaMatricula.DAO
 {
@@ -16,7 +17,7 @@ namespace SistemaMatricula.DAO
                     throw new Exception("Parâmetro vazio");
 
                 if (item.Course == null)
-                    throw new Exception("Parâmetro vazio");
+                    throw new Exception("Parâmetro 'Course' vazio");
 
                 ClassData row = new ClassData
                 {
@@ -38,7 +39,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Item: {0}. Erro: {1}", item.ToString(), e.Message);
+                string notes = LogHelper.Notes(item, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.ClassDAO.Add", notes);
             }
 
@@ -51,7 +52,7 @@ namespace SistemaMatricula.DAO
             try
             {
                 if (id == null || Guid.Equals(id, Guid.Empty))
-                    throw new Exception("Parâmetro vazio");
+                    throw new Exception("Parâmetro inválido");
 
                 Class item = null;
 
@@ -60,7 +61,7 @@ namespace SistemaMatricula.DAO
                     ClassData row = db.ClassData.FirstOrDefault(x => x.IdClass == id);
 
                     if (row == null)
-                        throw new Exception("Registro não encontrado");
+                        throw new Exception("Disciplina não encontrada");
 
                     item = Convert(row);
                 }
@@ -69,7 +70,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Id: {0}. Erro: {1}", id, e.Message);
+                string notes = LogHelper.Notes(id, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.ClassDAO.Find", notes);
             }
 
@@ -102,9 +103,22 @@ namespace SistemaMatricula.DAO
                             query = query.Where(x => x.IdCourse == filters.Course.IdCourse);
                     }
 
+                    query = query.OrderByDescending(x => x.RegisterDate);
+
+                    if (filters != null && filters.Pagination != null)
+                    {
+                        filters.Pagination.Rows = query.Count();
+
+                        if (filters.Pagination.Rows < 1)
+                            return new List<Class>();
+
+                        int skip = (filters.Pagination.Actual - 1) * filters.Pagination.ItensPerPage;
+
+                        query = query.Skip(skip).Take(filters.Pagination.ItensPerPage);
+                    }
+
                     list = query
                         .Select(x => Convert(x))
-                        .OrderByDescending(x => x.RegisterDate)
                         .ToList();
                 }
 
@@ -112,7 +126,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Filtros: {0}. Erro: {1}", filters.ToString(), e.Message);
+                string notes = LogHelper.Notes(filters, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.ClassDAO.List", notes);
             }
 
@@ -127,14 +141,14 @@ namespace SistemaMatricula.DAO
                     throw new Exception("Parâmetro vazio");
 
                 if (item.Course == null)
-                    throw new Exception("Parâmetro vazio");
+                    throw new Exception("Parâmetro 'Course' vazio");
 
                 using (Entities db = new Entities())
                 {
                     ClassData row = db.ClassData.FirstOrDefault(x => x.IdClass == item.IdClass);
 
                     if (row == null)
-                        throw new Exception("Registro não encontrado");
+                        throw new Exception("Disciplina não encontrada");
 
                     row.Name = item.Name;
                     row.Description = item.Description;
@@ -147,7 +161,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Objeto: {0}. Erro: {1}", item.ToString(), e.Message);
+                string notes = LogHelper.Notes(item, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.ClassDAO.Update", notes);
             }
 
@@ -159,14 +173,14 @@ namespace SistemaMatricula.DAO
             try
             {
                 if (id == null || Guid.Equals(id, Guid.Empty))
-                    throw new Exception("Parâmetro vazio");
+                    throw new Exception("Parâmetro inválido");
 
                 using (Entities db = new Entities())
                 {
                     ClassData row = db.ClassData.FirstOrDefault(x => x.IdClass == id);
 
                     if (row == null)
-                        throw new Exception("Registro não encontrado");
+                        throw new Exception("Disciplina não encontrada");
 
                     row.DeleteDate = DateTime.Now;
                     row.DeleteBy = User.Logged.IdUser;
@@ -178,7 +192,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Id: {0}. Erro: {1}", id, e.Message);
+                string notes = LogHelper.Notes(id, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.ClassDAO.Delete", notes);
             }
 
@@ -195,7 +209,7 @@ namespace SistemaMatricula.DAO
                 var course = CourseDAO.Find(item.IdCourse);
 
                 if (course == null)
-                    throw new Exception("Registro não encontrado");
+                    throw new Exception("Curso não encontrado");
 
                 return new Class
                 {
@@ -211,7 +225,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Objeto: {0}. Erro: {1}", item.ToString(), e.Message);
+                string notes = LogHelper.Notes(item, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.ClassDAO.Convert", notes);
             }
 

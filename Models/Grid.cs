@@ -1,6 +1,7 @@
 ﻿using SistemaMatricula.DAO;
 using System;
 using System.Collections.Generic;
+using SistemaMatricula.Helpers;
 
 namespace SistemaMatricula.Models
 {
@@ -96,6 +97,8 @@ namespace SistemaMatricula.Models
                     };
             }
         }
+
+        public Pagination Pagination { get; set; }
 
         public static bool Add(Grid item)
         {

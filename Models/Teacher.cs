@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using SistemaMatricula.Helpers;
 
 namespace SistemaMatricula.Models
 {
@@ -34,6 +35,8 @@ namespace SistemaMatricula.Models
             }
         }
 
+        public Pagination Pagination { get; set; }
+
         public static bool Add(Teacher item)
         {
             return TeacherDAO.Add(item);
@@ -49,9 +52,9 @@ namespace SistemaMatricula.Models
             return TeacherDAO.Find(email: User.Logged.Email);
         }
 
-        public static List<Teacher> List(string filter = null)
+        public static List<Teacher> List(Teacher filters = null)
         {
-            return TeacherDAO.List(filter);
+            return TeacherDAO.List(filters);
         }
 
         public static bool Update(Teacher item)

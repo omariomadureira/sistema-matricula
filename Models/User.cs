@@ -64,14 +64,14 @@ namespace SistemaMatricula.Models
                 User item = UserDAO.Find(login);
 
                 if (item == null)
-                    throw new Exception("Registro não encontrado");
+                    throw new Exception("Usuário não encontrado");
 
                 if (item.DeleteDate == null)
                     return true;
             }
             catch (Exception e)
             {
-                string notes = string.Format("Filtro: {0}. Erro: {1}", login, e.Message);
+                string notes = LogHelper.Notes(login, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Models.User.IsActive", notes);
             }
 
@@ -92,7 +92,7 @@ namespace SistemaMatricula.Models
             }
             catch (Exception e)
             {
-                string notes = string.Format("Filtro: {0}. Erro: {1}", login, e.Message);
+                string notes = LogHelper.Notes(login, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Models.User.Exists", notes);
             }
 

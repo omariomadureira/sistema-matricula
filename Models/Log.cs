@@ -27,9 +27,9 @@ namespace SistemaMatricula.Models
 
         public Pagination Pagination { get; set; }
 
-        public static bool Add(string type, string description, string notes)
+        public static void Add(string type, string description, string notes)
         {
-            return LogDAO.Add(type, description, notes);
+            LogDAO.Add(type, description, notes);
         }
 
         public static Log Find(Guid id)

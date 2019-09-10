@@ -169,6 +169,8 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\CourseController.cs" />
+    <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -247,6 +249,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\LogHelper.cs" />
     <Compile Include="Helpers\Pagination.cs" />
     <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="Models\Student.cs" />
@@ -302,19 +305,12 @@
     <Content Include="Views\Aluno\Delete.cshtml" />
     <Content Include="Views\Aluno\Edit.cshtml" />
     <Content Include="Views\Aluno\Index.cshtml" />
-    <Content Include="Views\Curso\Delete.cshtml" />
-    <Content Include="Views\Curso\Edit.cshtml" />
-    <Content Include="Views\Curso\Index.cshtml" />
-    <Content Include="Views\Disciplina\Delete.cshtml" />
-    <Content Include="Views\Disciplina\Edit.cshtml" />
-    <Content Include="Views\Disciplina\Index.cshtml" />
     <Content Include="Views\Professor\Delete.cshtml" />
     <Content Include="Views\Professor\Edit.cshtml" />
     <Content Include="Views\Professor\Index.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
-    <Content Include="Views\User\Delete.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
     <Content Include="Views\Semestre\Delete.cshtml" />
     <Content Include="Views\Semestre\Edit.cshtml" />
@@ -332,6 +328,10 @@
     <Content Include="Views\Matricula\Finish.cshtml" />
     <Content Include="Views\Log\Index.cshtml" />
     <Content Include="Views\Shared\_DeleteModal.cshtml" />
+    <Content Include="Views\Course\Index.cshtml" />
+    <Content Include="Views\Course\Edit.cshtml" />
+    <Content Include="Views\Class\Edit.cshtml" />
+    <Content Include="Views\Class\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

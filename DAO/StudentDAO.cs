@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SistemaMatricula.Database;
 using SistemaMatricula.Models;
+using SistemaMatricula.Helpers;
 
 namespace SistemaMatricula.DAO
 {
@@ -36,7 +37,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Item: {0}. Erro: {1}", item.ToString(), e.Message);
+                string notes = LogHelper.Notes(item, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.StudentDAO.Add", notes);
             }
 
@@ -48,10 +49,10 @@ namespace SistemaMatricula.DAO
             try
             {
                 if (id == null && string.IsNullOrEmpty(email))
-                    throw new Exception("Parâmetro vazio");
+                    throw new Exception("Parâmetros vazios");
 
                 if (id != null && Guid.Equals(id, Guid.Empty))
-                    throw new Exception("Parâmetro vazio");
+                    throw new Exception("Parâmetro 'id' inválido");
 
                 Student item = null;
 
@@ -68,7 +69,7 @@ namespace SistemaMatricula.DAO
                     StudentData row = query.FirstOrDefault();
 
                     if (row == null)
-                        throw new Exception("Registro não encontrado");
+                        throw new Exception("Aluno não encontrado");
 
                     item = Convert(row);
                 }
@@ -77,14 +78,15 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Id: {0}. Email: {1}. Erro: {2}", id, email, e.Message);
+                object[] parameters = { id, email };
+                string notes = LogHelper.Notes(parameters, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.StudentDAO.Find", notes);
             }
 
             return null;
         }
 
-        public static List<Student> List(string filter = null)
+        public static List<Student> List(Student filters = null)
         {
             try
             {
@@ -94,19 +96,32 @@ namespace SistemaMatricula.DAO
                 {
                     IEnumerable<StudentData> query = db.StudentData.Where(x => x.DeleteDate == null);
 
-                    if (!string.IsNullOrWhiteSpace(filter))
+                    if (filters != null && !string.IsNullOrWhiteSpace(filters.Name))
                     {
-                        filter = filter.Trim().ToLower();
+                        filters.Name = filters.Name.Trim().ToLower();
 
                         query = query
                             .Where(x =>
-                                x.Name.ToLower().Contains(filter)
-                                || x.Email.ToLower().Contains(filter));
+                                x.Name.ToLower().Contains(filters.Name)
+                                || x.Email.ToLower().Contains(filters.Name));
+                    }
+
+                    query = query.OrderByDescending(x => x.RegisterDate);
+
+                    if (filters != null && filters.Pagination != null)
+                    {
+                        filters.Pagination.Rows = query.Count();
+
+                        if (filters.Pagination.Rows < 1)
+                            return new List<Student>();
+
+                        int skip = (filters.Pagination.Actual - 1) * filters.Pagination.ItensPerPage;
+
+                        query = query.Skip(skip).Take(filters.Pagination.ItensPerPage);
                     }
 
                     list = query
                         .Select(x => Convert(x))
-                        .OrderByDescending(x => x.RegisterDate)
                         .ToList();
                 }
 
@@ -114,7 +129,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Filtro: {0}. Erro: {1}", filter, e.Message);
+                string notes = LogHelper.Notes(filters, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.StudentDAO.List", notes);
             }
 
@@ -133,7 +148,7 @@ namespace SistemaMatricula.DAO
                     StudentData row = db.StudentData.FirstOrDefault(x => x.IdStudent == item.IdStudent);
 
                     if (row == null)
-                        throw new Exception("Registro não encontrado");
+                        throw new Exception("Aluno não encontrado");
 
                     row.Name = item.Name;
                     row.Birthday = item.Birthday;
@@ -147,7 +162,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Objeto: {0}. Erro: {1}", item.ToString(), e.Message);
+                string notes = LogHelper.Notes(item, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.StudentDAO.Update", notes);
             }
 
@@ -166,17 +181,27 @@ namespace SistemaMatricula.DAO
                     StudentData row = db.StudentData.FirstOrDefault(x => x.IdStudent == id);
 
                     if (row == null)
-                        throw new Exception("Registro não encontrado");
+                        throw new Exception("Aluno não encontrado");
 
                     row.DeleteDate = DateTime.Now;
                     row.DeleteBy = User.Logged.IdUser;
 
                     db.SaveChanges();
+
+                    User user = UserDAO.Find(row.Email);
+
+                    if (user != null)
+                    {
+                        var deleted = UserDAO.Delete(user.IdUser);
+
+                        if (deleted == false)
+                            throw new Exception("Usuário não deletado");
+                    }
                 }
             }
             catch (Exception e)
             {
-                string notes = string.Format("Id: {0}. Erro: {1}", id, e.Message);
+                string notes = LogHelper.Notes(id, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.StudentDAO.Delete", notes);
             }
 

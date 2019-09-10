@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using SistemaMatricula.Helpers;
 
 namespace SistemaMatricula.Models
 {
@@ -21,6 +22,8 @@ namespace SistemaMatricula.Models
         public DateTime? DeleteDate { get; set; }
         public Guid? DeleteBy { get; set; }
 
+        public Pagination Pagination { get; set; }
+
         public static bool Add(Course item)
         {
             return CourseDAO.Add(item);
@@ -31,9 +34,9 @@ namespace SistemaMatricula.Models
             return CourseDAO.Find(id);
         }
 
-        public static List<Course> List(string filter = null)
+        public static List<Course> List(Course filters = null, Func<Database.CourseData, object> sort = null)
         {
-            return CourseDAO.List(filter);
+            return CourseDAO.List(filters, sort);
         }
 
         public static bool Update(Course item)

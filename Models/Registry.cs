@@ -1,6 +1,7 @@
 ﻿using SistemaMatricula.DAO;
 using System;
 using System.Collections.Generic;
+using SistemaMatricula.Helpers;
 
 namespace SistemaMatricula.Models
 {
@@ -14,6 +15,8 @@ namespace SistemaMatricula.Models
         public DateTime? DeleteDate { get; set; }
         public Guid? DeleteBy { get; set; }
 
+        public Pagination Pagination { get; set; }
+
         public static bool Add(Registry item)
         {
             return RegistryDAO.Add(item);
@@ -24,9 +27,9 @@ namespace SistemaMatricula.Models
             return RegistryDAO.Find(id);
         }
 
-        public static List<Registry> List(Registry filter = null)
+        public static List<Registry> List(Registry filters = null)
         {
-            return RegistryDAO.List(filter);
+            return RegistryDAO.List(filters);
         }
 
         public static List<Registry> GridList(Guid idStudent, Guid idCourse)

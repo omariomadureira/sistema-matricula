@@ -3,45 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using SistemaMatricula.Database;
 using SistemaMatricula.Models;
+using SistemaMatricula.Helpers;
 
 namespace SistemaMatricula.DAO
 {
     public class LogDAO
     {
-        public static bool Add(string type, string description, string notes)
+        public static void Add(string type, string description, string notes)
         {
-            try
+            if (string.IsNullOrEmpty(type))
+                throw new Exception("Parâmetro 'type' vazio");
+
+            if (string.IsNullOrEmpty(description))
+                throw new Exception("Parâmetro 'description' vazio");
+
+            if (string.IsNullOrEmpty(notes))
+                throw new Exception("Parâmetro 'notes' vazio");
+
+            LogData row = new LogData
             {
-                if (string.IsNullOrEmpty(type))
-                    throw new Exception("Parâmetro vazio");
+                IdLog = Guid.NewGuid(),
+                Type = type,
+                Description = description,
+                Notes = notes,
+                IdUser = User.Logged.IdUser,
+                RegisterDate = DateTime.Now,
+            };
 
-                if (string.IsNullOrEmpty(description))
-                    throw new Exception("Parâmetro vazio");
-
-                if (string.IsNullOrEmpty(notes))
-                    throw new Exception("Parâmetro vazio");
-
-                LogData row = new LogData
-                {
-                    IdLog = Guid.NewGuid(),
-                    Type = type,
-                    Description = description,
-                    Notes = notes,
-                    IdUser = User.Logged.IdUser,
-                    RegisterDate = DateTime.Now,
-                };
-
-                using (Entities db = new Entities())
-                {
-                    db.LogData.Add(row);
-                    db.SaveChanges();
-                }
-
-                return true;
+            using (Entities db = new Entities())
+            {
+                db.LogData.Add(row);
+                db.SaveChanges();
             }
-            catch { }
-
-            return false;
         }
 
         public static Log Find(Guid id)
@@ -49,7 +42,7 @@ namespace SistemaMatricula.DAO
             try
             {
                 if (id == null || Guid.Equals(id, Guid.Empty))
-                    throw new Exception("Parâmetro vazio");
+                    throw new Exception("Parâmetro inválido");
 
                 Log item = null;
 
@@ -58,7 +51,7 @@ namespace SistemaMatricula.DAO
                     LogData row = db.LogData.FirstOrDefault(x => x.IdLog == id);
 
                     if (row == null)
-                        throw new Exception("Registro não encontrado");
+                        throw new Exception("Log não encontrado");
 
                     item = Convert(row);
                 }
@@ -67,7 +60,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Id: {0}. Erro: {1}", id, e.Message);
+                string notes = LogHelper.Notes(id, e.Message);
                 Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.LogDAO.Find", notes);
             }
 
@@ -103,7 +96,9 @@ namespace SistemaMatricula.DAO
                         }
                     }
 
-                    if (filters.Pagination != null)
+                    query = query.OrderByDescending(x => x.RegisterDate);
+
+                    if (filters != null && filters.Pagination != null)
                     {
                         filters.Pagination.Rows = query.Count();
 
@@ -117,7 +112,6 @@ namespace SistemaMatricula.DAO
 
                     list = query
                         .Select(x => Convert(x))
-                        .OrderByDescending(x => x.RegisterDate)
                         .ToList();
                 }
 
@@ -125,7 +119,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = string.Format("Filtro: {0}. Erro: {1}", filters.ToString(), e.Message);
+                string notes = LogHelper.Notes(filters, e.Message);
                 Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.LogDAO.List", e.Message);
             }
 

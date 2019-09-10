@@ -62,8 +62,9 @@
     });
 
     $(document).on('click', 'button.btn', function (e) {
-        var inputs = $("input:invalid");
-        if (inputs.length == 0) {
+        var invalids = $("input:invalid").length;
+        invalids = invalids + $("select:invalid").length;
+        if (invalids == 0) {
             $('.btn').not(this).each(function () {
                 $(this).fadeTo("fast", 0.60);
                 if ($(this).is('button')) {

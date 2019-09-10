@@ -64,13 +64,11 @@ namespace SistemaMatricula.Controllers
                 ViewBag.List = Models.User.List(view);
 
                 if (ViewBag.List == null)
-                {
-                    ViewBag.Message = "Não foi possível listar os registros. Erro de execução.";
-                }
+                    throw new Exception("Os usuários não foram listados");
             }
             catch (Exception e)
             {
-                string notes = string.Format("Filtro: {0}. Erro: {1}", view.Email, e.Message);
+                string notes = LogHelper.Notes(view, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Controllers.UserController.Index", notes);
                 ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
             }
@@ -78,15 +76,14 @@ namespace SistemaMatricula.Controllers
             return View(view);
         }
 
+        [HttpGet]
         [Authorize]
-        public ActionResult Edit(RegisterViewModel view = null)
+        public ActionResult Edit(RegisterViewModel view, bool error = false)
         {
             try
             {
                 ViewBag.HideScreen = false;
                 ViewBag.Title = "Manutenção de Usuários";
-
-                ModelState.Clear();
 
                 if (User.IsInRole(Models.User.ROLE_ADMINISTRATOR) == false)
                 {
@@ -96,34 +93,37 @@ namespace SistemaMatricula.Controllers
 
                 view.RoleSelectList = new SelectList(Models.User.Roles());
 
-                if (ModelState.IsValid == false)
+                if (error)
                 {
                     ViewBag.Message = "Não foi possível atualizar o registro. Analise os erros.";
                     return View("Edit", view);
                 }
 
+                ModelState.Clear();
+
                 if (string.IsNullOrWhiteSpace(view.Login))
                     return View("Edit", view);
 
-                ApplicationUser user = UserManager.FindByName(view.Login);
+                ApplicationUser item = UserManager.FindByName(view.Login);
 
-                if (user == null)
-                    throw new Exception("Registro não encontrado");
+                if (item == null)
+                    throw new Exception("Usuário não encontrado");
 
-                view.Id = user.Id;
-                view.Email = user.Email;
+                view.Id = item.Id;
+                view.Email = item.Email;
 
                 var itens = UserManager.GetRoles(view.Id);
 
                 if (itens.Count < 1)
-                    throw new Exception("Registro não possui role cadastrado");
+                    throw new Exception("Usuário não possui role cadastrado");
 
                 view.RoleSelectList = new SelectList(Models.User.Roles(), itens[0]);
                 view.RoleSelected = itens[0];
             }
             catch (Exception e)
             {
-                string notes = string.Format("Parâmetro: {0}. Erro: {1}", view, e.Message);
+                object[] parameters = { view, error };
+                string notes = LogHelper.Notes(parameters, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Controllers.UserController.Edit", notes);
                 ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
                 ViewBag.HideScreen = true;
@@ -140,9 +140,7 @@ namespace SistemaMatricula.Controllers
             try
             {
                 if (ModelState.IsValid == false)
-                    return Edit(view);
-
-                ViewBag.HideScreen = false;
+                    return Edit(view, true);
 
                 view.Email = view.Email.Trim();
                 view.Login = view.Login.Trim();
@@ -159,7 +157,7 @@ namespace SistemaMatricula.Controllers
                     if (insert.Succeeded == false)
                     {
                         AddErrors(insert);
-                        return Edit(view);
+                        return Edit(view, true);
                     }
 
                     user = await UserManager.FindByNameAsync(user.UserName);
@@ -171,7 +169,7 @@ namespace SistemaMatricula.Controllers
                 user = UserManager.FindByName(view.Login);
 
                 if (user == null)
-                    throw new Exception("Registro não encontrado");
+                    throw new Exception("Usuário não encontrado");
 
                 user.PasswordHash = UserManager.PasswordHasher.HashPassword(view.Password);
 
@@ -180,14 +178,14 @@ namespace SistemaMatricula.Controllers
                 if (update.Succeeded == false)
                 {
                     AddErrors(update);
-                    return Edit(view);
+                    return Edit(view, true);
                 }
 
                 return RedirectToAction("Index", "User");
             }
             catch (Exception e)
             {
-                string notes = string.Format("Parâmetro: {0}. Erro: {1}", view, e.Message);
+                string notes = LogHelper.Notes(view, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Controllers.UserController.Update", notes);
                 ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
                 ViewBag.HideScreen = true;
@@ -196,6 +194,7 @@ namespace SistemaMatricula.Controllers
             return View("Edit");
         }
 
+        [HttpGet]
         [Authorize(Roles = Models.User.ROLE_ADMINISTRATOR)]
         public ActionResult Delete(Guid id)
         {
@@ -207,13 +206,13 @@ namespace SistemaMatricula.Controllers
                 var deleted = Models.User.Delete(id);
 
                 if (deleted == false)
-                    throw new Exception("Registro não apagado");
+                    throw new Exception("Usuário não deletado");
 
                 return RedirectToAction("Index", "User");
             }
             catch (Exception e)
             {
-                string notes = string.Format("View: {0}. Erro: {1}", id, e.Message);
+                string notes = LogHelper.Notes(id, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Controllers.UserController.Delete", notes);
                 ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
                 ViewBag.HideScreen = true;
@@ -240,25 +239,36 @@ namespace SistemaMatricula.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (ModelState.IsValid == false)
-                return View("Login", "_Login", model);
-
-            if (Models.User.IsActive(model.User) == false)
+            try
             {
-                ModelState.AddModelError("", "Usuário inativo");
-                return View("Login", "_Login", model);
-            }
-
-            var login = await SignInManager.PasswordSignInAsync(model.User, model.Password, model.RememberMe, shouldLockout: false);
-
-            switch (login)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                default:
-                    ModelState.AddModelError("", "Tentativa de login inválida.");
+                if (ModelState.IsValid == false)
                     return View("Login", "_Login", model);
+
+                if (Models.User.IsActive(model.User) == false)
+                {
+                    ModelState.AddModelError("", "Usuário inativo");
+                    return View("Login", "_Login", model);
+                }
+
+                var login = await SignInManager.PasswordSignInAsync(model.User, model.Password, model.RememberMe, shouldLockout: false);
+
+                switch (login)
+                {
+                    case SignInStatus.Success:
+                        return RedirectToLocal(returnUrl);
+                    default:
+                        ModelState.AddModelError("", "Tentativa de login inválida.");
+                        return View("Login", "_Login", model);
+                }
             }
+            catch (Exception e)
+            {
+                object[] parameters = { model, returnUrl };
+                string notes = LogHelper.Notes(parameters, e.Message);
+                Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Controllers.UserController.Login", notes);
+            }
+
+            return View("Login", "_Login", model);
         }
 
         [HttpPost]

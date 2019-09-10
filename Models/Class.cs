@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using SistemaMatricula.Helpers;
 
 namespace SistemaMatricula.Models
 {
@@ -18,6 +19,8 @@ namespace SistemaMatricula.Models
         public Guid RegisterBy { get; set; }
         public DateTime? DeleteDate { get; set; }
         public Guid? DeleteBy { get; set; }
+
+        public Pagination Pagination { get; set; }
 
         public static bool Add(Class item)
         {
