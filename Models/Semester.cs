@@ -11,6 +11,7 @@ namespace SistemaMatricula.Models
         public Guid IdSemester { get; set; }
         public string Period { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
+        [Display(Name = "Data de Início")]
         public DateTime InitialDate { get; set; }
         public DateTime RegisterDate { get; set; }
         public Guid RegisterBy { get; set; }

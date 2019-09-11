@@ -1,0 +1,65 @@
+﻿@model SistemaMatricula.Controllers.SemesterView
+@{ViewBag.Title = "Manutenção de Semestres";}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+    </div>
+    <div class="card-body">
+        @if (string.IsNullOrEmpty(ViewBag.Message) == false)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        }
+        @if (ViewBag.HideScreen)
+        {
+            <div class="text-center">
+                <a id="voltar" class="btn btn-primary btn-sm" href="@Url.Action("Index", "Semester")">VOLTAR</a>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-lg-12">
+                    @using (Html.BeginForm("Update", "Semester", FormMethod.Post, new { @class = "user" }))
+                    {
+                        <div class="form-group row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                @Html.DropDownListFor(
+                                    model => model.PeriodSelected,
+                                    Model.PeriodSelectList, "Selecione um período",
+                                    new
+                                    {
+                                        @class = "form-control",
+                                        @required = "required"
+                                    })
+                                @Html.ValidationMessageFor(model => model.PeriodSelectList)
+                            </div>
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(
+                                    model => model.InitialDate,
+                                    new {
+                                        @class = "form-control form-control-user birthday",
+                                        @required = "required",
+                                        @placeholder = "Digite a data de início"
+                                    })
+                                @Html.ValidationMessageFor(model => model.InitialDate)
+                            </div>
+                        </div>
+                        if (Model != null)
+                        {
+                            @Html.HiddenFor(model => model.IdSemester)
+                        }
+                        <div class="form-group text-center">
+                            <button type="submit" id="salvar" class="btn btn-primary btn-success btn-sm">
+                                <i class="fas fa-save"></i> SALVAR
+                            </button>
+                            <a id="cancelar" class="btn btn-danger btn-sm" href="@Url.Action("Index", "Semester")">CANCELAR</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

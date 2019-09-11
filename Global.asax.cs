@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using SistemaMatricula.Helpers;
 
 namespace SistemaMatricula
 {
@@ -12,10 +10,18 @@ namespace SistemaMatricula
     {
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            try
+            {
+                AreaRegistration.RegisterAllAreas();
+                FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+                RouteConfig.RegisterRoutes(RouteTable.Routes);
+                BundleConfig.RegisterBundles(BundleTable.Bundles);
+            }
+            catch (Exception e)
+            {
+                string notes = LogHelper.Notes(null, e.Message);
+                Models.Log.Add(Models.Log.TYPE_ERROR, "SistemaMatricula.Global.Application_Start", notes);
+            }
         }
     }
 }

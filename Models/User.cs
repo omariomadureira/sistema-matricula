@@ -18,13 +18,15 @@ namespace SistemaMatricula.Models
         {
             get
             {
-                if (System.Web.HttpContext.Current.User.Identity.Name != null)
-                {
-                    string login = System.Web.HttpContext.Current.User.Identity.Name;
-                    return UserDAO.Find(login);
-                }
+                var id = (Guid)System.Web.HttpContext.Current.Cache["IdUser"];
 
-                return null;
+                if (id == null)
+                    return null;
+
+                if (Guid.Equals(id, Guid.Empty))
+                    return null;
+
+                return UserDAO.Find(id);
             }
         }
 
@@ -49,19 +51,25 @@ namespace SistemaMatricula.Models
             return UserDAO.List(filters);
         }
 
+        public static User Find(Guid? id = null, string login = null)
+        {
+            return UserDAO.Find(id, login);
+        }
+
         public static bool Delete(Guid id)
         {
             return UserDAO.Delete(id);
         }
 
+        /*
         public static bool IsActive(string login)
         {
             try
             {
                 if (string.IsNullOrEmpty(login))
-                    throw new Exception("Parâmetro vazio");
+                    return false;
 
-                User item = UserDAO.Find(login);
+                User item = UserDAO.Find(login: login);
 
                 if (item == null)
                     throw new Exception("Usuário não encontrado");
@@ -83,9 +91,9 @@ namespace SistemaMatricula.Models
             try
             {
                 if (string.IsNullOrEmpty(login))
-                    throw new Exception("Parâmetro vazio");
+                    return false;
 
-                User item = UserDAO.Find(login);
+                User item = UserDAO.Find(login: login);
 
                 if (item != null)
                     return true;
@@ -98,5 +106,6 @@ namespace SistemaMatricula.Models
 
             return false;
         }
+        */
     }
 }

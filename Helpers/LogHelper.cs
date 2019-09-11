@@ -15,7 +15,7 @@ namespace SistemaMatricula.Helpers
             }
 
             if (string.IsNullOrWhiteSpace(error) == false)
-                notes = string.Format("{0}. Erro: {1}", notes, error);
+                notes = string.Format("{0} Erro: {1}", notes, error);
 
             return notes;
         }
@@ -35,7 +35,7 @@ namespace SistemaMatricula.Helpers
             }
 
             if (string.IsNullOrWhiteSpace(error) == false)
-                notes = string.Format("{0}. Erro: {1}", notes, error);
+                notes = string.Format("{0} Erro: {1}", notes, error);
 
             return notes;
         }

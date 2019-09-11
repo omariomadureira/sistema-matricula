@@ -1,0 +1,117 @@
+﻿@model SistemaMatricula.Models.Teacher
+@{ ViewBag.Title = "Manutenção de Professores"; }
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="row">
+            <div class="col-md-9">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+            <div class="col-md-3 text-right">
+                <a class="btn btn-primary btn-sm" href="@Url.Action("Edit", "Teacher")">
+                    <i class="fas fa-plus"></i> ADICIONAR PROFESSOR
+                </a>
+            </div>
+        </div>
+    </div>
+    @if (string.IsNullOrEmpty(ViewBag.Message) == false)
+    {
+        <div class="card-body">
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        </div>
+    }
+    else
+    {
+        using (Html.BeginForm("Index", "Teacher"))
+        {
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        @Html.TextBoxFor(model => model.Name,
+                            new
+                            {
+                                 @class = "form-control form-control-user",
+                                 @placeholder = "O que você está procurando?"
+                            })
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary btn-user btn-sm">
+                            <i class="fas fa-search"></i> PESQUISAR
+                        </button>
+                        <a class="btn btn-primary btn-user btn-sm"
+                           href="@Url.Action("Index", "Teacher")">LIMPAR FILTRO</a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        @if (ViewBag.List.Count < 1)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td>Não há registros para listar.</td>
+                                </tr>
+                            </tbody>
+                        }
+                        else
+                        {
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>E-mail</th>
+                                    <th>Data de Cadastro</th>
+                                    <th class="text-center" colspan="3">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.List)
+                                {
+                                    <tr>
+                                        <td>@item.Name</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.RegisterDate.ToString("dd/MM/yyyy")</td>
+                                        @{
+                                            string action = item.User != null ? "ALTERAR SENHA" : "ADICIONAR USUÁRIO";
+                                            string url = item.User != null ?
+                                                string.Format("/User/Edit/{0}", item.User.IdUser)
+                                                : Url.Action("Edit", "User", new
+                                                {
+                                                    Login = item.Email.Trim(),
+                                                    Email = item.Email.Trim(),
+                                                    RoleSelected = SistemaMatricula.Models.User.ROLE_TEACHER
+                                                });
+                                        }
+                                        <td class="text-center">
+                                            <a class="btn btn-info btn-sm"
+                                               href="@url">
+                                                <i class="fas fa-pen"></i> @action
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-warning btn-sm"
+                                               href="@Url.Action("Edit", "Teacher", new { IdTeacher = item.IdTeacher })">
+                                                <i class="fas fa-pen"></i> EDITAR
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-danger btn-sm list-delete" href="#"
+                                               data-toggle="modal" data-target="#delete-modal"
+                                               data-item-name="@item.Name" data-item-url="/Teacher/Delete/@item.IdTeacher">
+                                                <i class="fas fa-trash"></i> EXCLUIR
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            </div>
+
+            @Html.Partial("_Pagination", Model)
+        }
+    }
+</div>
+
+@Html.Partial("_DeleteModal", "Professor")

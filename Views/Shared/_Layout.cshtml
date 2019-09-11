@@ -61,7 +61,7 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item">
                             <a class="nav-link"
-                               href="@Url.Action("Edit", "User", new { Login = User.Identity.Name })">
+                               href="@Url.Action("Edit", "User", new { Id = Cache["IdUser"] })">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Alterar senha</span>
                             </a>

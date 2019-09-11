@@ -13,12 +13,14 @@ namespace SistemaMatricula.Models
         [StringLength(100, ErrorMessage = "O campo deve ter no máximo 100 caracteres.")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
+        [Display(Name = "Data de Nascimento")]
         public DateTime Birthday { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         [EmailAddress(ErrorMessage = "Preencha um e-mail válido")]
         [StringLength(100, ErrorMessage = "O campo deve ter no máximo 100 caracteres.")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
+        [CustomValidation(typeof(Validation), "IsCPF")]
         public string CPF { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public string Resume { get; set; }
@@ -27,11 +29,14 @@ namespace SistemaMatricula.Models
         public DateTime? DeleteDate { get; set; }
         public Guid? DeleteBy { get; set; }
 
-        public bool HasUser
+        public User User
         {
             get
             {
-                return User.Exists(Email);
+                if (string.IsNullOrEmpty(Email))
+                    return null;
+
+                return User.Find(login: Email);
             }
         }
 

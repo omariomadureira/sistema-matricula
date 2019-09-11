@@ -1,0 +1,40 @@
+﻿<div class="card-footer">
+    <div class="row">
+        <div class="col-sm-12 col-md-5">
+            <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
+                Página @Model.Pagination.Actual de @Model.Pagination.Pages<br />
+                Total de @Model.Pagination.Rows registro(s)
+            </div>
+        </div>
+        @if (Model.Pagination.Pages > 1)
+        {
+            <div class="col-sm-12 col-md-7">
+                <div class="dataTables_paginate paging_simple_numbers">
+                    <ul class="pagination">
+                        @if (Model.Pagination.MaxPages < Model.Pagination.Pages && Model.Pagination.Actual > 1)
+                        {
+                            decimal page = Model.Pagination.InitialPage - 1;
+                            <li class="paginate_button page-item">
+                                <button type="submit" class="btn page-link" name="Pagination.Actual" value="@page">...</button>
+                            </li>
+                        }
+                        @for (decimal page = Model.Pagination.InitialPage; page <= Model.Pagination.FinalPage; page++)
+                        {
+                            string active = page == Model.Pagination.Actual ? "active" : "";
+                            <li class="paginate_button page-item @active">
+                                <button type="submit" class="btn page-link" name="Pagination.Actual" value="@page">@page</button>
+                            </li>
+                        }
+                        @if (Model.Pagination.FinalPage < Model.Pagination.Pages)
+                        {
+                            decimal page = Model.Pagination.FinalPage + 1;
+                            <li class="paginate_button page-item">
+                                <button type="submit" class="btn page-link" name="Pagination.Actual" value="@page">...</button>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+</div>

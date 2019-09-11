@@ -57,8 +57,8 @@
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th>Quando</th>
-                                    <th>Rota</th>
                                     <th>Tipo</th>
+                                    <th>Rota</th>
                                     <th>Descrição</th>
                                 </tr>
                             </thead>
@@ -67,8 +67,8 @@
                                 {
                                     <tr>
                                         <td>@item.RegisterDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
-                                        <td>@item.Description</td>
                                         <td>@item.Type</td>
+                                        <td>@item.Description</td>
                                         <td>@item.Notes</td>
                                     </tr>
                                 }
@@ -77,32 +77,8 @@
                     </div>
                 }
             </div>
-            <div class="card-footer">
-                <div class="row">
-                    <div class="col-sm-12 col-md-5">
-                        <div class="dataTables_info" id="dataTable_info" role="status" aria-live="polite">
-                            Página @Model.Pagination.Actual de @Model.Pagination.Pages<br />
-                            Total de @Model.Pagination.Rows registro(s)
-                        </div>
-                    </div>
-                    @if (Model.Pagination.Pages > 1)
-                    {
-                        <div class="col-sm-12 col-md-7">
-                            <div class="dataTables_paginate paging_simple_numbers">
-                                <ul class="pagination">
-                                    @for (int page = 1; page <= Model.Pagination.Pages; page++)
-                                    {
-                                        string active = page == Model.Pagination.Actual ? "active" : "";
-                                        <li class="paginate_button page-item @active">
-                                            <button type="submit" class="btn page-link" name="Pagination.Actual" value="@page">@page</button>
-                                        </li>
-                                    }
-                                </ul>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
+
+            @Html.Partial("_Pagination", Model)
         }
     }
 </div>

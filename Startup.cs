@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin;
 using Owin;
+using SistemaMatricula.Helpers;
 
 [assembly: OwinStartupAttribute(typeof(SistemaMatricula.Startup))]
 namespace SistemaMatricula
@@ -8,8 +9,16 @@ namespace SistemaMatricula
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
-            CreateUserRoles();
+            try
+            {
+                ConfigureAuth(app);
+                CreateUserRoles();
+            }
+            catch (System.Exception e)
+            {
+                string notes = LogHelper.Notes(app, e.Message);
+                Models.Log.Add(Models.Log.TYPE_ERROR, "SistemaMatricula.Startup", notes);
+            }
         }
     }
 }

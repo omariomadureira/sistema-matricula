@@ -95,21 +95,24 @@ namespace SistemaMatricula.Controllers
 
                 if (error)
                 {
-                    ViewBag.Message = "Não foi possível atualizar o registro. Analise os erros.";
+                    ViewBag.Message = "Não foi possível salvar o registro. Analise os erros.";
                     return View("Edit", view);
                 }
 
                 ModelState.Clear();
 
-                if (string.IsNullOrWhiteSpace(view.Login))
+                if (string.IsNullOrEmpty(view.Id))
                     return View("Edit", view);
 
-                ApplicationUser item = UserManager.FindByName(view.Login);
+                if (Equals(view.Id, System.Guid.Empty))
+                    return View("Edit", view);
+
+                ApplicationUser item = UserManager.FindById(view.Id);
 
                 if (item == null)
                     throw new Exception("Usuário não encontrado");
 
-                view.Id = item.Id;
+                view.Login = item.UserName;
                 view.Email = item.Email;
 
                 var itens = UserManager.GetRoles(view.Id);
@@ -237,38 +240,47 @@ namespace SistemaMatricula.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel view, string returnUrl)
         {
             try
             {
                 if (ModelState.IsValid == false)
-                    return View("Login", "_Login", model);
+                    return View("Login", "_Login", view);
 
-                if (Models.User.IsActive(model.User) == false)
+                User user = Models.User.Find(login: view.User);
+
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "Tentativa de login inválida.");
+                    return View("Login", "_Login", view);
+                }
+
+                if (user.DeleteDate != null)
                 {
                     ModelState.AddModelError("", "Usuário inativo");
-                    return View("Login", "_Login", model);
+                    return View("Login", "_Login", view);
                 }
 
-                var login = await SignInManager.PasswordSignInAsync(model.User, model.Password, model.RememberMe, shouldLockout: false);
+                var login = await SignInManager
+                    .PasswordSignInAsync(view.User, view.Password, view.RememberMe, shouldLockout: false);
 
-                switch (login)
+                if (login == SignInStatus.Success)
                 {
-                    case SignInStatus.Success:
-                        return RedirectToLocal(returnUrl);
-                    default:
-                        ModelState.AddModelError("", "Tentativa de login inválida.");
-                        return View("Login", "_Login", model);
+                    HttpContext.Cache["IdUser"] = user.IdUser;
+
+                    return RedirectToLocal(returnUrl);
                 }
+
+                ModelState.AddModelError("", "Tentativa de login inválida.");
             }
             catch (Exception e)
             {
-                object[] parameters = { model, returnUrl };
+                object[] parameters = { view, returnUrl };
                 string notes = LogHelper.Notes(parameters, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Controllers.UserController.Login", notes);
             }
 
-            return View("Login", "_Login", model);
+            return View("Login", "_Login", view);
         }
 
         [HttpPost]
@@ -277,6 +289,8 @@ namespace SistemaMatricula.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
+            HttpContext.Cache.Remove("IdUser");
 
             return RedirectToAction("Login", "User");
         }

@@ -41,7 +41,7 @@ namespace SistemaMatricula.Controllers
 
                 if (error)
                 {
-                    ViewBag.Message = "Não foi possível atualizar o registro. Analise os erros.";
+                    ViewBag.Message = "Não foi possível salvar o registro. Analise os erros.";
                     return View("Edit", view);
                 }
 

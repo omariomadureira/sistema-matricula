@@ -188,7 +188,7 @@ namespace SistemaMatricula.DAO
 
                     db.SaveChanges();
 
-                    User user = UserDAO.Find(row.Email);
+                    User user = UserDAO.Find(login: row.Email);
 
                     if (user != null)
                     {
@@ -198,6 +198,8 @@ namespace SistemaMatricula.DAO
                             throw new Exception("Usuário não deletado");
                     }
                 }
+
+                return true;
             }
             catch (Exception e)
             {

@@ -59,18 +59,59 @@ namespace SistemaMatricula.DAO
             return null;
         }
 
-        public static User Find(string login)
+        public static User Find(Guid? id = null, string login = null)
         {
             try
             {
-                if (string.IsNullOrEmpty(login))
+                if (id == null && string.IsNullOrEmpty(login))
+                    throw new Exception("Parâmetros vazios");
+
+                if (id != null && Guid.Equals(id, Guid.Empty))
+                    throw new Exception("Parâmetro 'id' inválido");
+
+                User item = null;
+
+                using (Entities db = new Entities())
+                {
+                    IEnumerable<AspNetUsers> query = db.AspNetUsers;
+                    
+                    if (id != null)
+                        query = query.Where(x => x.Id.Trim() == id.ToString());
+
+                    if (!string.IsNullOrWhiteSpace(login))
+                        query = query.Where(x => x.UserName.Trim() == login.Trim());
+
+                    AspNetUsers row = query.FirstOrDefault();
+
+                    if (row == null)
+                        return null;
+
+                    item = Convert(row);
+                }
+
+                return item;
+            }
+            catch (Exception e)
+            {
+                string notes = LogHelper.Notes(login, e.Message);
+                Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.UserDAO.Find", notes);
+            }
+
+            return null;
+        }
+
+        public static User Find(Guid id)
+        {
+            try
+            {
+                if (id != null && Guid.Equals(id, Guid.Empty))
                     throw new Exception("Parâmetro vazio");
 
                 User item = null;
 
                 using (Entities db = new Entities())
                 {
-                    AspNetUsers row = db.AspNetUsers.FirstOrDefault(x => x.UserName.Trim() == login.Trim());
+                    AspNetUsers row = db.AspNetUsers.FirstOrDefault(x => x.Id.Trim() == id.ToString());
 
                     if (row == null)
                         throw new Exception("Usuário não encontrado");
@@ -82,7 +123,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                string notes = LogHelper.Notes(login, e.Message);
+                string notes = LogHelper.Notes(id, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.UserDAO.Find", notes);
             }
 
