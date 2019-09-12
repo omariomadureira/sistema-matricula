@@ -20,7 +20,7 @@ namespace SistemaMatricula.Models
         [StringLength(100, ErrorMessage = "O campo deve ter no máximo 100 caracteres.")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
-        [CustomValidation(typeof(Validation), "IsCPF")]
+        [CustomValidation(typeof(Form), "IsCPF")]
         public string CPF { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public string Resume { get; set; }
@@ -57,9 +57,9 @@ namespace SistemaMatricula.Models
             return TeacherDAO.Find(email: User.Logged.Email);
         }
 
-        public static List<Teacher> List(Teacher filters = null)
+        public static List<Teacher> List(Teacher filters = null, Func<Database.TeacherData, object> sort = null)
         {
-            return TeacherDAO.List(filters);
+            return TeacherDAO.List(filters, sort);
         }
 
         public static bool Update(Teacher item)

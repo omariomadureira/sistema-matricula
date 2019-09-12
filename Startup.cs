@@ -13,6 +13,7 @@ namespace SistemaMatricula
             {
                 ConfigureAuth(app);
                 CreateUserRoles();
+                SetLanguage();
             }
             catch (System.Exception e)
             {

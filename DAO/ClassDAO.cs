@@ -51,7 +51,7 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                if (id == null || Guid.Equals(id, Guid.Empty))
+                if (id == null || Equals(id, Guid.Empty))
                     throw new Exception("Parâmetro inválido");
 
                 Class item = null;
@@ -77,7 +77,7 @@ namespace SistemaMatricula.DAO
             return null;
         }
 
-        public static List<Class> List(Class filters = null)
+        public static List<Class> List(Class filters = null, Func<ClassData, object> sort = null)
         {
             try
             {
@@ -103,7 +103,11 @@ namespace SistemaMatricula.DAO
                             query = query.Where(x => x.IdCourse == filters.Course.IdCourse);
                     }
 
-                    query = query.OrderByDescending(x => x.RegisterDate);
+                    if (sort == null)
+                        query = query.OrderByDescending(x => x.RegisterDate);
+
+                    if (sort != null)
+                        query = query.OrderBy(sort);
 
                     if (filters != null && filters.Pagination != null)
                     {
@@ -112,9 +116,7 @@ namespace SistemaMatricula.DAO
                         if (filters.Pagination.Rows < 1)
                             return new List<Class>();
 
-                        int skip = (filters.Pagination.Actual - 1) * filters.Pagination.ItensPerPage;
-
-                        query = query.Skip(skip).Take(filters.Pagination.ItensPerPage);
+                        query = query.Skip(filters.Pagination.Skip).Take(filters.Pagination.ItensPerPage);
                     }
 
                     list = query
@@ -172,7 +174,7 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                if (id == null || Guid.Equals(id, Guid.Empty))
+                if (id == null || Equals(id, Guid.Empty))
                     throw new Exception("Parâmetro inválido");
 
                 using (Entities db = new Entities())

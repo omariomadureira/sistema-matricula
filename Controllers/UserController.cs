@@ -203,7 +203,7 @@ namespace SistemaMatricula.Controllers
         {
             try
             {
-                if (Guid.Equals(id, Guid.Empty))
+                if (Equals(id, Guid.Empty))
                     throw new Exception("Parâmetro vazio");
 
                 var deleted = Models.User.Delete(id);
@@ -283,14 +283,14 @@ namespace SistemaMatricula.Controllers
             return View("Login", "_Login", view);
         }
 
-        [HttpPost]
         [Authorize]
-        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 
             HttpContext.Cache.Remove("IdUser");
+
+            Session.Abandon();
 
             return RedirectToAction("Login", "User");
         }

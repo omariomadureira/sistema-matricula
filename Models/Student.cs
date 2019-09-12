@@ -20,7 +20,7 @@ namespace SistemaMatricula.Models
         [StringLength(100, ErrorMessage = "O campo deve ter no máximo 100 caracteres.")]
         public string Email { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
-        [CustomValidation(typeof(Validation), "IsCPF")]
+        [CustomValidation(typeof(Form), "IsCPF")]
         public string CPF { get; set; }
         public DateTime RegisterDate { get; set; }
         public Guid RegisterBy { get; set; }

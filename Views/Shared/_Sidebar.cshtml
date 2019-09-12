@@ -8,7 +8,7 @@
     {
         string collapsed = "collapsed";
         string show = string.Empty;
-        if (url.Contains("Registry"))
+        if (url.Contains("/Registry"))
         {
             collapsed = string.Empty;
             show = "show";
@@ -24,7 +24,7 @@
             </a>
             <div id="menu-registry" class="collapse @show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="@Url.Action("Index", "Registry")">Inscrição</a>
+                    <a class="collapse-item" href="@Url.Action("Index", "Registry")">Inscrições</a>
                 </div>
             </div>
         </li>
@@ -34,7 +34,7 @@
     {
         string collapsed = "collapsed";
         string show = string.Empty;
-        if (url.Contains("Grid"))
+        if (url.Contains("/Grid"))
         {
             collapsed = string.Empty;
             show = "show";
@@ -53,6 +53,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="@Url.Action("Index", "Grid")">Manutenção</a>
                     <a class="collapse-item" href="@Url.Action("Start", "Grid")">Liberação</a>
+                    <a class="collapse-item" href="@Url.Action("Finish", "Grid")">Fechamento</a>
                 </div>
             </div>
         </li>
@@ -62,8 +63,8 @@
     {
         string collapsed = "collapsed";
         string show = string.Empty;
-        if (url.Contains("Student") || url.Contains("Semester") 
-            || url.Contains("Teacher") || url.Contains("Class") || url.Contains("Course"))
+        if (url.Contains("/Student") || url.Contains("/Semester")
+            || url.Contains("/Teacher") || url.Contains("/Class") || url.Contains("/Course"))
         {
             collapsed = string.Empty;
             show = "show";
@@ -94,7 +95,7 @@
     {
         string collapsed = "collapsed";
         string show = string.Empty;
-        if (url.Contains("User") || url.Contains("Log"))
+        if (url.Contains("/User") || url.Contains("/Log"))
         {
             collapsed = string.Empty;
             show = "show";

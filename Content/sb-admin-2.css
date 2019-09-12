@@ -12076,3 +12076,7 @@ span.field-validation-error {
 .input-validation-error {
     border-color: red;
 }
+
+.card-login {
+    opacity: 0.95;
+}

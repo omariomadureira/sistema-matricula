@@ -89,7 +89,7 @@ namespace SistemaMatricula.Controllers
 
                 view.Period = view.PeriodSelected.Trim();
 
-                if (Guid.Equals(view.IdSemester, System.Guid.Empty))
+                if (Equals(view.IdSemester, System.Guid.Empty))
                 {
                     var insert = Semester.Add(view);
 
@@ -122,7 +122,7 @@ namespace SistemaMatricula.Controllers
         {
             try
             {
-                if (Guid.Equals(id, Guid.Empty))
+                if (Equals(id, Guid.Empty))
                     throw new Exception("Parâmetro vazio");
 
                 var deleted = Semester.Delete(id);

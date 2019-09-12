@@ -47,7 +47,7 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                if (id == null || Guid.Equals(id, Guid.Empty))
+                if (id == null || Equals(id, Guid.Empty))
                     throw new Exception("Parâmetro inválido");
 
                 Registry item = null;
@@ -88,7 +88,7 @@ namespace SistemaMatricula.DAO
                         if (filters.Alternative != null)
                             query = query.Where(x => x.Alternative == filters.Alternative);
 
-                        if (filters.Student != null && !Guid.Equals(filters.Student.IdStudent, Guid.Empty))
+                        if (filters.Student != null && !Equals(filters.Student.IdStudent, Guid.Empty))
                             query = query.Where(x => x.IdStudent == filters.Student.IdStudent);
                     }
 
@@ -101,9 +101,7 @@ namespace SistemaMatricula.DAO
                         if (filters.Pagination.Rows < 1)
                             return new List<Registry>();
 
-                        int skip = (filters.Pagination.Actual - 1) * filters.Pagination.ItensPerPage;
-
-                        query = query.Skip(skip).Take(filters.Pagination.ItensPerPage);
+                        query = query.Skip(filters.Pagination.Skip).Take(filters.Pagination.ItensPerPage);
                     }
 
                     list = query
@@ -126,10 +124,10 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                if (idStudent == null || Guid.Equals(idStudent, Guid.Empty))
+                if (idStudent == null || Equals(idStudent, Guid.Empty))
                     throw new Exception("Parâmetro 'idStudent' vazio");
 
-                if (idCourse == null || Guid.Equals(idCourse, Guid.Empty))
+                if (idCourse == null || Equals(idCourse, Guid.Empty))
                     throw new Exception("Parâmetro 'idCourse' vazio");
 
                 Semester semester = SemesterDAO.Last();
@@ -185,7 +183,7 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                if (id == null || Guid.Equals(id, Guid.Empty))
+                if (id == null || Equals(id, Guid.Empty))
                     throw new Exception("Parâmetro inválido");
 
                 using (Entities db = new Entities())
@@ -197,6 +195,40 @@ namespace SistemaMatricula.DAO
 
                     row.DeleteDate = DateTime.Now;
                     row.DeleteBy = User.Logged.IdUser;
+
+                    db.SaveChanges();
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                string notes = LogHelper.Notes(id, e.Message);
+                Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.RegistryDAO.Delete", notes);
+            }
+
+            return false;
+        }
+
+        public static bool DeleteByGrid(Guid id)
+        {
+            try
+            {
+                if (id == null || Equals(id, Guid.Empty))
+                    throw new Exception("Parâmetro inválido");
+
+                using (Entities db = new Entities())
+                {
+                    List<RegistryData> rows = db.RegistryData.Where(x => x.IdGrid == id).ToList();
+
+                    if (rows.Count < 1)
+                        return true;
+
+                    foreach (RegistryData row in rows)
+                    {
+                        row.DeleteDate = DateTime.Now;
+                        row.DeleteBy = User.Logged.IdUser;
+                    }
 
                     db.SaveChanges();
                 }

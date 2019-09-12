@@ -41,7 +41,7 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                if (id == null || Guid.Equals(id, Guid.Empty))
+                if (id == null || Equals(id, Guid.Empty))
                     throw new Exception("Parâmetro inválido");
 
                 Log item = null;
@@ -105,9 +105,7 @@ namespace SistemaMatricula.DAO
                         if (filters.Pagination.Rows < 1)
                             return new List<Log>();
 
-                        int skip = (filters.Pagination.Actual - 1) * filters.Pagination.ItensPerPage;
-
-                        query = query.Skip(skip).Take(filters.Pagination.ItensPerPage);
+                        query = query.Skip(filters.Pagination.Skip).Take(filters.Pagination.ItensPerPage);
                     }
 
                     list = query

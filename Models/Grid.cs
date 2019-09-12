@@ -23,8 +23,21 @@ namespace SistemaMatricula.Models
         {
             get
             {
-                return ((DayOfWeek)Weekday).ToString().ToUpper();
+                return new System.Globalization.CultureInfo("pt-BR")
+                    .DateTimeFormat.GetDayName((DayOfWeek)Weekday).ToUpper();
             }
+        }
+
+        public static List<Grid> WeekdayList()
+        {
+            List<Grid> list = new List<Grid>();
+
+            for (int day = 1; day < 7; day++)
+            {
+                list.Add(new Grid() { Weekday = day });
+            }
+
+            return list;
         }
 
         public const string REGISTERED = "CADASTRADA";
@@ -32,16 +45,14 @@ namespace SistemaMatricula.Models
         public const string CANCELED = "CANCELADA";
         public const string FINISHED = "ENCERRADA";
 
-        public static List<string> WeekdayList()
+        public static List<string> StatusList()
         {
             return new List<string>()
             {
-                DayOfWeek.Monday.ToString(),
-                DayOfWeek.Tuesday.ToString(),
-                DayOfWeek.Wednesday.ToString(),
-                DayOfWeek.Thursday.ToString(),
-                DayOfWeek.Friday.ToString(),
-                DayOfWeek.Saturday.ToString()
+                REGISTERED,
+                RELEASED,
+                CANCELED,
+                FINISHED
             };
         }
 
@@ -98,6 +109,30 @@ namespace SistemaMatricula.Models
             }
         }
 
+        public int Registries
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Status))
+                    return 0;
+
+                if (Status == REGISTERED || Status == CANCELED)
+                    return 0;
+
+                Registry filters = new Registry()
+                {
+                    Grid = new Grid() { IdGrid = IdGrid }
+                };
+
+                var registries = Registry.List(filters);
+
+                if (registries == null)
+                    return 0;
+
+                return registries.Count;
+            }
+        }
+
         public Pagination Pagination { get; set; }
 
         public static bool Add(Grid item)
@@ -125,87 +160,81 @@ namespace SistemaMatricula.Models
             return GridDAO.Delete(id);
         }
 
-        //TODO: Verificar a necessidade de toda essa lógica abaixo
-
-        /*
-        public static bool UpdateStatus(string status)
+        public static bool Release()
         {
-            return GridDAO.UpdateStatus(status);
-        }
-
-        public static Grid[] Listar(Grid filtros = null, bool grade = false)
-        {
-            //TODO: Adicionar regra na procedure de disciplinas que não devem ser inseridas na grade, pois não atingiram a quantidade de alunos
-
-            List<Grid> lista = new List<Grid>();
-
             try
             {
-                if (filtros.Class != null && filtros.Semester != null)
+                Grid filters = new Grid()
                 {
-                    if (!grade)
-                    {
-                        return GridDAO.Listar(filtros).ToArray();
-                    }
+                    Status = REGISTERED
+                };
 
-                    Class novoFiltro = new Class()
-                    {
-                        Course = new Course { IdCourse = filtros.Class.Course.IdCourse }
-                    };
+                var list = List(filters);
 
-                    List<Class> disciplinas = Class.List(novoFiltro);
+                if (list == null)
+                    throw new Exception("As grades não foram listadas");
 
-                    foreach (Class disciplina in disciplinas)
-                    {
-                        filtros.Class.IdClass = disciplina.IdClass;
-                        List<Grid> definidas = GridDAO.Listar(filtros);
-
-                        if (definidas.Count == 0)
-                        {
-                            definidas.Add(new Grid()
-                            {
-                                Class = disciplina,
-                                Semester = filtros.Semester
-                            });
-                        }
-
-                        lista.AddRange(definidas);
-                    }
-
-                    lista.Sort((a, b) => -1 * a.Semester.InitialDate.CompareTo(b.Semester.InitialDate));
-                }
-                else
+                foreach (Grid item in list)
                 {
-                    return GridDAO.Listar(filtros).ToArray();
+                    item.Status = RELEASED;
+
+                    var update = Update(item);
+
+                    if (update == false)
+                        throw new Exception(string.Format("Grade {0} não foi liberada", item.IdGrid));
+
+                    continue;
                 }
+
+                return true;
             }
-            catch { }
-
-            return lista.ToArray();
-        }
-
-        public static object ListarCourses(Guid? IdSemester = null, Guid? IdCourse = null, string StatusGrade = null, string PalavraChave = null)
-        {
-            //TODO: Adicionar regra na procedure de disciplinas que não devem ser inseridas na grade, pois não atingiram a quantidade de alunos
-            return GridDAO.ListarCourses(IdSemester, IdCourse, StatusGrade, PalavraChave);
-        }
-
-        public static object ListarGrade(string StatusClass = null, Guid? IdCourse = null)
-        {
-            return GridDAO.ListarGrade(StatusClass, IdCourse);
-        }
-
-        public static List<string> StatusGrade()
-        {
-            return new List<string>()
+            catch (Exception e)
             {
-                "PENDENTE",
-                "COMPLETO",
-                "INCOMPLETO",
-                "ENCERRADO",
-                "ERRO"
-            };
+                string notes = LogHelper.Notes(null, e.Message);
+                Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Models.Grid.Release", notes);
+            }
+
+            return false;
         }
-        */
+
+        public static bool Close()
+        {
+            try
+            {
+                Grid filters = new Grid()
+                {
+                    Status = RELEASED
+                };
+
+                var list = List(filters);
+
+                if (list == null)
+                    throw new Exception("As grades não foram listadas");
+
+                foreach (Grid item in list)
+                {
+                    if (item.Registries < 4)
+                        item.Status = CANCELED;
+                    else
+                        item.Status = FINISHED;
+
+                    var update = Update(item);
+
+                    if (update == false)
+                        throw new Exception(string.Format("Grade {0} não foi encerrada", item.IdGrid));
+
+                    continue;
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                string notes = LogHelper.Notes(null, e.Message);
+                Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Models.Grid.Close", notes);
+            }
+
+            return false;
+        }
     }
 }

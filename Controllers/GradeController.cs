@@ -4,8 +4,8 @@ using System.Web.Mvc;
 
 namespace SistemaMatricula.Controllers
 {
-    [Authorize(Roles = Usuario.ROLE_ADMINISTRADOR)]
-    public class GradeController : Controller
+    [Authorize(Roles = Models.User.ROLE_ADMINISTRATOR)]
+    public class GridController : Controller
     {
         public ActionResult Index(GradeIndexView view)
         {
@@ -640,70 +640,36 @@ namespace SistemaMatricula.Controllers
         }
     }
 
-    public class GradeIndexView
+    public class GridIndexView
     {
-        public SelectList slSemestres { get; set; }
-        public SelectList slCursos { get; set; }
-        public SelectList slStatusGrade { get; set; }
+        public SelectList SemesterSelectList { get; set; }
+        public SelectList CourseSelectList { get; set; }
+        public SelectList StatusSelectList { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
-        public System.Guid? SemestreSelecionado { get; set; }
+        public System.Guid? SemesterSelected { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
-        public System.Guid? CursoSelecionado { get; set; }
+        public System.Guid? CourseSelected { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
-        public string StatusGradeSelecionado { get; set; }
-        public string PalavraChave { get; set; }
+        public string StatusSelected { get; set; }
+        public string Search { get; set; }
     }
 
-    public class GradeEditView : Grid
+    public class GridEditView : Grid
     {
-        public System.Guid IdSemestre { get; set; }
-        public System.Guid IdCurso { get; set; }
-        public SelectList slProfessores { get; set; }
-        public SelectList slHorarios { get; set; }
-        public SelectList slDias { get; set; }
-        public SelectList slDisciplinas { get; set; }
+        public System.Guid IdSemester { get; set; }
+        public System.Guid IdCourse { get; set; }
+        public SelectList TeacherSelectList { get; set; }
+        public SelectList TimeSelectList { get; set; }
+        public SelectList WeekdaySelectList { get; set; }
+        public SelectList ClassSelectList { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
-        public System.Guid ProfessorSelecionado { get; set; }
+        public System.Guid TeacherSelected { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
-        public string HorarioSelecionado { get; set; }
+        public string TimeSelected { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
-        public string DiaSelecionado { get; set; }
+        public string WeekdaySelected { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
-        public System.Guid DisciplinaSelecionada { get; set; }
-
-        public static GradeEditView Converter(Grid a)
-        {
-            try
-            {
-                GradeEditView item = new GradeEditView()
-                {
-                    IdSemestre = a.Semestre == null ? System.Guid.Empty : a.Semestre.IdSemestre,
-                    IdCurso = a.Disciplina == null ? System.Guid.Empty : a.Disciplina.Curso.IdCurso,
-                    IdDisciplinaSemestre = a.IdDisciplinaSemestre,
-                    Disciplina = a.Disciplina,
-                    Semestre = a.Semestre,
-                    Professor = a.Professor,
-                    DiaSemana = a.DiaSemana == null ? string.Empty : a.DiaSemana.Trim(),
-                    DiaSelecionado = a.DiaSemana == null ? string.Empty : a.DiaSemana.Trim(),
-                    Horario = a.Horario == null ? string.Empty : a.Horario.Trim(),
-                    HorarioSelecionado = a.Horario == null ? string.Empty : a.Horario.Trim(),
-                    Status = a.Status == null ? string.Empty : a.Status.Trim(),
-                    CadastroData = a.CadastroData,
-                    CadastroPor = a.CadastroPor,
-                    ExclusaoData = a.ExclusaoData,
-                    ExclusaoPor = a.ExclusaoPor
-                };
-
-                if (a.Professor != null)
-                    item.ProfessorSelecionado = a.Professor.IdProfessor;
-
-                return item;
-            }
-            catch
-            {
-                return null;
-            }
-        }
+        public System.Guid ClassSelected { get; set; }
     }
 
     public class GradeEditAllView

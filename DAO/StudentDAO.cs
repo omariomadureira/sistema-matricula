@@ -51,7 +51,7 @@ namespace SistemaMatricula.DAO
                 if (id == null && string.IsNullOrEmpty(email))
                     throw new Exception("Parâmetros vazios");
 
-                if (id != null && Guid.Equals(id, Guid.Empty))
+                if (id != null && Equals(id, Guid.Empty))
                     throw new Exception("Parâmetro 'id' inválido");
 
                 Student item = null;
@@ -115,9 +115,7 @@ namespace SistemaMatricula.DAO
                         if (filters.Pagination.Rows < 1)
                             return new List<Student>();
 
-                        int skip = (filters.Pagination.Actual - 1) * filters.Pagination.ItensPerPage;
-
-                        query = query.Skip(skip).Take(filters.Pagination.ItensPerPage);
+                        query = query.Skip(filters.Pagination.Skip).Take(filters.Pagination.ItensPerPage);
                     }
 
                     list = query
@@ -173,7 +171,7 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                if (id == null || Guid.Equals(id, Guid.Empty))
+                if (id == null || Equals(id, Guid.Empty))
                     throw new Exception("Parâmetro vazio");
 
                 using (Entities db = new Entities())

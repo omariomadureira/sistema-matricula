@@ -86,7 +86,7 @@ namespace SistemaMatricula.Controllers
                 view.Name = view.Name.Trim();
                 view.Resume = view.Resume.Trim();
 
-                if (Guid.Equals(view.IdTeacher, System.Guid.Empty))
+                if (Equals(view.IdTeacher, System.Guid.Empty))
                 {
                     var insert = Teacher.Add(view);
 
@@ -119,7 +119,7 @@ namespace SistemaMatricula.Controllers
         {
             try
             {
-                if (Guid.Equals(id, Guid.Empty))
+                if (Equals(id, Guid.Empty))
                     throw new Exception("Parâmetro vazio");
 
                 var deleted = Teacher.Delete(id);

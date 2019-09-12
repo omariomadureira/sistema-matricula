@@ -169,6 +169,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\GridController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\CourseController.cs" />
@@ -253,7 +254,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\LogHelper.cs" />
-    <Compile Include="Helpers\Validation.cs" />
+    <Compile Include="Helpers\Form.cs" />
     <Compile Include="Helpers\Pagination.cs" />
     <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="Models\Student.cs" />
@@ -311,12 +312,6 @@
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
     <Content Include="Views\Shared\_Sidebar.cshtml" />
-    <Content Include="Views\Grade\Delete.cshtml" />
-    <Content Include="Views\Grade\Edit.cshtml" />
-    <Content Include="Views\Grade\Index.cshtml" />
-    <Content Include="Views\Grade\List.cshtml" />
-    <Content Include="Views\Grade\EditAll.cshtml" />
-    <Content Include="Views\Grade\Start.cshtml" />
     <Content Include="Views\Matricula\Index.cshtml" />
     <Content Include="Views\Matricula\Edit.cshtml" />
     <Content Include="Views\Matricula\Delete.cshtml" />
@@ -334,6 +329,10 @@
     <Content Include="Views\Teacher\Edit.cshtml" />
     <Content Include="Views\Teacher\Index.cshtml" />
     <Content Include="Views\Shared\_Pagination.cshtml" />
+    <Content Include="Views\Grid\Edit.cshtml" />
+    <Content Include="Views\Grid\Index.cshtml" />
+    <Content Include="Views\Grid\Start.cshtml" />
+    <Content Include="Views\Grid\Finish.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

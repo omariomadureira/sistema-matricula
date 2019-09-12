@@ -33,7 +33,7 @@ namespace SistemaMatricula.DAO
                     IdTeacher = item.Teacher.IdTeacher,
                     Weekday = item.Weekday,
                     Time = item.Time,
-                    Status = Grid.REGISTERED,
+                    Status = item.Status,
                     RegisterDate = DateTime.Now,
                     RegisterBy = User.Logged.IdUser
                 };
@@ -59,7 +59,7 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                if (id == null || Guid.Equals(id, Guid.Empty))
+                if (id == null || Equals(id, Guid.Empty))
                     throw new Exception("Parâmetro inválido");
 
                 Grid item = null;
@@ -133,9 +133,7 @@ namespace SistemaMatricula.DAO
                         if (filters.Pagination.Rows < 1)
                             return new List<Grid>();
 
-                        int skip = (filters.Pagination.Actual - 1) * filters.Pagination.ItensPerPage;
-
-                        query = query.Skip(skip).Take(filters.Pagination.ItensPerPage);
+                        query = query.Skip(filters.Pagination.Skip).Take(filters.Pagination.ItensPerPage);
                     }
 
                     IEnumerable<Grid> rows = query.Select(x => Convert(x));
@@ -192,10 +190,26 @@ namespace SistemaMatricula.DAO
                     if (!string.IsNullOrEmpty(item.Time))
                         row.Time = item.Time;
 
+                    bool different = false;
+
                     if (!string.IsNullOrEmpty(item.Status))
+                    {
+                        if (row.Status.Trim() != item.Status)
+                            different = true;
+
                         row.Status = item.Status;
+                    }
 
                     db.SaveChanges();
+
+                    //TODO: Testar exclusão de matrículas anteriores ao mudar de status
+                    if ((item.Status == Grid.REGISTERED || item.Status == Grid.CANCELED) && different)
+                    {
+                        var delete = Registry.DeleteByGrid(item.IdGrid);
+
+                        if (delete == false)
+                            throw new Exception("Matrículas não deletadas");
+                    }
                 }
 
                 return true;
@@ -213,7 +227,7 @@ namespace SistemaMatricula.DAO
         {
             try
             {
-                if (id == null || Guid.Equals(id, Guid.Empty))
+                if (id == null || Equals(id, Guid.Empty))
                     throw new Exception("Parâmetro inválido");
 
                 using (Entities db = new Entities())
@@ -222,6 +236,9 @@ namespace SistemaMatricula.DAO
 
                     if (row == null)
                         throw new Exception("Grade não encontrada");
+
+                    if (row.Status.Trim() != Grid.REGISTERED && row.Status.Trim() != Grid.CANCELED)
+                        throw new Exception("Grade não pode ser excluída");
 
                     row.DeleteDate = DateTime.Now;
                     row.DeleteBy = User.Logged.IdUser;
@@ -239,78 +256,6 @@ namespace SistemaMatricula.DAO
 
             return false;
         }
-
-        /*
-        public static bool UpdateStatus(string status)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(status))
-                    throw new Exception("Parâmetro vazio");
-
-                using (Entities db = new Entities())
-                {
-                    List<Grade_ListarClasssParaMatricula_Result> resultado = db.Grade_ListarClasssParaMatricula().ToList();
-
-                    if (resultado.Count > 0)
-                    {
-                        foreach (Grade_ListarClasssParaMatricula_Result item in resultado)
-                        {
-                            ClassSemesterData disciplina = db.ClassSemesterData.FirstOrDefault(x => x.IdClassSemester == item.IdClassSemester);
-
-                            if (disciplina != null)
-                            {
-                                disciplina.Status = status;
-                                db.SaveChanges();
-                            }
-                        }
-                    }
-                }
-
-                return true;
-            }
-            catch (Exception e) { }
-
-            return false;
-        }
-
-        public static List<Grade_ListarCourses_Result> ListarCourses(Guid? IdSemester = null, Guid? IdCourse = null, string StatusGrade = null, string PalavraChave = null)
-        {
-            try
-            {
-                Entities db = new Entities();
-
-                List<Grade_ListarCourses_Result> resultado = db.Grade_ListarCourses(IdSemester, IdCourse, StatusGrade, PalavraChave).ToList();
-
-                db.Dispose();
-
-                return resultado;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-        }
-
-        public static List<Grade_ListarClasss_Result> ListarGrade(string StatusClass = null, Guid? IdCourse = null)
-        {
-            try
-            {
-                Entities db = new Entities();
-
-                //TODO: Verificar se essa procedure é necessária
-                List<Grade_ListarClasss_Result> resultado = db.Grade_ListarClasss(StatusClass, IdCourse).ToList();
-
-                db.Dispose();
-
-                return resultado;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-        }
-        */
 
         public static Grid Convert(GridData item)
         {

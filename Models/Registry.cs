@@ -42,6 +42,11 @@ namespace SistemaMatricula.Models
             return RegistryDAO.Delete(id);
         }
 
+        public static bool DeleteByGrid(Guid id)
+        {
+            return RegistryDAO.DeleteByGrid(id);
+        }
+
         public static void AcionarSistemaCobranca()
         {
             //TODO: Simular acionamento do sistema de cobrança

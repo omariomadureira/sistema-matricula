@@ -1,0 +1,114 @@
+﻿@model SistemaMatricula.Controllers.GridIndexView
+@{ ViewBag.Title = "Manutenção de Grades"; }
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="row">
+            <div class="col-md-9">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+        </div>
+    </div>
+    @if (string.IsNullOrEmpty(ViewBag.Message) == false)
+    {
+        <div class="card-body">
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        </div>
+    }
+    else
+    {
+        using (Html.BeginForm("Index", "Grid"))
+        {
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(
+                            model => model.SemesterSelected,
+                            Model.SemesterSelectList,
+                            new
+                            {
+                                @class = "form-control form-control-user"
+                            })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(
+                            model => model.CourseSelected,
+                            Model.CourseSelectList,
+                            new
+                            {
+                                @class = "form-control form-control-user"
+                            })
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary btn-user btn-sm">
+                            <i class="fas fa-search"></i> PESQUISAR
+                        </button>
+                        <a class="btn btn-primary btn-sm"
+                           href="@Url.Action("Edit", "Grid",
+                                    new { IdCourse = Model.CourseSelected, IdSemester = Model.SemesterSelected })">
+                            <i class="fas fa-plus"></i> ADICIONAR GRADE
+                        </a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        @if (ViewBag.List.Count < 1)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td>Não há grade cadastrada.</td>
+                                </tr>
+                            </tbody>
+                        }
+                        else
+                        {
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th>Dia</th>
+                                    <th>Horário</th>
+                                    <th>Disciplina</th>
+                                    <th>Professor</th>
+                                    <th>Status</th>
+                                    <th class="text-center" colspan="2">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.List)
+                                {
+                                    <tr>
+                                        <td>@item.WeekdayName</td>
+                                        <td>@item.Time</td>
+                                        <td>@item.Class.Name</td>
+                                        <td>@item.Teacher.Name</td>
+                                        <td>@item.Status</td>
+                                        <td class="text-center">
+                                            <a class="btn btn-warning btn-sm"
+                                               href="@Url.Action("Edit", "Grid", 
+                                                    new { IdGrid = item.IdGrid, IdSemester = item.Semester.IdSemester })">
+                                                <i class="fas fa-pen"></i> EDITAR
+                                            </a>
+                                        </td>
+                                        @if (item.Status == SistemaMatricula.Models.Grid.REGISTERED)
+                                        {
+                                            <td class="text-center">
+                                                <a class="btn btn-danger btn-sm list-delete" href="#"
+                                                   data-toggle="modal" data-target="#delete-modal"
+                                                   data-item-name="@item.Class.Name" data-item-url="/Grid/Delete/@item.IdGrid">
+                                                    <i class="fas fa-trash"></i> EXCLUIR
+                                                </a>
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@Html.Partial("_DeleteModal", "Grade")

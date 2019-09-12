@@ -13,6 +13,14 @@
             }
         }
 
+        public int Skip
+        {
+            get
+            {
+                return (Actual - 1) * ItensPerPage;
+            }
+        }
+
         public decimal Pages
         {
             get

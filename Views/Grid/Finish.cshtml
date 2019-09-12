@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Fechamento de Grade";
+    string course = string.Empty;
+}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="row">
+            <div class="col-md-9">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+        </div>
+    </div>
+    @if (string.IsNullOrEmpty(ViewBag.Message) == false)
+    {
+        <div class="card-body">
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    @if (ViewBag.List.Count < 1)
+                    {
+                        <tbody>
+                            <tr>
+                                <td>Não há grades disponíveis para fechamento.</td>
+                            </tr>
+                        </tbody>
+                    }
+                    else
+                    {
+                        foreach (var item in ViewBag.List)
+                        {
+                            if (!string.Equals(course,
+                                string.Format("{0} - {1}", item.Semester.Name, item.Class.Course.Name.ToUpper())))
+                            {
+                                course = string.Format("{0} - {1}", item.Semester.Name, item.Class.Course.Name.ToUpper());
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="text-center" colspan="5">@course</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Dia</th>
+                                        <th>Horário</th>
+                                        <th>Disciplina</th>
+                                        <th>Professor</th>
+                                        <th>Matrículas</th>
+                                    </tr>
+                                </thead>
+                            }
+                            <tbody>
+                                <tr>
+                                    <td>@item.WeekdayName</td>
+                                    <td>@item.Time</td>
+                                    <td>@item.Class.Name</td>
+                                    <td>@item.Teacher.Name</td>
+                                    <td>@item.Registries</td>
+                                </tr>
+                            </tbody>
+                        }
+                    }
+                </table>
+                @if (ViewBag.List.Count > 0)
+                {
+                    using (Html.BeginForm("Close", "Grid", FormMethod.Post))
+                    {
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-success btn-user btn-sm">ENCERRAR</button>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    }
+</div>

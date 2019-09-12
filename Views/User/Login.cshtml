@@ -1,8 +1,7 @@
 ﻿@model SistemaMatricula.Models.LoginViewModel
 
 <div class="row">
-    <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-    <div class="col-lg-6">
+    <div class="col-md-12">
         <div class="p-5">
             <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Entrar</h1>
@@ -20,12 +19,6 @@
                 <div class="form-group">
                     @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-user", @placeholder = "Senha" })
                     @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group">
-                    <div class="custom-control custom-checkbox small">
-                        @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input" })
-                        <label class="custom-control-label" for="customCheck">Lembrar-me</label>
-                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-user btn-block">ACESSAR</button>
             }

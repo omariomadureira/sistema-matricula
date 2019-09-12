@@ -8,10 +8,8 @@ namespace SistemaMatricula.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            if(!Request.IsAuthenticated)
-            {
+            if (!Request.IsAuthenticated)
                 return RedirectToAction("Login", "User");
-            }
 
             return View();
         }

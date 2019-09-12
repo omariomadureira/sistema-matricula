@@ -18,12 +18,14 @@ namespace SistemaMatricula.Models
         {
             get
             {
-                var id = (Guid)System.Web.HttpContext.Current.Cache["IdUser"];
+                var cache = System.Web.HttpContext.Current.Cache.Get("IdUser");
 
-                if (id == null)
+                if (cache == null)
                     return null;
 
-                if (Guid.Equals(id, Guid.Empty))
+                Guid id = Guid.Parse(cache.ToString());
+
+                if (Equals(id, Guid.Empty))
                     return null;
 
                 return UserDAO.Find(id);

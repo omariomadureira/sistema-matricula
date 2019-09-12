@@ -32,9 +32,9 @@ namespace SistemaMatricula.Models
             return ClassDAO.Find(id);
         }
 
-        public static List<Class> List(Class filters = null)
+        public static List<Class> List(Class filters = null, Func<Database.ClassData, object> sort = null)
         {
-            return ClassDAO.List(filters);
+            return ClassDAO.List(filters, sort);
         }
 
         public static bool Update(Class item)

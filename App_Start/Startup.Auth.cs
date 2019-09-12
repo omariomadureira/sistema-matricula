@@ -59,5 +59,11 @@ namespace SistemaMatricula
                 roleManager.Create(role);
             }
         }
+
+        private void SetLanguage()
+        {
+            System.Globalization.CultureInfo language = new System.Globalization.CultureInfo("pt-BR");
+            System.Threading.Thread.CurrentThread.CurrentCulture = language;
+        }
     }
 }
