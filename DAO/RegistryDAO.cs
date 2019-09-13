@@ -73,7 +73,7 @@ namespace SistemaMatricula.DAO
             return null;
         }
 
-        public static List<Registry> List(Registry filters = null)
+        public static List<Registry> List(Registry filters = null, bool active = false)
         {
             try
             {
@@ -90,23 +90,31 @@ namespace SistemaMatricula.DAO
 
                         if (filters.Student != null && !Equals(filters.Student.IdStudent, Guid.Empty))
                             query = query.Where(x => x.IdStudent == filters.Student.IdStudent);
+
+                        if (filters.Grid != null && filters.Grid.Semester != null
+                            && !Equals(filters.Grid.Semester.IdSemester, Guid.Empty))
+                        {
+                            query = query.Where(x =>
+                                db.GridData
+                                    .Where(g => g.IdSemester == filters.Grid.Semester.IdSemester)
+                                    .Select(g => g.IdGrid)
+                                    .Contains(x.IdGrid));
+                        }
                     }
 
                     query = query.OrderByDescending(x => x.RegisterDate);
 
-                    if (filters != null && filters.Pagination != null)
-                    {
-                        filters.Pagination.Rows = query.Count();
+                    IEnumerable<Registry> rows = query.Select(x => Convert(x));
 
-                        if (filters.Pagination.Rows < 1)
-                            return new List<Registry>();
+                    if (active)
+                        rows = rows.Where(x => x.Grid.Semester.IsActive);
 
-                        query = query.Skip(filters.Pagination.Skip).Take(filters.Pagination.ItensPerPage);
-                    }
-
-                    list = query
-                        .Select(x => Convert(x))
-                        .ToList();
+                    list = rows
+                       .OrderBy(x => x.Grid.Semester.Name)
+                       .ThenBy(x => x.Grid.Class.Course.Name)
+                       .ThenBy(x => x.Grid.Weekday)
+                       .ThenBy(x => x.Grid.Time)
+                       .ToList();
                 }
 
                 return list;
@@ -137,6 +145,8 @@ namespace SistemaMatricula.DAO
 
                 List<GridData> grid = null;
 
+                //TODO: Se houver disciplinas com mais de 10 matrículas, encerrar automaticamente
+
                 using (Entities db = new Entities())
                 {
                     grid = db.GridData
@@ -151,17 +161,19 @@ namespace SistemaMatricula.DAO
                                 .Contains(g.IdGrid)
                             && db.ClassData
                                 .Where(c => c.IdCourse == idCourse)
-                                .Select(c => c.IdCourse)
+                                .Select(c => c.IdClass)
                                 .Contains(g.IdClass)
-                            && g.Status == Grid.RELEASED)
+                            && g.Status.Trim() == Grid.RELEASED)
                         .ToList();
                 }
 
                 if (grid.Count < 1)
                     return new List<Registry>();
 
+                Student student = StudentDAO.Find(idStudent);
+
                 List<Registry> list = grid
-                    .Select(x => new Registry() { Grid = GridDAO.Convert(x) })
+                    .Select(x => new Registry() { Grid = GridDAO.Convert(x), Student = student })
                     .OrderBy(x => x.Grid.Semester.Name)
                     .ThenBy(x => x.Grid.Weekday)
                     .ThenBy(x => x.Grid.Time)
@@ -263,6 +275,7 @@ namespace SistemaMatricula.DAO
 
                 return new Registry
                 {
+                    IdRegistry = item.IdRegistry,
                     Grid = grid,
                     Student = student,
                     Alternative = item.Alternative,

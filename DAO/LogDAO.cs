@@ -11,30 +11,34 @@ namespace SistemaMatricula.DAO
     {
         public static void Add(string type, string description, string notes)
         {
-            if (string.IsNullOrEmpty(type))
-                throw new Exception("Parâmetro 'type' vazio");
-
-            if (string.IsNullOrEmpty(description))
-                throw new Exception("Parâmetro 'description' vazio");
-
-            if (string.IsNullOrEmpty(notes))
-                throw new Exception("Parâmetro 'notes' vazio");
-
-            LogData row = new LogData
+            try
             {
-                IdLog = Guid.NewGuid(),
-                Type = type,
-                Description = description,
-                Notes = notes,
-                IdUser = User.Logged.IdUser,
-                RegisterDate = DateTime.Now,
-            };
+                if (string.IsNullOrEmpty(type))
+                    throw new Exception("Parâmetro 'type' vazio");
 
-            using (Entities db = new Entities())
-            {
-                db.LogData.Add(row);
-                db.SaveChanges();
+                if (string.IsNullOrEmpty(description))
+                    throw new Exception("Parâmetro 'description' vazio");
+
+                if (string.IsNullOrEmpty(notes))
+                    throw new Exception("Parâmetro 'notes' vazio");
+
+                LogData row = new LogData
+                {
+                    IdLog = Guid.NewGuid(),
+                    Type = type,
+                    Description = description,
+                    Notes = notes,
+                    IdUser = User.Logged.IdUser,
+                    RegisterDate = DateTime.Now,
+                };
+
+                using (Entities db = new Entities())
+                {
+                    db.LogData.Add(row);
+                    db.SaveChanges();
+                }
             }
+            catch { }
         }
 
         public static Log Find(Guid id)

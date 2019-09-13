@@ -85,7 +85,7 @@ namespace SistemaMatricula.DAO
             return null;
         }
 
-        public static List<Grid> List(Grid filters = null, bool? active = null)
+        public static List<Grid> List(Grid filters = null, bool active = false)
         {
             try
             {
@@ -138,7 +138,7 @@ namespace SistemaMatricula.DAO
 
                     IEnumerable<Grid> rows = query.Select(x => Convert(x));
 
-                    if (active != null)
+                    if (active)
                         rows = rows.Where(x => x.Semester.IsActive);
 
                     list = rows

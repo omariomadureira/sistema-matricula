@@ -145,7 +145,7 @@ namespace SistemaMatricula.Models
             return GridDAO.Find(id);
         }
 
-        public static List<Grid> List(Grid filters = null, bool? active = null)
+        public static List<Grid> List(Grid filters = null, bool active = false)
         {
             return GridDAO.List(filters, active);
         }

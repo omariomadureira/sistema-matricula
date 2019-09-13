@@ -1,0 +1,114 @@
+﻿@model SistemaMatricula.Controllers.RegistryIndexView
+@{
+    ViewBag.Title = "Painel de Inscrições";
+    object alternative = string.Empty;
+}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="row">
+            <div class="col-md-9">
+                <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+            <div class="col-md-3 text-right">
+                <a class="btn btn-primary btn-sm" href="@Url.Action("Edit", "Registry")">
+                     <i class="fas fa-list"></i> INSCREVA-SE
+                </a>
+            </div>
+        </div>
+    </div>
+    @if (string.IsNullOrEmpty(ViewBag.Message) == false)
+    {
+        <div class="card-body">
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        </div>
+    }
+    else
+    {
+        using (Html.BeginForm("Index", "Registry"))
+        {
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(
+                            model => model.SemesterSelected,
+                            Model.SemesterSelectList,
+                            new
+                            {
+                                @class = "form-control form-control-user"
+                            })
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary btn-user btn-sm">
+                            <i class="fas fa-search"></i> PESQUISAR
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        @if (ViewBag.List.Count < 1)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td>Não há inscrições realizadas nesse semestre.</td>
+                                </tr>
+                            </tbody>
+                        }
+                        else
+                        {
+                            foreach (var item in ViewBag.List)
+                            {
+                                if (!Equals(alternative, item.Alternative))
+                                {
+                                    alternative = item.Alternative;
+                                    <thead class="bg-gray-100">
+                                        <tr>
+                                            @if (item.Alternative == null)
+                                            {
+                                                <th class="text-center" colspan="6">PRIMEIRA OPÇÃO</th>
+                                            }
+                                            else
+                                            {
+                                                <th class="text-center" colspan="6">SEGUNDA OPÇÃO</th>
+                                            }
+                                        </tr>
+                                        <tr>
+                                            <th>Dia</th>
+                                            <th>Horário</th>
+                                            <th>Curso</th>
+                                            <th>Disciplina</th>
+                                            <th>Professor</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                }
+                                <tbody>
+                                    <tr>
+                                        <td>@item.Grid.WeekdayName</td>
+                                        <td>@item.Grid.Time</td>
+                                        <td>@item.Grid.Class.Course.Name</td>
+                                        <td>@item.Grid.Class.Name</td>
+                                        <td>@item.Grid.Teacher.Name</td>
+                                        @if (item.Grid.Status == SistemaMatricula.Models.Grid.RELEASED)
+                                        {
+                                            <td class="text-center">
+                                                <a class="btn btn-danger btn-sm list-delete" href="#"
+                                                   data-toggle="modal" data-target="#delete-modal"
+                                                   data-item-name="@item.Grid.Class.Name" data-item-url="/Registry/Delete/@item.IdRegistry">
+                                                    <i class="fas fa-trash"></i> EXCLUIR
+                                                </a>
+                                            </td>
+                                        }
+                                    </tr>
+                                </tbody>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@Html.Partial("_DeleteModal", "Matrícula")
