@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using SistemaMatricula.Helpers;
 
 namespace SistemaMatricula.Models
 {
@@ -31,11 +32,6 @@ namespace SistemaMatricula.Models
             return RegistryDAO.List(filters, active);
         }
 
-        public static List<Registry> GridList(Guid idStudent, Guid idCourse)
-        {
-            return RegistryDAO.GridList(idStudent, idCourse);
-        }
-
         public static bool Delete(Guid id)
         {
             return RegistryDAO.Delete(id);
@@ -62,6 +58,9 @@ namespace SistemaMatricula.Models
             };
 
             var registries = List(filters, true);
+
+            if (registries == null)
+                return new ValidationResult("Não foi possível realizar a matrícula. Tente novamente mais tarde.");
 
             int restForFirst = 4 - registries.FindAll(x => !x.Alternative.HasValue || !x.Alternative.Value).Count;
             int restForSecond = 2 - registries.FindAll(x => x.Alternative.HasValue && x.Alternative.Value).Count;
@@ -97,6 +96,59 @@ namespace SistemaMatricula.Models
                     string.Format("Escolha no máximo {0} disciplina(s) para segunda opção.", restForSecond));
 
             return ValidationResult.Success;
+        }
+
+        public static List<Registry> IsFull(List<Registry> itens)
+        {
+            try
+            {
+                if (itens == null)
+                    return null;
+
+                List<Grid> list = new List<Grid>();
+
+                foreach (Registry item in itens)
+                    list.Add(item.Grid);
+
+                foreach (Grid item in list)
+                {
+                    if (item.Registries > 9)
+                    {
+                        item.Status = Grid.FINISHED;
+
+                        var update = Grid.Update(item);
+
+                        if (update == false)
+                            throw new Exception("Grade não atualizada");
+
+                        itens.RemoveAll(x => x.Grid.IdGrid == item.IdGrid);
+                    }
+                }
+
+                return itens;
+            }
+            catch (Exception e)
+            {
+                string notes = LogHelper.Notes(itens, e.Message);
+                Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Models.Registry.IsFull", notes);
+            }
+
+            return null;
+        }
+
+        public static List<Registry> GridList(Guid idStudent, Guid idCourse)
+        {
+            var list = RegistryDAO.GridList(idStudent, idCourse);
+
+            if (list == null)
+                return null;
+
+            list = IsFull(list);
+
+            if (list == null)
+                throw new Exception("Erro na checagem da grade com quantidade máxima de matrículas");
+
+            return list;
         }
 
         public static void AcionarSistemaCobranca()

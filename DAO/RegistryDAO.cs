@@ -91,6 +91,9 @@ namespace SistemaMatricula.DAO
                         if (filters.Student != null && !Equals(filters.Student.IdStudent, Guid.Empty))
                             query = query.Where(x => x.IdStudent == filters.Student.IdStudent);
 
+                        if  (filters.Grid != null && !Equals(filters.Grid.IdGrid, Guid.Empty))
+                            query = query.Where(x => x.IdGrid == filters.Grid.IdGrid);
+
                         if (filters.Grid != null && filters.Grid.Semester != null
                             && !Equals(filters.Grid.Semester.IdSemester, Guid.Empty))
                         {

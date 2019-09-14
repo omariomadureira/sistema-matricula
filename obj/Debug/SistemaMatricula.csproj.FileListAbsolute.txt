@@ -227,3 +227,4 @@ C:\Users\User\source\repos\sistema-matricula\obj\Debug\SistemaMatricula.csproj.C
 C:\Users\User\source\repos\sistema-matricula\obj\Debug\SistemaMatricula.csproj.CopyComplete
 C:\Users\User\source\repos\sistema-matricula\obj\Debug\SistemaMatricula.dll
 C:\Users\User\source\repos\sistema-matricula\obj\Debug\SistemaMatricula.pdb
+C:\Users\User\source\repos\sistema-matricula\obj\Debug\SistemaMatricula.csprojAssemblyReference.cache
