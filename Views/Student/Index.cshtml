@@ -36,11 +36,11 @@
                                  @placeholder = "O que você está procurando?"
                             })
                     </div>
-                    <div class="col-md-3">
-                        <button type="submit" class="btn btn-primary btn-user btn-sm">
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary btn-user">
                             <i class="fas fa-search"></i> PESQUISAR
                         </button>
-                        <a class="btn btn-primary btn-user btn-sm"
+                        <a class="btn btn-primary btn-user"
                            href="@Url.Action("Index", "Student")">LIMPAR FILTRO</a>
                     </div>
                 </div>
@@ -71,6 +71,12 @@
                                         <td>@item.Name</td>
                                         <td>@item.Email</td>
                                         <td>@item.RegisterDate.ToString("dd/MM/yyyy")</td>
+                                        <td class="text-center">
+                                            <a class="btn btn-warning btn-sm"
+                                               href="@Url.Action("Edit", "Student", new { IdStudent = item.IdStudent })">
+                                                <i class="fas fa-pen"></i> EDITAR
+                                            </a>
+                                        </td>
                                         @{
                                             string action = item.User != null ? "ALTERAR SENHA" : "ADICIONAR USUÁRIO";
                                             string url = item.User != null ?
@@ -86,12 +92,6 @@
                                             <a class="btn btn-info btn-sm"
                                                href="@url">
                                                 <i class="fas fa-pen"></i> @action
-                                            </a>
-                                        </td>
-                                        <td class="text-center">
-                                            <a class="btn btn-warning btn-sm"
-                                               href="@Url.Action("Edit", "Student", new { IdStudent = item.IdStudent })">
-                                                <i class="fas fa-pen"></i> EDITAR
                                             </a>
                                         </td>
                                         <td class="text-center">

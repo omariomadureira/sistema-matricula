@@ -145,9 +145,9 @@ namespace SistemaMatricula.Models
             return GridDAO.Find(id);
         }
 
-        public static List<Grid> List(Grid filters = null, bool active = false)
+        public static List<Grid> List(Grid filters = null, bool actual = false)
         {
-            return GridDAO.List(filters, active);
+            return GridDAO.List(filters, actual);
         }
 
         public static bool Update(Grid item)
@@ -232,6 +232,55 @@ namespace SistemaMatricula.Models
             {
                 string notes = LogHelper.Notes(null, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Models.Grid.Close", notes);
+            }
+
+            return false;
+        }
+
+        public static bool Copy(Guid idOrigin, Guid idDestiny)
+        {
+            try
+            {
+                if (Equals(idOrigin, Guid.Empty))
+                    throw new Exception("Parâmetro 'idOrigin' inválido");
+
+                if (Equals(idDestiny, Guid.Empty))
+                    throw new Exception("Parâmetro 'idDestiny' inválido");
+
+                Grid filters = new Grid()
+                {
+                    Semester = new Semester() { IdSemester = idOrigin },
+                    Status = FINISHED
+                };
+
+                var list = List(filters);
+
+                if (list == null)
+                    throw new Exception("As grades não foram listadas");
+
+                var semester = Semester.Find(idDestiny);
+
+                if (semester == null)
+                    throw new Exception(string.Format("Semestre {0} não existe", idDestiny));
+
+                foreach (Grid item in list)
+                {
+                    item.Semester = semester;
+                    item.Status = REGISTERED;
+                }
+
+                var insert = GridDAO.Add(list);
+
+                if (insert == false)
+                    throw new Exception("A grade não foi copiada");
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                object[] parameters = { idOrigin, idDestiny };
+                string notes = LogHelper.Notes(parameters, e.Message);
+                Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Models.Grid.Copy", notes);
             }
 
             return false;

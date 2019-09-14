@@ -297,6 +297,73 @@ namespace SistemaMatricula.Controllers
             return View("Finish");
         }
 
+        [HttpGet]
+        public ActionResult Copy(GridCopyView view, bool error = false)
+        {
+            try
+            {
+                ViewBag.HideScreen = false;
+
+                var semesters = Semester.List();
+
+                if (semesters == null)
+                    throw new Exception("Os semestres não foram listados");
+
+                if (Equals(view.OrigenSelected, Guid.Empty))
+                    view.OrigenSelected = semesters[0].IdSemester;
+
+                if (Equals(view.DestinySelectList, Guid.Empty))
+                    view.DestinySelected = semesters[0].IdSemester;
+
+                view.OrigenSelectList = new SelectList(semesters, "IdSemester", "Name", view.OrigenSelected);
+                view.DestinySelectList = new SelectList(semesters, "IdSemester", "Name", view.DestinySelected);
+
+                if (error)
+                {
+                    ViewBag.Message = "Não foi possível realizar a matrícula. Analise os erros.";
+                    return View("Copy");
+                }
+
+                ModelState.Clear();
+            }
+            catch (Exception e)
+            {
+                object[] parameters = { view, error };
+                string notes = LogHelper.Notes(parameters, e.Message);
+                Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Controllers.GridController.Copy.Get", notes);
+                ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+                ViewBag.HideScreen = true;
+            }
+
+            return View("Copy", view);
+        }
+
+        [HttpPost]
+        public ActionResult Copy(GridCopyView view)
+        {
+            try
+            {
+                if (ModelState.IsValid == false)
+                    return Copy(view, true);
+
+                var copy = Grid.Copy(view.OrigenSelected, view.DestinySelected);
+
+                if (copy == false)
+                    return Copy(view, true);
+
+                return RedirectToAction("Index", "Grid");
+            }
+            catch (Exception e)
+            {
+                string notes = LogHelper.Notes(view, e.Message);
+                Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Controllers.GridController.Copy.Post", notes);
+                ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+                ViewBag.HideScreen = true;
+            }
+
+            return View("Copy");
+        }
+
         /*
         [HttpGet]
         public ActionResult EditAll(GradeEditAllView view)
@@ -531,5 +598,15 @@ namespace SistemaMatricula.Controllers
         public Guid ClassSelected { get; set; }
         [Required(ErrorMessage = "Preenchimento obrigatório")]
         public string StatusSelected { get; set; }
+    }
+
+    public class GridCopyView
+    {
+        public SelectList OrigenSelectList { get; set; }
+        [Required(ErrorMessage = "Preenchimento obrigatório")]
+        public Guid OrigenSelected { get; set; }
+        public SelectList DestinySelectList { get; set; }
+        [Required(ErrorMessage = "Preenchimento obrigatório")]
+        public Guid DestinySelected { get; set; }
     }
 }

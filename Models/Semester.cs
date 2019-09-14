@@ -26,7 +26,7 @@ namespace SistemaMatricula.Models
             }
         }
 
-        public bool IsActive
+        public bool IsActual
         {
             get
             {

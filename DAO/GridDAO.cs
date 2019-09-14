@@ -55,6 +55,71 @@ namespace SistemaMatricula.DAO
             return false;
         }
 
+        public static bool Add(List<Grid> itens)
+        {
+            try
+            {
+                if (itens == null || itens.Count < 1)
+                    throw new Exception("Parâmetro vazio");
+
+                bool invalid = itens.Exists(x => x.Class == null);
+
+                if (invalid == true)
+                    throw new Exception("Parâmetro 'Class' vazio");
+
+                invalid = itens.Exists(x => x.Semester == null);
+
+                if (invalid == true)
+                    throw new Exception("Parâmetro 'Semester' vazio");
+
+                invalid = itens.Exists(x => x.Teacher == null);
+
+                if (invalid == true)
+                    throw new Exception("Parâmetro 'Teacher' vazio");
+
+                var user = User.Logged.IdUser;
+
+                if (Equals(user, Guid.Empty))
+                    throw new Exception("Parâmetro 'IdUser' vazio");
+
+                List<GridData> rows = new List<GridData>();
+
+                foreach (Grid item in itens)
+                {
+                    rows.Add
+                    (
+                        new GridData
+                        {
+                            IdGrid = Guid.NewGuid(),
+                            IdClass = item.Class.IdClass,
+                            IdSemester = item.Semester.IdSemester,
+                            IdTeacher = item.Teacher.IdTeacher,
+                            Weekday = item.Weekday,
+                            Time = item.Time,
+                            Status = item.Status,
+                            RegisterDate = DateTime.Now,
+                            RegisterBy = user
+                        }
+                    );
+                }
+
+                using (Entities db = new Entities())
+                {
+                    db.GridData.AddRange(rows);
+                    db.SaveChanges();
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                string notes = LogHelper.Notes(itens, e.Message);
+                Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.GridDAO.Add", notes);
+            }
+
+            return false;
+        }
+
         public static Grid Find(Guid id)
         {
             try
@@ -85,7 +150,7 @@ namespace SistemaMatricula.DAO
             return null;
         }
 
-        public static List<Grid> List(Grid filters = null, bool active = false)
+        public static List<Grid> List(Grid filters = null, bool actual = false)
         {
             try
             {
@@ -138,8 +203,8 @@ namespace SistemaMatricula.DAO
 
                     IEnumerable<Grid> rows = query.Select(x => Convert(x));
 
-                    if (active)
-                        rows = rows.Where(x => x.Semester.IsActive);
+                    if (actual)
+                        rows = rows.Where(x => x.Semester.IsActual);
 
                     list = rows
                        .OrderBy(x => x.Semester.Name)
@@ -153,7 +218,7 @@ namespace SistemaMatricula.DAO
             }
             catch (Exception e)
             {
-                object[] parameters = { filters, active };
+                object[] parameters = { filters, actual };
                 string notes = LogHelper.Notes(parameters, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.GridDAO.List", notes);
             }

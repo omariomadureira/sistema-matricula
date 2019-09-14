@@ -38,11 +38,11 @@
                                 @class = "form-control form-control-user"
                             })
                     </div>
-                    <div class="col-md-3">
-                        <button type="submit" class="btn btn-primary btn-user btn-sm">
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary btn-user">
                             <i class="fas fa-search"></i> PESQUISAR
                         </button>
-                        <a class="btn btn-primary btn-user btn-sm"
+                        <a class="btn btn-primary btn-user"
                            href="@Url.Action("Index", "Semester")">LIMPAR FILTRO</a>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                                     <th>Período</th>
                                     <th>Atual</th>
                                     <th>Data de Cadastro</th>
-                                    <th class="text-center" colspan="2">Ações</th>
+                                    <th class="text-center" colspan="3">Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -71,13 +71,19 @@
                                 {
                                     <tr>
                                         <td>@item.Name</td>
-                                        @{string active = item.IsActive ? "Sim" : "Não";}
+                                        @{string active = item.IsActual ? "Sim" : "Não";}
                                         <td>@active</td>
                                         <td>@item.RegisterDate.ToString("dd/MM/yyyy")</td>
                                         <td class="text-center">
                                             <a class="btn btn-warning btn-sm"
                                                href="@Url.Action("Edit", "Semester", new { IdSemester = item.IdSemester })">
                                                 <i class="fas fa-pen"></i> EDITAR
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-info btn-sm"
+                                               href="@Url.Action("Copy", "Grid", new { OrigenSelected = item.IdSemester })">
+                                                <i class="fas fa-plus"></i> COPIAR GRADE
                                             </a>
                                         </td>
                                         <td class="text-center">

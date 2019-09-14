@@ -73,7 +73,7 @@ namespace SistemaMatricula.DAO
             return null;
         }
 
-        public static List<Registry> List(Registry filters = null, bool active = false)
+        public static List<Registry> List(Registry filters = null, bool actual = false)
         {
             try
             {
@@ -109,8 +109,8 @@ namespace SistemaMatricula.DAO
 
                     IEnumerable<Registry> rows = query.Select(x => Convert(x));
 
-                    if (active)
-                        rows = rows.Where(x => x.Grid.Semester.IsActive);
+                    if (actual)
+                        rows = rows.Where(x => x.Grid.Semester.IsActual);
 
                     list = rows
                        .OrderBy(x => x.Grid.Semester.Name)

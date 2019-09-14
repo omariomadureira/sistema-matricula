@@ -1,0 +1,64 @@
+﻿@model SistemaMatricula.Controllers.GridCopyView
+@{ViewBag.Title = "Manutenção de Grades";}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+    </div>
+    <div class="card-body">
+        @if (string.IsNullOrEmpty(ViewBag.Message) == false)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Message
+            </div>
+        }
+        @if (ViewBag.HideScreen)
+        {
+            <div class="text-center">
+                <a id="voltar" class="btn btn-primary btn-sm" href="@Url.Action("Index", "Grid")">VOLTAR</a>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-lg-12">
+                    @using (Html.BeginForm("Copy", "Grid", FormMethod.Post, new { @class = "user" }))
+                    {
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(
+                                    model => model.OrigenSelected,
+                                    Model.OrigenSelectList,
+                                    "Selecione o semestre a ser copiado",
+                                    new
+                                    {
+                                        @class = "form-control",
+                                        @required = "required"
+                                    })
+                                @Html.ValidationMessageFor(model => model.OrigenSelected)
+                            </div>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(
+                                    model => model.DestinySelected,
+                                    Model.DestinySelectList,
+                                    "Selecione o semestre de destino",
+                                    new
+                                    {
+                                        @class = "form-control",
+                                        @required = "required"
+                                    })
+                                @Html.ValidationMessageFor(model => model.DestinySelectList)
+                            </div>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" id="salvar" class="btn btn-primary btn-success btn-sm">
+                                <i class="fas fa-save"></i> COPIAR
+                            </button>
+                            <a id="cancelar" class="btn btn-danger btn-sm" href="@Url.Action("Index", "Grid")">CANCELAR</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

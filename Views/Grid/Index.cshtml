@@ -4,8 +4,20 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-8">
                 <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+            </div>
+            <div class="col-md-4 text-right">
+                <a class="btn btn-primary btn-sm"
+                   href="@Url.Action("Edit", "Grid",
+                                    new { IdCourse = Model.CourseSelected, IdSemester = Model.SemesterSelected })">
+                    <i class="fas fa-plus"></i> ADICIONAR GRADE
+                </a>
+                <a class="btn btn-primary btn-sm"
+                   href="@Url.Action("Copy", "Grid",
+                                    new { OrigenSelected = Model.SemesterSelected })">
+                    <i class="fas fa-plus"></i> COPIAR GRADE
+                </a>
             </div>
         </div>
     </div>
@@ -42,14 +54,9 @@
                             })
                     </div>
                     <div class="col-md-4">
-                        <button type="submit" class="btn btn-primary btn-user btn-sm">
+                        <button type="submit" class="btn btn-primary btn-user">
                             <i class="fas fa-search"></i> PESQUISAR
                         </button>
-                        <a class="btn btn-primary btn-sm"
-                           href="@Url.Action("Edit", "Grid",
-                                    new { IdCourse = Model.CourseSelected, IdSemester = Model.SemesterSelected })">
-                            <i class="fas fa-plus"></i> ADICIONAR GRADE
-                        </a>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -85,7 +92,7 @@
                                         <td>@item.Status</td>
                                         <td class="text-center">
                                             <a class="btn btn-warning btn-sm"
-                                               href="@Url.Action("Edit", "Grid", 
+                                               href="@Url.Action("Edit", "Grid",
                                                     new { IdGrid = item.IdGrid, IdSemester = item.Semester.IdSemester })">
                                                 <i class="fas fa-pen"></i> EDITAR
                                             </a>

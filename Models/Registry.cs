@@ -27,9 +27,9 @@ namespace SistemaMatricula.Models
             return RegistryDAO.Find(id);
         }
 
-        public static List<Registry> List(Registry filters = null, bool active = false)
+        public static List<Registry> List(Registry filters = null, bool actual = false)
         {
-            return RegistryDAO.List(filters, active);
+            return RegistryDAO.List(filters, actual);
         }
 
         public static bool Delete(Guid id)
