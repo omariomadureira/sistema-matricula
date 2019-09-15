@@ -19,6 +19,12 @@ namespace SistemaMatricula.Models
 
         public static bool Add(Registry item)
         {
+            //TODO: adicionar campo valor na grade
+            var send = SendBill(item.Student.Name, item.Student.CPF, 1);
+
+            if (send == false)
+                return false;
+
             return RegistryDAO.Add(item);
         }
 
@@ -138,22 +144,60 @@ namespace SistemaMatricula.Models
 
         public static List<Registry> GridList(Guid idStudent, Guid idCourse)
         {
-            var list = RegistryDAO.GridList(idStudent, idCourse);
+            try
+            {
+                var list = RegistryDAO.GridList(idStudent, idCourse);
 
-            if (list == null)
-                return null;
+                if (list == null)
+                    return null;
 
-            list = IsFull(list);
+                list = IsFull(list);
 
-            if (list == null)
-                throw new Exception("Erro na checagem da grade com quantidade máxima de matrículas");
+                if (list == null)
+                    throw new Exception("Erro na checagem da grade com quantidade máxima de matrículas");
 
-            return list;
+                return list;
+            }
+            catch (Exception e)
+            {
+                object[] parameters = { idStudent, idCourse };
+                string notes = LogHelper.Notes(parameters, e.Message);
+                Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Models.Registry.GridList", notes);
+            }
+
+            return null;
         }
 
-        public static void AcionarSistemaCobranca()
+        public static bool SendBill(string name, string cpf, decimal value)
         {
-            //TODO: Simular acionamento do sistema de cobrança
+            try
+            {
+                if (string.IsNullOrWhiteSpace(name))
+                    throw new Exception("Parâmetro name vazio");
+
+                if (string.IsNullOrWhiteSpace(cpf))
+                    throw new Exception("Parâmetro cpf vazio");
+
+                if (value < 1)
+                    throw new Exception("Parâmetro value vazio");
+
+                var url = string.Format("https://localhost:44339/api/bill/post?name={0}&cpf={1}&value={2}", name, cpf, value);
+
+                var api = API.Call("POST", url);
+
+                if (api == false)
+                    throw new Exception("Fatura de matrícula não enviada.");
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                object[] parameters = { name, cpf, value };
+                string notes = LogHelper.Notes(parameters, e.Message);
+                Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Models.Registry.SendBill", notes);
+            }
+
+            return false;
         }
     }
 }

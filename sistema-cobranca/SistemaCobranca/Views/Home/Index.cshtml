@@ -1,0 +1,21 @@
+﻿<div>
+    <h1>Sistema de Matrículas</h1>
+    <h2>Sistema de Cobranças - Gerador de Cobrança</h2>
+</div>
+<div>
+    Resultado de execução de teste: <label id="response"></label>
+</div>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax
+            ({
+                url: "/api/bill/post?name=teste&cpf=teste&value=teste",
+                type: 'POST',
+                success: function (result) {
+                    console.log(result);
+                    $("#response").text(result);
+                }
+            });
+    });
+</script>
