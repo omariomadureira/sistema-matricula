@@ -34,8 +34,10 @@ namespace SistemaMatricula.Controllers
                 view.CourseSelectList = new SelectList(courses, "IdCourse", "Name", view.CourseSelected);
                 view.SemesterSelectList = new SelectList(semesters, "IdSemester", "Name", view.SemesterSelected);
 
+                var semester = semesters.Find(x => x.IdSemester == view.SemesterSelected);
+
                 view.Class = new Class { Course = new Course() { IdCourse = view.CourseSelected } };
-                view.Semester = new Semester { IdSemester = view.SemesterSelected };
+                view.Semester = semester;
 
                 ViewBag.List = Grid.List(view);
 
@@ -111,6 +113,9 @@ namespace SistemaMatricula.Controllers
                 if (item == null)
                     throw new Exception("Grade não encontrada");
 
+                if (item.Semester.IsActual == false)
+                    throw new Exception("Semestre não é atual");
+
                 view.TeacherSelectList = new SelectList(teachers, "IdTeacher", "Name", item.Teacher.IdTeacher);
                 view.TeacherSelected = item.Teacher.IdTeacher;
                 view.ClassSelectList = new SelectList(classList, "IdClass", "Name", item.Class.IdClass);
@@ -141,6 +146,11 @@ namespace SistemaMatricula.Controllers
             {
                 if (ModelState.IsValid == false)
                     return Edit(view, true);
+
+                var semester = Semester.Find(view.IdSemester);
+
+                if (semester.IsActual == false)
+                    throw new Exception("Semestre não é atual");
 
                 view.Class = new Class() { IdClass = view.ClassSelected };
                 view.Weekday = view.WeekdaySelected;
@@ -186,6 +196,14 @@ namespace SistemaMatricula.Controllers
             {
                 if (Equals(id, Guid.Empty))
                     throw new Exception("Parâmetro inválido");
+
+                var grid = Grid.Find(id);
+
+                if (grid == null)
+                    throw new Exception(string.Format("Grade {0} não existe", id));
+
+                if (grid.Semester.IsActual == false)
+                    throw new Exception("Semestre não é atual");
 
                 var deleted = Grid.Delete(id);
 

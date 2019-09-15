@@ -267,7 +267,6 @@ namespace SistemaMatricula.DAO
 
                     db.SaveChanges();
 
-                    //TODO: Testar exclusão de matrículas anteriores ao mudar de status
                     if ((item.Status == Grid.REGISTERED || item.Status == Grid.CANCELED) && different)
                     {
                         var delete = Registry.DeleteByGrid(item.IdGrid);

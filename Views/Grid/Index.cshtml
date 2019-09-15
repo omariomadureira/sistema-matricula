@@ -78,7 +78,10 @@
                                     <th>Disciplina</th>
                                     <th>Professor</th>
                                     <th>Status</th>
-                                    <th class="text-center" colspan="2">Ações</th>
+                                    @if (Model.Semester.IsActual)
+                                    {
+                                        <th class="text-center" colspan="2">Ações</th>
+                                    }
                                 </tr>
                             </thead>
                             <tbody>
@@ -90,22 +93,25 @@
                                         <td>@item.Class.Name</td>
                                         <td>@item.Teacher.Name</td>
                                         <td>@item.Status</td>
-                                        <td class="text-center">
-                                            <a class="btn btn-warning btn-sm"
-                                               href="@Url.Action("Edit", "Grid",
-                                                    new { IdGrid = item.IdGrid, IdSemester = item.Semester.IdSemester })">
-                                                <i class="fas fa-pen"></i> EDITAR
-                                            </a>
-                                        </td>
-                                        @if (item.Status == SistemaMatricula.Models.Grid.REGISTERED)
+                                        @if (Model.Semester.IsActual)
                                         {
                                             <td class="text-center">
-                                                <a class="btn btn-danger btn-sm list-delete" href="#"
-                                                   data-toggle="modal" data-target="#delete-modal"
-                                                   data-item-name="@item.Class.Name" data-item-url="/Grid/Delete/@item.IdGrid">
-                                                    <i class="fas fa-trash"></i> EXCLUIR
+                                                <a class="btn btn-warning btn-sm"
+                                                   href="@Url.Action("Edit", "Grid",
+                                                    new { IdGrid = item.IdGrid, IdSemester = item.Semester.IdSemester })">
+                                                    <i class="fas fa-pen"></i> EDITAR
                                                 </a>
                                             </td>
+                                            if (item.Status == SistemaMatricula.Models.Grid.REGISTERED)
+                                            {
+                                                <td class="text-center">
+                                                    <a class="btn btn-danger btn-sm list-delete" href="#"
+                                                       data-toggle="modal" data-target="#delete-modal"
+                                                       data-item-name="@item.Class.Name" data-item-url="/Grid/Delete/@item.IdGrid">
+                                                        <i class="fas fa-trash"></i> EXCLUIR
+                                                    </a>
+                                                </td>
+                                            }
                                         }
                                     </tr>
                                 }
