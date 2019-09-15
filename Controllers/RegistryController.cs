@@ -6,9 +6,10 @@ using SistemaMatricula.Helpers;
 
 namespace SistemaMatricula.Controllers
 {
-    [Authorize(Roles = Models.User.ROLE_STUDENT)]
+    [Authorize]
     public class RegistryController : Controller
     {
+        [Authorize(Roles = Models.User.ROLE_STUDENT)]
         public ActionResult Index(RegistryIndexView view)
         {
             try
@@ -51,6 +52,7 @@ namespace SistemaMatricula.Controllers
             return View(view);
         }
 
+        [Authorize(Roles = Models.User.ROLE_STUDENT)]
         public ActionResult Edit(RegistryEditView view, bool error = false)
         {
             try
@@ -95,6 +97,7 @@ namespace SistemaMatricula.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Models.User.ROLE_STUDENT)]
         public ActionResult Update(RegistryEditView view)
         {
             try
@@ -141,6 +144,7 @@ namespace SistemaMatricula.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Models.User.ROLE_STUDENT)]
         public ActionResult Delete(Guid id)
         {
             try
@@ -188,6 +192,62 @@ namespace SistemaMatricula.Controllers
 
             return list;
         }
+
+        [Authorize(Roles = Models.User.ROLE_TEACHER)]
+        public ActionResult List(RegistryListView view)
+        {
+            try
+            {
+                ModelState.Clear();
+
+                var semesters = Semester.List();
+
+                if (semesters == null)
+                    throw new Exception("Os semestres não foram listados");
+
+                Teacher logged = Teacher.FindLoggedUser();
+
+                if (logged == null)
+                    throw new Exception("Professor não encontrado");
+
+                var classList = Class.List(logged.IdTeacher);
+
+                if (classList == null)
+                    throw new Exception("As disciplinas não foram listadas");
+
+                if (Equals(view.SemesterSelected, Guid.Empty))
+                    view.SemesterSelected = semesters[0].IdSemester;
+
+                if (Equals(view.ClassSelected, Guid.Empty))
+                    view.ClassSelected = classList[0].IdClass;
+
+                view.SemesterSelectList = new SelectList(semesters, "IdSemester", "Name", view.SemesterSelected);
+                view.ClassSelectList = new SelectList(classList, "IdClass", "Name", view.ClassSelected);
+
+                Registry filters = new Registry()
+                {
+                    Grid = new Grid()
+                    {
+                        Semester = new Semester() { IdSemester = view.SemesterSelected },
+                        Teacher = new Teacher() { IdTeacher = logged.IdTeacher },
+                        Class = new Class() { IdClass = view.ClassSelected }
+                    }
+                };
+
+                ViewBag.List = Registry.List(filters);
+
+                if (ViewBag.List == null)
+                    throw new Exception("As matrículas não foram listadas");
+            }
+            catch (Exception e)
+            {
+                string notes = LogHelper.Notes(view, e.Message);
+                Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Controllers.RegistryController.List", notes);
+                ViewBag.Message = "Não foi possível realizar a solicitação. Erro de execução.";
+            }
+
+            return View(view);
+        }
     }
 
     public class RegistryIndexView
@@ -208,5 +268,13 @@ namespace SistemaMatricula.Controllers
         public Guid CourseSelected { get; set; }
         [CustomValidation(typeof(Registry), "Allow")]
         public RegistryView[] Registries { get; set; }
+    }
+
+    public class RegistryListView
+    {
+        public SelectList SemesterSelectList { get; set; }
+        public Guid SemesterSelected { get; set; }
+        public SelectList ClassSelectList { get; set; }
+        public Guid ClassSelected { get; set; }
     }
 }

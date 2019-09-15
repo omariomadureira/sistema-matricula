@@ -1,36 +1,74 @@
 ﻿@{ string url = HttpContext.Current.Request.RawUrl; }
 
-<!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-    <!-- Nav Item - Dashboard -->
     @if (User.IsInRole(SistemaMatricula.Models.User.ROLE_ADMINISTRATOR)
             || User.IsInRole(SistemaMatricula.Models.User.ROLE_STUDENT))
     {
         string collapsed = "collapsed";
         string show = string.Empty;
-        if (url.Contains("/Registry"))
+        if ((url.Contains("/Registry") && !url.Contains("/Registry/Class")) || url.Contains("/Student"))
         {
             collapsed = string.Empty;
             show = "show";
         }
-        <!-- Divider -->
+
         <hr class="sidebar-divider">
 
         <li class="nav-item">
             <a class="nav-link @collapsed" href="#" data-toggle="collapse"
-               data-target="#menu-registry" aria-expanded="true" aria-controls="menu-registry">
-                <i class="fas fa-fw fa-list"></i>
-                <span>Matrículas</span>
+               data-target="#menu-student" aria-expanded="true" aria-controls="menu-registry">
+                <i class="fas fa-fw fa-user"></i>
+                <span>Aluno</span>
             </a>
-            @if (User.IsInRole(SistemaMatricula.Models.User.ROLE_STUDENT))
-            {
-                <div id="menu-registry" class="collapse @show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="@Url.Action("Index", "Registry")">Inscrições</a>
-                    </div>
+            <div id="menu-student" class="collapse @show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    @if (User.IsInRole(SistemaMatricula.Models.User.ROLE_STUDENT))
+                    {
+                        <a class="collapse-item" href="@Url.Action("Index", "Registry")">Matrícula</a>
+                    }
+                    else
+                    {
+                        <a class="collapse-item" href="@Url.Action("Edit", "Student")">Novo</a>
+                        <a class="collapse-item" href="@Url.Action("Index", "Student")">Manutenção</a>
+                    }
                 </div>
-            }
+            </div>
+        </li>
+    }
+
+    @if (User.IsInRole(SistemaMatricula.Models.User.ROLE_ADMINISTRATOR)
+            || User.IsInRole(SistemaMatricula.Models.User.ROLE_TEACHER))
+    {
+        string collapsed = "collapsed";
+        string show = string.Empty;
+        if (url.Contains("/Teacher") || url.Contains("/Registry/List"))
+        {
+            collapsed = string.Empty;
+            show = "show";
+        }
+
+        <hr class="sidebar-divider">
+
+        <li class="nav-item">
+            <a class="nav-link @collapsed" href="#" data-toggle="collapse"
+               data-target="#menu-teacher" aria-expanded="true" aria-controls="menu-registry">
+                <i class="fas fa-fw fa-user"></i>
+                <span>Professor</span>
+            </a>
+            <div id="menu-teacher" class="collapse @show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    @if (User.IsInRole(SistemaMatricula.Models.User.ROLE_TEACHER))
+                    {
+                        <a class="collapse-item" href="@Url.Action("List", "Registry")">Lista de Chamada</a>
+                    }
+                    else
+                    {
+                        <a class="collapse-item" href="@Url.Action("Edit", "Teacher")">Novo</a>
+                        <a class="collapse-item" href="@Url.Action("Index", "Teacher")">Manutenção</a>
+                    }
+                </div>
+            </div>
         </li>
     }
 
@@ -44,7 +82,6 @@
             show = "show";
         }
 
-        <!-- Divider -->
         <hr class="sidebar-divider">
 
         <li class="nav-item">
@@ -67,27 +104,23 @@
     {
         string collapsed = "collapsed";
         string show = string.Empty;
-        if (url.Contains("/Student") || url.Contains("/Semester")
-            || url.Contains("/Teacher") || url.Contains("/Class") || url.Contains("/Course"))
+        if (url.Contains("/Semester") || url.Contains("/Class") || url.Contains("/Course"))
         {
             collapsed = string.Empty;
             show = "show";
         }
 
-        <!-- Divider -->
         <hr class="sidebar-divider">
 
         <li class="nav-item">
             <a class="nav-link @collapsed" href="#" data-toggle="collapse"
                data-target="#menu-input" aria-expanded="true" aria-controls="menu-input">
                 <i class="fas fa-fw fa-folder"></i>
-                <span>Manutenção</span>
+                <span>Cadastro</span>
             </a>
             <div id="menu-input" class="collapse @show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="@Url.Action("Index", "Student")">Aluno</a>
                     <a class="collapse-item" href="@Url.Action("Index", "Semester")">Semestre</a>
-                    <a class="collapse-item" href="@Url.Action("Index", "Teacher")">Professor</a>
                     <a class="collapse-item" href="@Url.Action("Index", "Class")">Disciplina</a>
                     <a class="collapse-item" href="@Url.Action("Index", "Course")">Curso</a>
                 </div>
@@ -105,7 +138,6 @@
             show = "show";
         }
 
-        <!-- Divider -->
         <hr class="sidebar-divider">
 
         <li class="nav-item">
@@ -123,7 +155,6 @@
         </li>
     }
 
-    <!-- Divider -->
     <hr class="sidebar-divider">
 
     <li class="nav-item">
@@ -133,34 +164,9 @@
         </a>
     </li>
 
-    <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Nav Item - Pages Collapse Menu
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder"></i>
-            <span>Pages</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Login Screens:</h6>
-                <a class="collapse-item" href="login.html">Login</a>
-                <a class="collapse-item" href="register.html">Register</a>
-                <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                <div class="collapse-divider"></div>
-                <h6 class="collapse-header">Other Pages:</h6>
-                <a class="collapse-item" href="404.html">404 Page</a>
-                <a class="collapse-item" href="blank.html">Blank Page</a>
-            </div>
-        </div>
-    </li> -->
-    <!-- Divider
-    <hr class="sidebar-divider d-none d-md-block"> -->
-    <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
-
 </ul>
-<!-- End of Sidebar -->

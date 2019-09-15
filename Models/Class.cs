@@ -37,6 +37,11 @@ namespace SistemaMatricula.Models
             return ClassDAO.List(filters, sort);
         }
 
+        public static List<Class> List(Guid idTeacher)
+        {
+            return ClassDAO.List(idTeacher);
+        }
+
         public static bool Update(Class item)
         {
             return ClassDAO.Update(item);

@@ -11,7 +11,13 @@ namespace SistemaMatricula.Controllers
             if (!Request.IsAuthenticated)
                 return RedirectToAction("Login", "User");
 
-            return View();
+            if (User.IsInRole(Models.User.ROLE_STUDENT))
+                return RedirectToAction("Index", "Registry");
+
+            if (User.IsInRole(Models.User.ROLE_TEACHER))
+                return RedirectToAction("List", "Registry");
+
+            return RedirectToAction("Index", "Grid");
         }
 
         public ActionResult About()

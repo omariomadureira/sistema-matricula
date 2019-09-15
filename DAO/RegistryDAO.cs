@@ -91,7 +91,7 @@ namespace SistemaMatricula.DAO
                         if (filters.Student != null && !Equals(filters.Student.IdStudent, Guid.Empty))
                             query = query.Where(x => x.IdStudent == filters.Student.IdStudent);
 
-                        if  (filters.Grid != null && !Equals(filters.Grid.IdGrid, Guid.Empty))
+                        if (filters.Grid != null && !Equals(filters.Grid.IdGrid, Guid.Empty))
                             query = query.Where(x => x.IdGrid == filters.Grid.IdGrid);
 
                         if (filters.Grid != null && filters.Grid.Semester != null
@@ -100,6 +100,26 @@ namespace SistemaMatricula.DAO
                             query = query.Where(x =>
                                 db.GridData
                                     .Where(g => g.IdSemester == filters.Grid.Semester.IdSemester)
+                                    .Select(g => g.IdGrid)
+                                    .Contains(x.IdGrid));
+                        }
+
+                        if (filters.Grid != null && filters.Grid.Teacher != null
+                            && !Equals(filters.Grid.Teacher.IdTeacher, Guid.Empty))
+                        {
+                            query = query.Where(x =>
+                                db.GridData
+                                    .Where(g => g.IdTeacher == filters.Grid.Teacher.IdTeacher)
+                                    .Select(g => g.IdGrid)
+                                    .Contains(x.IdGrid));
+                        }
+
+                        if (filters.Grid != null && filters.Grid.Class != null 
+                            && !Equals(filters.Grid.Class.IdClass, Guid.Empty))
+                        {
+                            query = query.Where(x =>
+                                db.GridData
+                                    .Where(g => g.IdClass == filters.Grid.Class.IdClass)
                                     .Select(g => g.IdGrid)
                                     .Contains(x.IdGrid));
                         }
@@ -117,6 +137,7 @@ namespace SistemaMatricula.DAO
                        .ThenBy(x => x.Grid.Class.Course.Name)
                        .ThenBy(x => x.Grid.Weekday)
                        .ThenBy(x => x.Grid.Time)
+                       .ThenBy(x => x.Student.Name)
                        .ToList();
                 }
 
@@ -147,8 +168,6 @@ namespace SistemaMatricula.DAO
                     throw new Exception("Semestre não encontrado");
 
                 List<GridData> grid = null;
-
-                //TODO: Se houver disciplinas com mais de 10 matrículas, encerrar automaticamente
 
                 using (Entities db = new Entities())
                 {

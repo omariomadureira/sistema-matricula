@@ -94,8 +94,8 @@ namespace SistemaMatricula.DAO
                             filters.Name = filters.Name.Trim().ToLower();
 
                             query = query
-                                .Where(x => 
-                                    x.Name.ToLower().Contains(filters.Name) 
+                                .Where(x =>
+                                    x.Name.ToLower().Contains(filters.Name)
                                     || x.Description.ToLower().Contains(filters.Name));
                         }
 
@@ -130,6 +130,45 @@ namespace SistemaMatricula.DAO
             {
                 string notes = LogHelper.Notes(filters, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.ClassDAO.List", notes);
+            }
+
+            return null;
+        }
+
+        public static List<Class> List(Guid idTeacher)
+        {
+            try
+            {
+                if (idTeacher == null || Equals(idTeacher, Guid.Empty))
+                    throw new Exception("Parâmetro inválido");
+
+                List<GridData> rows = null;
+
+                using (Entities db = new Entities())
+                {
+                    rows = db.GridData
+                        .Where(g => g.DeleteDate == null && g.IdTeacher == idTeacher)
+                        .ToList();
+                }
+
+                if (rows.Count < 1)
+                    return new List<Class>();
+
+                List<Grid> grids = rows.Select(x => GridDAO.Convert(x)).ToList();
+
+                List<Class> list = grids
+                    .Select(x => x.Class)
+                    .GroupBy(x => new { x.IdClass, x.Name })
+                    .Select(x => x.First())
+                    .OrderBy(x => x.Name)
+                    .ToList();
+
+                return list;
+            }
+            catch (Exception e)
+            {
+                string notes = LogHelper.Notes(idTeacher, e.Message);
+                Log.Add(Log.TYPE_ERROR, "SistemaMatricula.DAO.ClassDAO.List.ByTeacher", notes);
             }
 
             return null;
