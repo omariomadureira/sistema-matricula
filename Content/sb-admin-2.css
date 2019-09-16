@@ -11651,19 +11651,19 @@ a:focus {
 }
 
 .bg-login-image {
-    background: url("/Content/img/login-estudante.jpg");
+    background: url("/Content/img/login.jpg");
     background-position: center;
     background-size: cover;
 }
 
 .bg-register-image {
-    background: url("/Content/img/login-estudante.jpg");
+    background: url("/Content/img/login.jpg");
     background-position: center;
     background-size: cover;
 }
 
 .bg-password-image {
-    background: url("/Content/img/login-estudante.jpg");
+    background: url("/Content/img/login.jpg");
     background-position: center;
     background-size: cover;
 }

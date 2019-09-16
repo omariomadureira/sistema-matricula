@@ -6,10 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Estudo: Sistema de Matrículas">
     <meta name="author" content="Mario Madureira">
-    <title>@ViewBag.Title - Sistema de Matrículas</title>
+    <title>@ViewBag.Title - Clasoft</title>
     @Styles.Render("~/bundles/css")
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" 
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
           rel="stylesheet">
+    <link rel="icon" href="/Content/img/icon.png" />
 </head>
 
 <body id="page-top">
@@ -28,41 +29,22 @@
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                    <!-- Topbar -->
-                    <label class="sidebar-brand-text mx-3">Sistema de Matrículas v0.1</label>
+                    <ul class="navbar-nav text-xs text-center" style="width:120px;margin-left:auto;">
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item">
+                            <img class="img-fluid" src="/Content/img/logo.png" />
+                        </li>
+                        <li><small>v1.1.0</small></li>
+                    </ul>
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle"
-                               href="#" id="searchDropdown" role="button" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                 aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small"
-                                               placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item">
                             <a class="nav-link"
                                href="@Url.Action("Edit", "User", new { Id = Cache["IdUser"] })">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                <i class="fas fa-unlock-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Alterar senha</span>
                             </a>
                         </li>

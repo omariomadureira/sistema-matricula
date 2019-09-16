@@ -1,14 +1,114 @@
 ﻿@{ViewBag.Title = "Sobre";}
 
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">@ViewBag.Title</h6>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Definição</h6>
+            </div>
+            <div class="card-body">
+                <p>
+                    <b>Clasoft</b> é um sistema online de matrículas e manutenção de grades curriculares.
+                    Foi desenvolvido por <a href="https://www.mariomadureira.com.br" target="_blank">Mario Madureira</a>
+                    para fins de estudo e prática de desenvolvimento.
+                </p>
+            </div>
         </div>
-        <div class="card-body">
-            <p>
-                Este projeto foi desenvolvido por <b><a href="mailto:mdsmadureira@gmail.com">Mario Madureira</a></b> e
-                feito exclusivamente para fins de prática de estudo.
-            </p>
-            <p>Fica proibido a utilização do código para outra finalidade a não ser o citado anteriormente.</p>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Tecnologia</h6>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li>Arquitetura MVC + DAO</li>
+                    <li>.NET Framework v4.7.2</li>
+                    <li>Entity Framework v6.0.0.0</li>
+                    <li>Bootstrap v4.3.1</li>
+                    <li>Font Awesome Free v5.9.0</li>
+                    <li>JQuery v3.4.1</li>
+                    <li>JQuery Easing v1.4.1</li>
+                    <li>Start Bootstrap - SB Admin 2 v4.0.6</li>
+                </ul>
+            </div>
+        </div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Sobre Mario Madureira</h6>
+            </div>
+            <div class="card-body">
+                <p>
+                    Bacharel em Ciência da Computação pela Universidade São Judas Tadeu. Possui mais de 9 anos em experiência
+                    com estudos e desenvolvimentos no setor de Tecnologia da Informação. Mantém uma iniciativa de trabalhos de
+                    escrita e composições autorais, além de contato com projetos no cenário teatral. Paulista e fã de uma boa risada.
+                </p>
+                <a class="btn btn-primary btn-circle" href="https://www.mariomadureira.com.br" target="_blank">
+                    <i class="fa fa-address-card"></i>
+                </a>
+                <a class="btn btn-primary btn-circle" href="https://github.com/omariomadureira" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a class="btn btn-primary btn-circle" href="http://www.linkedin.com/in/omariomadureira" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a class="btn btn-primary btn-circle" href="mailto:mdsmadureira@gmail.com" target="_blank">
+                    <i class="fa fa-envelope"></i>
+                </a>
+            </div>
         </div>
     </div>
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Regras de negócio</h6>
+            </div>
+            <div class="card-body">
+                <p>
+                    Uma faculdade pretende informatizar seu sistema de matrículas.
+                </p>
+                <p>
+                    A secretaria da faculdade gera o currículo para cada semestre e mantém as informações sobre as
+                    disciplinas, professores e alunos.
+                </p>
+                <p>
+                    Cada curso tem um nome, um determinado número de créditos e é constituído por diversas disciplinas.
+                </p>
+                <p>
+                    Os alunos podem se matricular a 4 disciplinas como 1ª opção e a mais 2 outras alternativas.
+                </p>
+                <p>
+                    Há períodos para efetuar matrículas, durante os quais um aluno pode acessar o sistema para se matricular
+                    em disciplinas e/ou para cancelar matrículas feitas anteriormente.
+                </p>
+                <p>
+                    Uma disciplina só fica ativa, isto é, só irá funcionar no semestre seguinte se, no final do período de
+                    matrículas tiver, pelo menos, 3 alunos inscritos (matriculados). Caso contrário, a disciplina será cancelada.
+                    O número máximo de alunos inscritos a uma disciplina é de 10 e quando este número é atingido, as inscrições
+                    (matrículas) a essa disciplina são encerradas.
+                </p>
+                <p>
+                    Após um aluno se inscrever para um semestre, o sistema de cobranças é notificado pelo sistema de matrículas,
+                    de modo que o aluno possa ser cobrado pelas disciplinas daquele semestre.
+                </p>
+                <p>
+                    Os professores podem acessar o sistema para saber quais são os alunos que estão matriculados em cada disciplina.
+                </p>
+                <p>
+                    Todos os usuários do sistema têm senhas que são utilizadas para validação do respectivo login.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Importante</h6>
+            </div>
+            <div class="card-body">
+                <p>
+                    Este projeto foi desenvolvido exclusivamente para fins de prática de estudo. Fica <b>proibida</b>
+                    a utilização do código para outra finalidade a não ser o citado anteriormente.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

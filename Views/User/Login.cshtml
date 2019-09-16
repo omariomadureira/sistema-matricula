@@ -4,6 +4,9 @@
     <div class="col-md-12">
         <div class="p-5">
             <div class="text-center">
+                <img class="img-fluid" src="/Content/img/logo.png" />
+            </div>
+            <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Entrar</h1>
             </div>
             @using (Html.BeginForm("Login", "USER", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
@@ -22,6 +25,13 @@
                 </div>
                 <button type="submit" class="btn btn-primary btn-user btn-block">ACESSAR</button>
             }
+            <br />
+            <div class="text-center">
+                <small>
+                    Desenvolvido por 
+                    <a href="https://www.mariomadureira.com.br" target="_blank">Mario Madureira</a>
+                </small>
+            </div>
         </div>
     </div>
 </div>

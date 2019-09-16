@@ -2,6 +2,8 @@
 
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
+    <hr class="sidebar-divider">
+
     @if (User.IsInRole(SistemaMatricula.Models.User.ROLE_ADMINISTRATOR)
             || User.IsInRole(SistemaMatricula.Models.User.ROLE_STUDENT))
     {
@@ -13,12 +15,10 @@
             show = "show";
         }
 
-        <hr class="sidebar-divider">
-
         <li class="nav-item">
             <a class="nav-link @collapsed" href="#" data-toggle="collapse"
                data-target="#menu-student" aria-expanded="true" aria-controls="menu-registry">
-                <i class="fas fa-fw fa-user"></i>
+                <i class="fas fa-fw fa-user-graduate"></i>
                 <span>Aluno</span>
             </a>
             <div id="menu-student" class="collapse @show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -53,7 +53,7 @@
         <li class="nav-item">
             <a class="nav-link @collapsed" href="#" data-toggle="collapse"
                data-target="#menu-teacher" aria-expanded="true" aria-controls="menu-registry">
-                <i class="fas fa-fw fa-user"></i>
+                <i class="fas fa-fw fa-user-tie"></i>
                 <span>Professor</span>
             </a>
             <div id="menu-teacher" class="collapse @show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -115,7 +115,7 @@
         <li class="nav-item">
             <a class="nav-link @collapsed" href="#" data-toggle="collapse"
                data-target="#menu-input" aria-expanded="true" aria-controls="menu-input">
-                <i class="fas fa-fw fa-folder"></i>
+                <i class="fas fa-fw fa-folder-open"></i>
                 <span>Cadastro</span>
             </a>
             <div id="menu-input" class="collapse @show" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -132,7 +132,7 @@
     {
         string collapsed = "collapsed";
         string show = string.Empty;
-        if (url.Contains("/User") || url.Contains("/Log"))
+        if (url.Contains("/User") || url.Contains("/Log") || url.Contains("/Home/About"))
         {
             collapsed = string.Empty;
             show = "show";
@@ -150,19 +150,11 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="@Url.Action("Index", "User")">Usuário</a>
                     <a class="collapse-item" href="@Url.Action("Index", "Log")">Log</a>
+                    <a class="collapse-item" href="@Url.Action("About", "Home")">Sobre</a>
                 </div>
             </div>
         </li>
     }
-
-    <hr class="sidebar-divider">
-
-    <li class="nav-item">
-        <a class="nav-link" href="@Url.Action("About", "Home")">
-            <i class="fas fa-fw fa-bell"></i>
-            <span>Aviso</span>
-        </a>
-    </li>
 
     <hr class="sidebar-divider">
 
