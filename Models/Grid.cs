@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using SistemaMatricula.Helpers;
+using System.ComponentModel.DataAnnotations;
 
 namespace SistemaMatricula.Models
 {
@@ -11,8 +12,13 @@ namespace SistemaMatricula.Models
         public Class Class { get; set; }
         public Semester Semester { get; set; }
         public Teacher Teacher { get; set; }
+        [Display(Name = "Dia da Semana")]
         public int Weekday { get; set; }
         public string Time { get; set; }
+        [Required(ErrorMessage = "Preenchimento obrigatório")]
+        [Range(1, double.MaxValue, ErrorMessage = "Preencha um valor válido")]
+        [Display(Name = "Preço da Matrícula")]
+        public double Price { get; set; }
         public string Status { get; set; }
         public DateTime RegisterDate { get; set; }
         public Guid RegisterBy { get; set; }
@@ -213,7 +219,7 @@ namespace SistemaMatricula.Models
 
                 foreach (Grid item in list)
                 {
-                    if (item.Registries < 4)
+                    if (item.Registries < 3)
                         item.Status = CANCELED;
                     else
                         item.Status = FINISHED;

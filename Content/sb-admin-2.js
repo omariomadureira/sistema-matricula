@@ -85,20 +85,37 @@
         $("#modal-url").attr('href', url);
     });
 
-    $(".cpf").inputmask("mask", {
-        "mask": "999.999.999-99"
-    }, {
-            reverse: true
+    $(document).ready( function() {
+        $(".cpf").inputmask("mask", {
+            "mask": "999.999.999-99"
+        }, {
+                reverse: true
+            });
+
+        $(".birthday").inputmask("mask", {
+            "mask": "99/99/9999"
+        }, {
+                reverse: true
+            });
+
+        if ($(".birthday").val() == "01/01/0001") {
+            $(".birthday").val("");
+        }
+
+        if ($(".price").val() == "0") {
+            $(".price").val(null);
+        }
+
+        $(".price").inputmask('decimal', {
+            'alias': 'numeric',
+            'groupSeparator': '.',
+            'autoGroup': true,
+            'digits': 2,
+            'radixPoint': ",",
+            'digitsOptional': false,
+            'allowMinus': false,
+            'prefix': '',
+            'rightAlign': false
         });
-
-    $(".birthday").inputmask("mask", {
-        "mask": "99/99/9999"
-    }, {
-            reverse: true
-        });
-
-    if ($(".birthday").val() == "01/01/0001") {
-        $(".birthday").val("");
-    }
-
+    });
 })(jQuery); // End of use strict

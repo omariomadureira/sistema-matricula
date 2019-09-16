@@ -76,14 +76,25 @@
                                 @Html.ValidationMessageFor(model => model.TimeSelected)
                             </div>
                         </div>
+                        if (Model.StatusSelected != SistemaMatricula.Models.Grid.REGISTERED)
+                        {
+                            <div class="form-group">
+                                <b>Atenção: </b>alterar o status da grade para 'CADASTRADA' ou 'CANCELADA',
+                                inflige na exclusão de matrículas previamente realizadas.
+                            </div>
+                        }
                         <div class="form-group row">
-                            @if (Model.StatusSelected != SistemaMatricula.Models.Grid.REGISTERED)
-                            {
-                                <div class="col-sm-6">
-                                    <b>Atenção: </b>alterar o status da grade para 'CADASTRADA' ou 'CANCELADA', 
-                                    inflige na exclusão de matrículas previamente realizadas.
-                                </div>
-                            }
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(
+                                    model => model.Price,
+                                    new
+                                    {
+                                        @class = "form-control form-control-user price",
+                                        @required = "required",
+                                        @placeholder = "Digite o preço da matrícula"
+                                    })
+                                @Html.ValidationMessageFor(model => model.Price)
+                            </div>
                             <div class="col-sm-6">
                                 @Html.DropDownListFor(
                                     model => model.StatusSelected,

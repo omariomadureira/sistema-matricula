@@ -19,8 +19,7 @@ namespace SistemaMatricula.Models
 
         public static bool Add(Registry item)
         {
-            //TODO: adicionar campo valor na grade
-            var send = SendBill(item.Student.Name, item.Student.CPF, 1);
+            var send = SendBill(item.Student.Name, item.Student.CPF, item.Grid.Price);
 
             if (send == false)
                 return false;
@@ -94,7 +93,7 @@ namespace SistemaMatricula.Models
             if (restForFirst == 0 && first > restForFirst)
                 return new ValidationResult("A quantidade máxima de matrículas para primeira opção foi atingida.");
 
-            if (restForSecond > 0 && second == 0)
+            if (restForFirst == 0 && restForSecond > 0 && second == 0)
                 return new ValidationResult("Escolha pelo menos 1 disciplina para segunda opção.");
 
             if (restForSecond > 0 && second > restForSecond)
@@ -168,7 +167,7 @@ namespace SistemaMatricula.Models
             return null;
         }
 
-        public static bool SendBill(string name, string cpf, decimal value)
+        public static bool SendBill(string name, string cpf, double price)
         {
             try
             {
@@ -178,10 +177,10 @@ namespace SistemaMatricula.Models
                 if (string.IsNullOrWhiteSpace(cpf))
                     throw new Exception("Parâmetro cpf vazio");
 
-                if (value < 1)
+                if (price < 1)
                     throw new Exception("Parâmetro value vazio");
 
-                var url = string.Format("https://localhost:44339/api/bill/post?name={0}&cpf={1}&value={2}", name, cpf, value);
+                var url = string.Format("https://localhost:44339/api/bill/post?name={0}&cpf={1}&value={2}", name, cpf, price);
 
                 var api = API.Call("POST", url);
 
@@ -192,7 +191,7 @@ namespace SistemaMatricula.Models
             }
             catch (Exception e)
             {
-                object[] parameters = { name, cpf, value };
+                object[] parameters = { name, cpf, price };
                 string notes = LogHelper.Notes(parameters, e.Message);
                 Log.Add(Log.TYPE_ERROR, "SistemaMatricula.Models.Registry.SendBill", notes);
             }

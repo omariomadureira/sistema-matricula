@@ -16,6 +16,7 @@ namespace SistemaMatricula.Models
         public string Description { get; set; }
         [Range(1, int.MaxValue, ErrorMessage = "Preencha um número válido")]
         [Required(ErrorMessage = "Preenchimento obrigatório")]
+        [Display(Name = "Créditos")]
         public int Credits { get; set; }
         public DateTime RegisterDate { get; set; }
         public Guid RegisterBy { get; set; }

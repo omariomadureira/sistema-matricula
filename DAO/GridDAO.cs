@@ -33,6 +33,7 @@ namespace SistemaMatricula.DAO
                     IdTeacher = item.Teacher.IdTeacher,
                     Weekday = item.Weekday,
                     Time = item.Time,
+                    Price = item.Price,
                     Status = item.Status,
                     RegisterDate = DateTime.Now,
                     RegisterBy = User.Logged.IdUser
@@ -96,6 +97,7 @@ namespace SistemaMatricula.DAO
                             IdTeacher = item.Teacher.IdTeacher,
                             Weekday = item.Weekday,
                             Time = item.Time,
+                            Price = item.Price,
                             Status = item.Status,
                             RegisterDate = DateTime.Now,
                             RegisterBy = user
@@ -255,6 +257,9 @@ namespace SistemaMatricula.DAO
                     if (!string.IsNullOrEmpty(item.Time))
                         row.Time = item.Time;
 
+                    if (item.Price > 0)
+                        row.Price = item.Price;
+
                     bool different = false;
 
                     if (!string.IsNullOrEmpty(item.Status))
@@ -351,6 +356,7 @@ namespace SistemaMatricula.DAO
                     Teacher = teacher,
                     Weekday = item.Weekday,
                     Time = item.Time,
+                    Price = item.Price,
                     Status = item.Status,
                     RegisterDate = item.RegisterDate,
                     RegisterBy = item.RegisterBy,

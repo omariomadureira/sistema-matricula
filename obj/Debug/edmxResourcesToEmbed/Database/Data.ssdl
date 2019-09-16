@@ -100,6 +100,7 @@
     <Property Name="IdTeacher" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Weekday" Type="int" Nullable="false" />
     <Property Name="Time" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="Price" Type="float" Nullable="false" />
     <Property Name="Status" Type="varchar" MaxLength="10" Nullable="false" />
     <Property Name="RegisterDate" Type="datetime" Nullable="false" />
     <Property Name="RegisterBy" Type="uniqueidentifier" Nullable="false" />
@@ -227,16 +228,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Function Name="Grade_ListarCursos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="IdSemestre" Type="uniqueidentifier" Mode="In" />
-    <Parameter Name="IdCurso" Type="uniqueidentifier" Mode="In" />
-    <Parameter Name="StatusGrade" Type="varchar" Mode="In" />
-    <Parameter Name="PalavraChave" Type="varchar" Mode="In" />
-  </Function>
-  <Function Name="Grade_ListarDisciplinas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="StatusDisciplina" Type="varchar" Mode="In" />
-    <Parameter Name="IdCurso" Type="uniqueidentifier" Mode="In" />
-  </Function>
   <EntityContainer Name="ModelStoreContainer">
     <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />

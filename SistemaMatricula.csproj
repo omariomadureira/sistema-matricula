@@ -224,15 +224,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Data.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Database\Grade_ListarCursos_Result.cs">
-      <DependentUpon>Data.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Database\Grade_ListarDisciplinasParaMatricula_Result.cs">
-      <DependentUpon>Data.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Database\Grade_ListarDisciplinas_Result.cs">
-      <DependentUpon>Data.tt</DependentUpon>
-    </Compile>
     <Compile Include="Database\GridData.cs">
       <DependentUpon>Data.tt</DependentUpon>
     </Compile>

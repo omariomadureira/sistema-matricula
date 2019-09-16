@@ -20,6 +20,7 @@ namespace SistemaMatricula.Database
         public System.Guid IdTeacher { get; set; }
         public int Weekday { get; set; }
         public string Time { get; set; }
+        public double Price { get; set; }
         public string Status { get; set; }
         public System.DateTime RegisterDate { get; set; }
         public System.Guid RegisterBy { get; set; }

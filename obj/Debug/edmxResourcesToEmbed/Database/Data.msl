@@ -38,173 +38,150 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="Grade_ListarCursos" FunctionName="Model.Store.Grade_ListarCursos">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="Model.Grade_ListarCursos_Result">
-          <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
-          <ScalarProperty Name="NomeSemestre" ColumnName="NomeSemestre" />
-          <ScalarProperty Name="IdCurso" ColumnName="IdCurso" />
-          <ScalarProperty Name="NomeCurso" ColumnName="NomeCurso" />
-          <ScalarProperty Name="StatusGrade" ColumnName="StatusGrade" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="Grade_ListarDisciplinas" FunctionName="Model.Store.Grade_ListarDisciplinas">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="Model.Grade_ListarDisciplinas_Result">
-          <ScalarProperty Name="IdDisciplinaSemestre" ColumnName="IdDisciplinaSemestre" />
-          <ScalarProperty Name="NomeSemestre" ColumnName="NomeSemestre" />
-          <ScalarProperty Name="DiaSemana" ColumnName="DiaSemana" />
-          <ScalarProperty Name="Horario" ColumnName="Horario" />
-          <ScalarProperty Name="NomeCurso" ColumnName="NomeCurso" />
-          <ScalarProperty Name="NomeDisciplina" ColumnName="NomeDisciplina" />
-          <ScalarProperty Name="NomeProfessor" ColumnName="NomeProfessor" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <EntitySetMapping Name="CourseData">
-      <EntityTypeMapping TypeName="Model.CourseData">
-        <MappingFragment StoreEntitySet="CourseData">
-          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
-          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
-          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
-          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
-          <ScalarProperty Name="Credits" ColumnName="Credits" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="IdCourse" ColumnName="IdCourse" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="LogData">
-      <EntityTypeMapping TypeName="Model.LogData">
-        <MappingFragment StoreEntitySet="LogData">
-          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
-          <ScalarProperty Name="IdUser" ColumnName="IdUser" />
-          <ScalarProperty Name="Notes" ColumnName="Notes" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Type" ColumnName="Type" />
-          <ScalarProperty Name="IdLog" ColumnName="IdLog" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="SemesterData">
-      <EntityTypeMapping TypeName="Model.SemesterData">
-        <MappingFragment StoreEntitySet="SemesterData">
-          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
-          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
-          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
-          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
-          <ScalarProperty Name="Period" ColumnName="Period" />
-          <ScalarProperty Name="InitialDate" ColumnName="InitialDate" />
-          <ScalarProperty Name="IdSemester" ColumnName="IdSemester" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="TeacherData">
-      <EntityTypeMapping TypeName="Model.TeacherData">
-        <MappingFragment StoreEntitySet="TeacherData">
-          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
-          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
-          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
-          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
-          <ScalarProperty Name="Resume" ColumnName="Resume" />
-          <ScalarProperty Name="CPF" ColumnName="CPF" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Birthday" ColumnName="Birthday" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="IdTeacher" ColumnName="IdTeacher" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="AspNetUsers">
       <EntityTypeMapping TypeName="Model.AspNetUsers">
         <MappingFragment StoreEntitySet="AspNetUsers">
-          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
-          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
-          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
-          <ScalarProperty Name="UserName" ColumnName="UserName" />
-          <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
-          <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
-          <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
-          <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
-          <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
-          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-          <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
-          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-          <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="StudentData">
-      <EntityTypeMapping TypeName="Model.StudentData">
-        <MappingFragment StoreEntitySet="StudentData">
-          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
-          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
-          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
-          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
-          <ScalarProperty Name="CPF" ColumnName="CPF" />
           <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Birthday" ColumnName="Birthday" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="IdStudent" ColumnName="IdStudent" />
+          <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+          <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+          <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+          <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+          <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+          <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="AspNetUserRoles" TypeName="Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-      <EndProperty Name="AspNetUsers">
-        <ScalarProperty Name="Id" ColumnName="UserId" />
-      </EndProperty>
-      <EndProperty Name="AspNetRoles">
-        <ScalarProperty Name="Id" ColumnName="RoleId" />
-      </EndProperty>
-    </AssociationSetMapping>
     <EntitySetMapping Name="ClassData">
       <EntityTypeMapping TypeName="Model.ClassData">
         <MappingFragment StoreEntitySet="ClassData">
-          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
-          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
-          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
-          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
-          <ScalarProperty Name="IdCourse" ColumnName="IdCourse" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="IdClass" ColumnName="IdClass" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="IdCourse" ColumnName="IdCourse" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="RegistryData">
-      <EntityTypeMapping TypeName="Model.RegistryData">
-        <MappingFragment StoreEntitySet="RegistryData">
-          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
-          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+    <EntitySetMapping Name="CourseData">
+      <EntityTypeMapping TypeName="Model.CourseData">
+        <MappingFragment StoreEntitySet="CourseData">
+          <ScalarProperty Name="IdCourse" ColumnName="IdCourse" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Credits" ColumnName="Credits" />
           <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
           <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
-          <ScalarProperty Name="Alternative" ColumnName="Alternative" />
-          <ScalarProperty Name="IdStudent" ColumnName="IdStudent" />
-          <ScalarProperty Name="IdGrid" ColumnName="IdGrid" />
-          <ScalarProperty Name="IdRegistry" ColumnName="IdRegistry" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="GridData">
       <EntityTypeMapping TypeName="Model.GridData">
         <MappingFragment StoreEntitySet="GridData">
-          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
-          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
-          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
-          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="Time" ColumnName="Time" />
-          <ScalarProperty Name="Weekday" ColumnName="Weekday" />
-          <ScalarProperty Name="IdTeacher" ColumnName="IdTeacher" />
-          <ScalarProperty Name="IdSemester" ColumnName="IdSemester" />
-          <ScalarProperty Name="IdClass" ColumnName="IdClass" />
           <ScalarProperty Name="IdGrid" ColumnName="IdGrid" />
+          <ScalarProperty Name="IdClass" ColumnName="IdClass" />
+          <ScalarProperty Name="IdSemester" ColumnName="IdSemester" />
+          <ScalarProperty Name="IdTeacher" ColumnName="IdTeacher" />
+          <ScalarProperty Name="Weekday" ColumnName="Weekday" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="LogData">
+      <EntityTypeMapping TypeName="Model.LogData">
+        <MappingFragment StoreEntitySet="LogData">
+          <ScalarProperty Name="IdLog" ColumnName="IdLog" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RegistryData">
+      <EntityTypeMapping TypeName="Model.RegistryData">
+        <MappingFragment StoreEntitySet="RegistryData">
+          <ScalarProperty Name="IdRegistry" ColumnName="IdRegistry" />
+          <ScalarProperty Name="IdGrid" ColumnName="IdGrid" />
+          <ScalarProperty Name="IdStudent" ColumnName="IdStudent" />
+          <ScalarProperty Name="Alternative" ColumnName="Alternative" />
+          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SemesterData">
+      <EntityTypeMapping TypeName="Model.SemesterData">
+        <MappingFragment StoreEntitySet="SemesterData">
+          <ScalarProperty Name="IdSemester" ColumnName="IdSemester" />
+          <ScalarProperty Name="InitialDate" ColumnName="InitialDate" />
+          <ScalarProperty Name="Period" ColumnName="Period" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StudentData">
+      <EntityTypeMapping TypeName="Model.StudentData">
+        <MappingFragment StoreEntitySet="StudentData">
+          <ScalarProperty Name="IdStudent" ColumnName="IdStudent" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="CPF" ColumnName="CPF" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TeacherData">
+      <EntityTypeMapping TypeName="Model.TeacherData">
+        <MappingFragment StoreEntitySet="TeacherData">
+          <ScalarProperty Name="IdTeacher" ColumnName="IdTeacher" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="CPF" ColumnName="CPF" />
+          <ScalarProperty Name="Resume" ColumnName="Resume" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="RegisterBy" ColumnName="RegisterBy" />
+          <ScalarProperty Name="DeleteDate" ColumnName="DeleteDate" />
+          <ScalarProperty Name="DeleteBy" ColumnName="DeleteBy" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="AspNetUserRoles" TypeName="Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+      <EndProperty Name="AspNetRoles">
+        <ScalarProperty Name="Id" ColumnName="RoleId" />
+      </EndProperty>
+      <EndProperty Name="AspNetUsers">
+        <ScalarProperty Name="Id" ColumnName="UserId" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -126,6 +126,7 @@ namespace SistemaMatricula.Controllers
                 view.WeekdaySelected = item.Weekday;
                 view.StatusSelectList = new SelectList(Grid.StatusList(), item.Status.Trim());
                 view.StatusSelected = item.Status.Trim();
+                view.Price = item.Price;
             }
             catch (Exception e)
             {

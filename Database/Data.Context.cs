@@ -12,8 +12,6 @@ namespace SistemaMatricula.Database
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using System.Data.Entity.Core.Objects;
-    using System.Linq;
     
     public partial class Entities : DbContext
     {
@@ -31,53 +29,14 @@ namespace SistemaMatricula.Database
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
-        public virtual DbSet<CourseData> CourseData { get; set; }
-        public virtual DbSet<LogData> LogData { get; set; }
-        public virtual DbSet<SemesterData> SemesterData { get; set; }
-        public virtual DbSet<TeacherData> TeacherData { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<StudentData> StudentData { get; set; }
         public virtual DbSet<ClassData> ClassData { get; set; }
-        public virtual DbSet<RegistryData> RegistryData { get; set; }
+        public virtual DbSet<CourseData> CourseData { get; set; }
         public virtual DbSet<GridData> GridData { get; set; }
-    
-        public virtual ObjectResult<Grade_ListarCursos_Result> Grade_ListarCursos(Nullable<System.Guid> idSemestre, Nullable<System.Guid> idCurso, string statusGrade, string palavraChave)
-        {
-            var idSemestreParameter = idSemestre.HasValue ?
-                new ObjectParameter("IdSemestre", idSemestre) :
-                new ObjectParameter("IdSemestre", typeof(System.Guid));
-    
-            var idCursoParameter = idCurso.HasValue ?
-                new ObjectParameter("IdCurso", idCurso) :
-                new ObjectParameter("IdCurso", typeof(System.Guid));
-    
-            var statusGradeParameter = statusGrade != null ?
-                new ObjectParameter("StatusGrade", statusGrade) :
-                new ObjectParameter("StatusGrade", typeof(string));
-    
-            var palavraChaveParameter = palavraChave != null ?
-                new ObjectParameter("PalavraChave", palavraChave) :
-                new ObjectParameter("PalavraChave", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Grade_ListarCursos_Result>("Grade_ListarCursos", idSemestreParameter, idCursoParameter, statusGradeParameter, palavraChaveParameter);
-        }
-    
-        public virtual ObjectResult<Grade_ListarDisciplinasParaMatricula_Result> Grade_ListarDisciplinasParaMatricula()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Grade_ListarDisciplinasParaMatricula_Result>("Grade_ListarDisciplinasParaMatricula");
-        }
-    
-        public virtual ObjectResult<Grade_ListarDisciplinas_Result> Grade_ListarDisciplinas(string statusDisciplina, Nullable<System.Guid> idCurso)
-        {
-            var statusDisciplinaParameter = statusDisciplina != null ?
-                new ObjectParameter("StatusDisciplina", statusDisciplina) :
-                new ObjectParameter("StatusDisciplina", typeof(string));
-    
-            var idCursoParameter = idCurso.HasValue ?
-                new ObjectParameter("IdCurso", idCurso) :
-                new ObjectParameter("IdCurso", typeof(System.Guid));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Grade_ListarDisciplinas_Result>("Grade_ListarDisciplinas", statusDisciplinaParameter, idCursoParameter);
-        }
+        public virtual DbSet<LogData> LogData { get; set; }
+        public virtual DbSet<RegistryData> RegistryData { get; set; }
+        public virtual DbSet<SemesterData> SemesterData { get; set; }
+        public virtual DbSet<StudentData> StudentData { get; set; }
+        public virtual DbSet<TeacherData> TeacherData { get; set; }
     }
 }
