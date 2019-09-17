@@ -180,7 +180,7 @@ namespace SistemaMatricula.Models
                 if (price < 1)
                     throw new Exception("Parâmetro value vazio");
 
-                var url = string.Format("https://localhost:44339/api/bill/post?name={0}&cpf={1}&value={2}", name, cpf, price);
+                var url = string.Format("{0}/bill/post?name={1}&cpf={2}&value={3}", API.COBRANCA_API_URL, name, cpf, price);
 
                 var api = API.Call("POST", url);
 
